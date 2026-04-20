@@ -1,0 +1,2908 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Siper — Tower Defense | Kule Savunma Oyunu</title>
+<meta name="description" content="Siper, modern askeri temalı ücretsiz bir tarayıcı tabanlı kule savunma oyunudur. 8 farklı harita, 3 zorluk seviyesi, sonsuz dalga modu. Hattı tut, üssü koru!">
+<meta name="keywords" content="siper, tower defense, kule savunma, kule oyunu, tarayıcı oyunu, türkçe oyun, mrtrclb">
+<meta name="author" content="mrtrclb">
+<meta name="theme-color" content="#d97e2a">
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://mrtrclb.github.io/siper/">
+<meta property="og:title" content="Siper — Kule Savunma Oyunu">
+<meta property="og:description" content="Modern askeri temalı ücretsiz tarayıcı kule savunma oyunu. 8 harita, 3 zorluk, sonsuz dalga. Hattı tut, üssü koru!">
+<meta property="og:image" content="https://mrtrclb.github.io/siper/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="tr_TR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:site_name" content="Siper">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="https://mrtrclb.github.io/siper/">
+<meta name="twitter:title" content="Siper — Kule Savunma Oyunu">
+<meta name="twitter:description" content="Modern askeri temalı ücretsiz tarayıcı kule savunma oyunu. Hattı tut, üssü koru!">
+<meta name="twitter:image" content="https://mrtrclb.github.io/siper/og-image.png">
+
+<!-- Favicon (inline SVG data URI — changes with version) -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%230a0a0a'/%3E%3Crect x='4' y='4' width='56' height='56' fill='none' stroke='%23d97e2a' stroke-width='3'/%3E%3Ccircle cx='32' cy='32' r='10' fill='%23d97e2a'/%3E%3Ccircle cx='32' cy='32' r='5' fill='%230a0a0a'/%3E%3Crect x='30' y='12' width='4' height='10' fill='%23d97e2a'/%3E%3Crect x='30' y='42' width='4' height='10' fill='%23d97e2a'/%3E%3Crect x='12' y='30' width='10' height='4' fill='%23d97e2a'/%3E%3Crect x='42' y='30' width='10' height='4' fill='%23d97e2a'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%230a0a0a'/%3E%3Ccircle cx='32' cy='32' r='20' fill='%23d97e2a'/%3E%3Ccircle cx='32' cy='32' r='10' fill='%230a0a0a'/%3E%3C/svg%3E">
+
+<!-- PWA Manifest -->
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Siper">
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --bg-2: #151410;
+    --panel: #1a1a15;
+    --panel-2: #24231c;
+    --border: #3a3830;
+    --khaki: #6b6140;
+    --khaki-2: #8a7d52;
+    --orange: #d97e2a;
+    --orange-2: #f2953a;
+    --text: #e8e4d6;
+    --dim: #8a8474;
+    --danger: #c8472f;
+    --good: #7a9f3f;
+    --sand: #c9b682;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Courier New', Consolas, monospace;
+    overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  #app {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    background:
+      radial-gradient(ellipse at top, rgba(217,126,42,0.06), transparent 60%),
+      linear-gradient(180deg, #0a0a0a 0%, #050505 100%);
+  }
+
+  /* ===== HUD ===== */
+  .hud {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    background: linear-gradient(180deg, var(--panel) 0%, var(--bg-2) 100%);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.6);
+    flex-wrap: wrap;
+  }
+  .stat {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 4px 10px;
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    min-width: 0;
+  }
+  .stat .icon { font-size: 14px; }
+  .stat.money { color: var(--orange-2); border-color: var(--orange); }
+  .stat.lives { color: var(--danger); }
+  .stat.wave { color: var(--sand); }
+  .stat.score { color: var(--khaki-2); }
+  .spacer { flex: 1; }
+  .btn {
+    background: linear-gradient(180deg, var(--khaki) 0%, #4d4530 100%);
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 6px 12px;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.15s;
+  }
+  .btn:hover { background: linear-gradient(180deg, var(--khaki-2) 0%, var(--khaki) 100%); }
+  .btn:active { transform: translateY(1px); }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .btn.primary {
+    background: linear-gradient(180deg, var(--orange) 0%, #a85f1e 100%);
+    border-color: var(--orange-2);
+  }
+  .btn.primary:hover { background: linear-gradient(180deg, var(--orange-2) 0%, var(--orange) 100%); }
+  .btn.danger {
+    background: linear-gradient(180deg, var(--danger) 0%, #8a2a18 100%);
+  }
+
+  /* ===== MAIN ===== */
+  .main {
+    flex: 1;
+    display: flex;
+    min-height: 0;
+    position: relative;
+  }
+  .canvas-wrap {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+  }
+  canvas {
+    max-width: 100%;
+    max-height: 100%;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.8), inset 0 0 40px rgba(0,0,0,0.4);
+    touch-action: none;
+  }
+
+  /* ===== SIDEBAR (TOWER SHOP) ===== */
+  .sidebar {
+    width: 180px;
+    background: linear-gradient(180deg, var(--panel) 0%, var(--bg-2) 100%);
+    border-left: 1px solid var(--border);
+    padding: 10px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    overflow-y: auto;
+  }
+  .sidebar-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--dim);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 4px;
+    margin-bottom: 2px;
+  }
+  .tower-card {
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 8px;
+    cursor: pointer;
+    transition: all 0.15s;
+    position: relative;
+  }
+  .tower-card:hover {
+    border-color: var(--khaki-2);
+    background: #2d2b22;
+  }
+  .tower-card.selected {
+    border-color: var(--orange);
+    background: #2d2617;
+    box-shadow: 0 0 0 1px var(--orange) inset, 0 0 10px rgba(217,126,42,0.3);
+  }
+  .tower-card.disabled { opacity: 0.4; cursor: not-allowed; }
+  .tower-card .name {
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--sand);
+    margin-bottom: 2px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .tower-card .cost {
+    font-size: 11px;
+    color: var(--orange-2);
+    font-weight: bold;
+  }
+  .tower-card .desc {
+    font-size: 10px;
+    color: var(--dim);
+    margin-top: 4px;
+    line-height: 1.3;
+  }
+  .tower-icon {
+    width: 14px;
+    height: 14px;
+    display: inline-block;
+    border-radius: 2px;
+  }
+
+  /* ===== SELECTED TOWER PANEL ===== */
+  .tower-panel {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    background: linear-gradient(180deg, var(--panel) 0%, var(--bg-2) 100%);
+    border: 1px solid var(--orange);
+    border-radius: 4px;
+    padding: 10px 12px;
+    min-width: 220px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.8);
+    display: none;
+    z-index: 10;
+  }
+  .tower-panel.active { display: block; }
+  .tower-panel h3 {
+    font-size: 13px;
+    color: var(--sand);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .tower-panel .stats-row {
+    display: flex;
+    gap: 10px;
+    font-size: 11px;
+    color: var(--dim);
+    margin-bottom: 8px;
+  }
+  .tower-panel .stats-row span { color: var(--text); font-weight: bold; }
+  .tower-panel .actions {
+    display: flex;
+    gap: 6px;
+  }
+  .tower-panel .actions .btn { flex: 1; font-size: 11px; padding: 6px 8px; }
+  .level-dots {
+    display: inline-flex;
+    gap: 3px;
+    margin-left: 6px;
+  }
+  .level-dots .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--border);
+  }
+  .level-dots .dot.on { background: var(--orange); box-shadow: 0 0 4px var(--orange); }
+
+  /* ===== MODAL ===== */
+  .modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+  }
+  .modal.active { display: flex; }
+  .modal-box {
+    background: linear-gradient(180deg, var(--panel) 0%, var(--bg-2) 100%);
+    border: 1px solid var(--orange);
+    border-radius: 4px;
+    padding: 24px;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 0 40px rgba(217,126,42,0.2);
+  }
+  .modal-box h2 {
+    font-size: 24px;
+    color: var(--orange-2);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+  .modal-box p {
+    color: var(--dim);
+    margin-bottom: 16px;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .modal-box .big {
+    font-size: 32px;
+    color: var(--sand);
+    margin: 12px 0;
+    font-weight: bold;
+  }
+  .modal-actions { display: flex; gap: 8px; justify-content: center; }
+
+  /* ===== TOAST ===== */
+  .toast {
+    position: fixed;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--panel);
+    border: 1px solid var(--danger);
+    color: var(--text);
+    padding: 10px 20px;
+    border-radius: 3px;
+    font-size: 13px;
+    font-weight: bold;
+    z-index: 200;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .toast.show { opacity: 1; }
+
+  /* ===== MAP SELECT ===== */
+  .map-select {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(180deg, #0a0a0a 0%, #050505 100%);
+    z-index: 300;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    overflow-y: auto;
+  }
+  .map-select.hidden { display: none; }
+  .map-select-header {
+    text-align: center;
+    margin-bottom: 24px;
+    padding-top: 10px;
+  }
+  .map-select-header h1 {
+    font-size: 32px;
+    color: var(--orange-2);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    text-shadow: 0 0 20px rgba(217,126,42,0.3);
+  }
+  .map-select-header p {
+    color: var(--dim);
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .map-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 14px;
+    max-width: 1100px;
+    width: 100%;
+    margin: 0 auto;
+  }
+  .map-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .map-card:hover {
+    border-color: var(--orange);
+    background: var(--panel-2);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.6), 0 0 0 1px rgba(217,126,42,0.3);
+  }
+  .map-card canvas {
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    background: #0a0a0a;
+    display: block;
+  }
+  .map-card .map-name {
+    font-size: 13px;
+    font-weight: bold;
+    color: var(--sand);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .map-card .map-tag {
+    font-size: 10px;
+    background: var(--bg-2);
+    padding: 2px 6px;
+    border-radius: 2px;
+    border: 1px solid var(--border);
+    color: var(--dim);
+    letter-spacing: 0.5px;
+  }
+  .map-card .map-tag.multi { color: var(--orange-2); border-color: var(--orange); }
+  .map-card .map-best {
+    font-size: 11px;
+    color: var(--khaki-2);
+    display: flex;
+    justify-content: space-between;
+  }
+  .map-card .map-best .best-val { color: var(--orange-2); font-weight: bold; }
+  .map-card .map-desc {
+    font-size: 11px;
+    color: var(--dim);
+    line-height: 1.4;
+  }
+
+  /* ===== SPLASH SCREEN ===== */
+  .splash {
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at center, rgba(217,126,42,0.12), transparent 65%),
+      linear-gradient(180deg, #0a0a0a 0%, #030302 100%);
+    z-index: 500;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    text-align: center;
+  }
+  .splash.hidden { display: none; }
+  .splash::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 40px,
+        rgba(217,126,42,0.02) 40px,
+        rgba(217,126,42,0.02) 42px
+      );
+    pointer-events: none;
+  }
+  .splash-logo {
+    font-size: clamp(48px, 12vw, 96px);
+    font-weight: bold;
+    color: var(--orange-2);
+    letter-spacing: clamp(6px, 2vw, 16px);
+    text-transform: uppercase;
+    text-shadow:
+      0 0 20px rgba(217,126,42,0.4),
+      0 0 40px rgba(217,126,42,0.2),
+      2px 2px 0 #8a4a18;
+    animation: splashGlow 3s ease-in-out infinite;
+    margin-bottom: 6px;
+    position: relative;
+  }
+  @keyframes splashGlow {
+    0%, 100% { text-shadow: 0 0 20px rgba(217,126,42,0.4), 0 0 40px rgba(217,126,42,0.2), 2px 2px 0 #8a4a18; }
+    50% { text-shadow: 0 0 30px rgba(217,126,42,0.6), 0 0 60px rgba(217,126,42,0.3), 2px 2px 0 #8a4a18; }
+  }
+  .splash-sub {
+    font-size: clamp(11px, 2.5vw, 14px);
+    color: var(--sand);
+    letter-spacing: clamp(2px, 0.6vw, 4px);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    position: relative;
+  }
+  .splash-tagline {
+    font-size: clamp(13px, 3vw, 17px);
+    color: var(--dim);
+    margin-bottom: 40px;
+    letter-spacing: 1px;
+    font-style: italic;
+    position: relative;
+  }
+  .splash-lang {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 28px;
+    position: relative;
+  }
+  .splash-lang .lang-btn {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    color: var(--dim);
+    padding: 8px 18px;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: all 0.2s;
+  }
+  .splash-lang .lang-btn.active {
+    background: var(--panel-2);
+    border-color: var(--orange);
+    color: var(--orange-2);
+    box-shadow: 0 0 10px rgba(217,126,42,0.2);
+  }
+  .splash-start {
+    background: linear-gradient(180deg, var(--orange) 0%, #a85f1e 100%);
+    color: #fff;
+    border: 2px solid var(--orange-2);
+    padding: 14px 40px;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    cursor: pointer;
+    border-radius: 3px;
+    box-shadow: 0 4px 20px rgba(217,126,42,0.4);
+    transition: all 0.15s;
+    position: relative;
+  }
+  .splash-start:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(217,126,42,0.6);
+  }
+  .splash-start:active { transform: translateY(0); }
+  .splash-footer {
+    position: absolute;
+    bottom: 16px;
+    color: var(--dim);
+    font-size: 10px;
+    letter-spacing: 1px;
+  }
+
+  /* ===== MAIN MENU ===== */
+  .main-menu {
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at top, rgba(217,126,42,0.08), transparent 60%),
+      linear-gradient(180deg, #0a0a0a 0%, #050505 100%);
+    z-index: 400;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px 20px;
+  }
+  .main-menu.hidden { display: none; }
+  .menu-header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  .menu-header h1 {
+    font-size: clamp(36px, 8vw, 56px);
+    color: var(--orange-2);
+    letter-spacing: clamp(4px, 1.5vw, 10px);
+    text-transform: uppercase;
+    text-shadow: 0 0 20px rgba(217,126,42,0.3);
+    margin-bottom: 6px;
+  }
+  .menu-header p {
+    color: var(--dim);
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .menu-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    width: 100%;
+    max-width: 320px;
+  }
+  .menu-btn {
+    background: linear-gradient(180deg, var(--panel) 0%, var(--bg-2) 100%);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 18px 20px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: all 0.2s;
+    position: relative;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .menu-btn:hover {
+    border-color: var(--orange);
+    color: var(--orange-2);
+    transform: translateX(4px);
+    box-shadow: -3px 3px 0 rgba(217,126,42,0.4);
+  }
+  .menu-btn .mb-icon {
+    font-size: 20px;
+    color: var(--orange);
+  }
+  .menu-btn.primary {
+    background: linear-gradient(180deg, rgba(217,126,42,0.15) 0%, rgba(168,95,30,0.1) 100%);
+    border-color: var(--orange);
+  }
+  .menu-btn.primary:hover { background: linear-gradient(180deg, rgba(217,126,42,0.25) 0%, rgba(168,95,30,0.15) 100%); }
+
+  /* Online indicator */
+  .online-indicator {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    color: var(--dim);
+    z-index: 350;
+  }
+  .online-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--good);
+    box-shadow: 0 0 6px var(--good);
+    animation: onlinePulse 2s ease-in-out infinite;
+  }
+  @keyframes onlinePulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 6px var(--good); }
+    50% { opacity: 0.4; box-shadow: 0 0 2px var(--good); }
+  }
+  .online-indicator.offline .online-dot {
+    background: #666;
+    box-shadow: none;
+    animation: none;
+  }
+
+  /* Menu back button */
+  .menu-back {
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 8px 14px;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    z-index: 350;
+    transition: all 0.15s;
+  }
+  .menu-back:hover { border-color: var(--orange); color: var(--orange-2); }
+
+  /* ===== DIFFICULTY MODAL ===== */
+  .diff-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.92);
+    z-index: 450;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .diff-modal.active { display: flex; }
+  .diff-box {
+    background: linear-gradient(180deg, var(--panel) 0%, var(--bg-2) 100%);
+    border: 1px solid var(--orange);
+    border-radius: 4px;
+    padding: 24px;
+    max-width: 520px;
+    width: 100%;
+    box-shadow: 0 0 40px rgba(217,126,42,0.2);
+  }
+  .diff-box h2 {
+    font-size: 20px;
+    color: var(--orange-2);
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-align: center;
+  }
+  .diff-box .diff-map-name {
+    font-size: 13px;
+    color: var(--sand);
+    margin-bottom: 18px;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+  .diff-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .diff-option {
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 12px 14px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .diff-option:hover {
+    border-color: var(--khaki-2);
+    background: #2d2b22;
+  }
+  .diff-option.selected {
+    border-color: var(--orange);
+    background: #2d2617;
+    box-shadow: 0 0 0 1px var(--orange) inset;
+  }
+  .diff-option .diff-title {
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--sand);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .diff-option .diff-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 2px;
+    font-size: 10px;
+    letter-spacing: 1px;
+  }
+  .diff-option.easy .diff-badge { background: rgba(122,159,63,0.2); color: var(--good); border: 1px solid var(--good); }
+  .diff-option.medium .diff-badge { background: rgba(217,126,42,0.2); color: var(--orange-2); border: 1px solid var(--orange); }
+  .diff-option.hard .diff-badge { background: rgba(200,71,47,0.2); color: var(--danger); border: 1px solid var(--danger); }
+  .diff-option .diff-desc {
+    font-size: 11px;
+    color: var(--dim);
+    line-height: 1.4;
+  }
+  .diff-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+  }
+
+  /* ===== SETTINGS / ABOUT PANELS ===== */
+  .panel-screen {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(180deg, #0a0a0a 0%, #050505 100%);
+    z-index: 380;
+    display: none;
+    flex-direction: column;
+    padding: 60px 20px 20px;
+    overflow-y: auto;
+  }
+  .panel-screen.active { display: flex; }
+  .panel-content {
+    max-width: 640px;
+    width: 100%;
+    margin: 0 auto;
+  }
+  .panel-content h1 {
+    font-size: 28px;
+    color: var(--orange-2);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    text-align: center;
+  }
+  .panel-content h2 {
+    font-size: 15px;
+    color: var(--sand);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 24px 0 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+  .panel-content p {
+    color: var(--text);
+    font-size: 13px;
+    line-height: 1.6;
+    margin-bottom: 8px;
+  }
+  .panel-content ul {
+    list-style: none;
+    padding-left: 0;
+  }
+  .panel-content ul li {
+    color: var(--text);
+    font-size: 13px;
+    line-height: 1.6;
+    padding-left: 20px;
+    position: relative;
+    margin-bottom: 4px;
+  }
+  .panel-content ul li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--orange);
+  }
+
+  .setting-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px;
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    margin-bottom: 8px;
+  }
+  .setting-row .setting-label {
+    font-size: 13px;
+    font-weight: bold;
+    color: var(--text);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .setting-control { display: flex; gap: 6px; }
+  .toggle-btn {
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    color: var(--dim);
+    padding: 6px 14px;
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.15s;
+  }
+  .toggle-btn.active {
+    background: var(--panel-2);
+    border-color: var(--orange);
+    color: var(--orange-2);
+  }
+
+  .other-games {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  .game-link {
+    display: block;
+    padding: 14px;
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    text-decoration: none;
+    color: var(--text);
+    transition: all 0.2s;
+  }
+  .game-link:hover {
+    border-color: var(--orange);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+  }
+  .game-link .gl-name {
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--orange-2);
+    margin-bottom: 3px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .game-link .gl-url {
+    font-size: 11px;
+    color: var(--dim);
+  }
+  .game-link .gl-desc {
+    font-size: 11px;
+    color: var(--text);
+    margin-top: 4px;
+  }
+  @media (max-width: 540px) {
+    .other-games { grid-template-columns: 1fr; }
+  }
+
+  /* ===== FEEDBACK ===== */
+  .feedback-box {
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 14px;
+    margin-top: 10px;
+  }
+  .feedback-box textarea {
+    width: 100%;
+    min-height: 80px;
+    background: var(--bg-2);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 10px;
+    font-family: inherit;
+    font-size: 13px;
+    resize: vertical;
+    outline: none;
+  }
+  .feedback-box textarea:focus { border-color: var(--orange); }
+  .feedback-row {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 8px;
+  }
+
+  /* ===== MOBILE ===== */
+  @media (max-width: 720px) {
+    .sidebar {
+      width: 100%;
+      height: 120px;
+      border-left: none;
+      border-top: 1px solid var(--border);
+      flex-direction: row;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 8px;
+    }
+    .main { flex-direction: column; }
+    .tower-card {
+      min-width: 120px;
+      flex-shrink: 0;
+    }
+    .sidebar-title { display: none; }
+    .hud { padding: 6px 8px; gap: 6px; }
+    .stat { font-size: 11px; padding: 3px 7px; }
+    .btn { font-size: 11px; padding: 5px 9px; }
+    .tower-panel { min-width: 200px; left: 5px; bottom: 130px; }
+  }
+
+  /* Lang toggle */
+  .lang-toggle {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--dim);
+    padding: 4px 8px;
+    font-size: 10px;
+    cursor: pointer;
+    border-radius: 2px;
+    font-family: inherit;
+  }
+  .lang-toggle:hover { color: var(--text); border-color: var(--khaki-2); }
+</style>
+</head>
+<body>
+<!-- SPLASH SCREEN -->
+<div class="splash" id="splash">
+  <div class="splash-logo">SİPER</div>
+  <div class="splash-sub">v1.5.0</div>
+  <div class="splash-tagline" data-i18n="splashTagline">Hattı Tut, Üssü Koru.</div>
+  <div class="splash-lang">
+    <button class="lang-btn" data-lang="tr">TÜRKÇE</button>
+    <button class="lang-btn" data-lang="en">ENGLISH</button>
+  </div>
+  <button class="splash-start" id="splash-start" data-i18n="startGame">Oyuna Başla!</button>
+  <div class="splash-footer">v1.5.0 · mrtrclb</div>
+</div>
+
+<!-- MAIN MENU -->
+<div class="main-menu hidden" id="main-menu">
+  <div class="online-indicator" id="online-indicator">
+    <div class="online-dot"></div>
+    <span><span id="online-count">1</span> <span data-i18n="online">Çevrimiçi</span></span>
+  </div>
+  <div class="menu-header">
+    <h1>SİPER</h1>
+    <p data-i18n="splashTagline">Hattı Tut, Üssü Koru.</p>
+  </div>
+  <div class="menu-buttons">
+    <button class="menu-btn primary" id="menu-maps">
+      <span class="mb-icon">▸</span>
+      <span data-i18n="menuMaps">Haritalar</span>
+    </button>
+    <button class="menu-btn" id="menu-settings">
+      <span class="mb-icon">⚙</span>
+      <span data-i18n="menuSettings">Ayarlar</span>
+    </button>
+    <button class="menu-btn" id="menu-about">
+      <span class="mb-icon">ℹ</span>
+      <span data-i18n="menuAbout">Oyun Hakkında</span>
+    </button>
+  </div>
+</div>
+
+<!-- SETTINGS PANEL -->
+<div class="panel-screen" id="settings-panel">
+  <button class="menu-back" data-back="main-menu" data-i18n="back">Geri</button>
+  <div class="panel-content">
+    <h1 data-i18n="menuSettings">Ayarlar</h1>
+
+    <h2 data-i18n="language">Dil</h2>
+    <div class="setting-row">
+      <div class="setting-label" data-i18n="language">Dil</div>
+      <div class="setting-control">
+        <button class="toggle-btn" data-set-lang="tr">TR</button>
+        <button class="toggle-btn" data-set-lang="en">EN</button>
+      </div>
+    </div>
+
+    <h2 data-i18n="sound">Ses</h2>
+    <div class="setting-row">
+      <div class="setting-label" data-i18n="sound">Ses</div>
+      <div class="setting-control">
+        <button class="toggle-btn" data-sound="on" data-i18n="on">Açık</button>
+        <button class="toggle-btn" data-sound="off" data-i18n="off">Kapalı</button>
+      </div>
+    </div>
+
+    <h2 data-i18n="resetData">Tüm Verileri Sıfırla</h2>
+    <div class="setting-row">
+      <div class="setting-label" data-i18n="resetData">Tüm Verileri Sıfırla</div>
+      <div class="setting-control">
+        <button class="btn danger" id="btn-reset-data" data-i18n="resetData">Sıfırla</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT PANEL -->
+<div class="panel-screen" id="about-panel">
+  <button class="menu-back" data-back="main-menu" data-i18n="back">Geri</button>
+  <div class="panel-content">
+    <h1>SİPER</h1>
+    <p style="text-align:center; color: var(--sand); letter-spacing: 2px; margin-bottom: 20px;">
+      <span data-i18n="version">Sürüm</span> 1.5.0
+    </p>
+    <p data-i18n="aboutDesc">Siper, 10×8 grid üzerinde modern askeri temalı bir kule savunma oyunudur.</p>
+
+    <h2 data-i18n="howToPlay">Nasıl Oynanır</h2>
+    <ul>
+      <li data-i18n="howToPlay1"></li>
+      <li data-i18n="howToPlay2"></li>
+      <li data-i18n="howToPlay3"></li>
+      <li data-i18n="howToPlay4"></li>
+    </ul>
+
+    <h2 data-i18n="features">Özellikler</h2>
+    <ul>
+      <li data-i18n="feat1"></li>
+      <li data-i18n="feat2"></li>
+      <li data-i18n="feat3"></li>
+      <li data-i18n="feat4"></li>
+      <li data-i18n="feat5"></li>
+    </ul>
+
+    <h2 data-i18n="feedback">Geri Bildirim</h2>
+    <div class="feedback-box">
+      <textarea id="feedback-text" placeholder="" data-i18n-placeholder="feedbackPlaceholder"></textarea>
+      <div class="feedback-row">
+        <button class="btn primary" id="feedback-send" data-i18n="feedbackSend">Gönder</button>
+      </div>
+    </div>
+
+    <h2 data-i18n="changelog">Sürüm Notları</h2>
+    <p><strong>v1.5.0</strong> — <span data-i18n="changelog150"></span></p>
+
+    <h2 data-i18n="otherGames">Diğer Oyunlarım</h2>
+    <div class="other-games">
+      <a href="https://watchempire.net" target="_blank" class="game-link">
+        <div class="gl-name">Watch Empire</div>
+        <div class="gl-url">watchempire.net</div>
+        <div class="gl-desc">Saat üretim imparatorluğu kur</div>
+      </a>
+      <a href="https://tradegame.net" target="_blank" class="game-link">
+        <div class="gl-name">Trade Game</div>
+        <div class="gl-url">tradegame.net</div>
+        <div class="gl-desc">Borsa ve yatırım simülasyonu</div>
+      </a>
+    </div>
+
+    <p style="text-align:center; color: var(--dim); margin-top: 30px; letter-spacing: 1px; font-size: 11px;" data-i18n="credits">Geliştiren: mrtrclb</p>
+  </div>
+</div>
+
+<!-- DIFFICULTY MODAL -->
+<div class="diff-modal" id="diff-modal">
+  <div class="diff-box">
+    <h2 data-i18n="selectDifficulty">Zorluk Seç</h2>
+    <div class="diff-map-name" id="diff-map-name">—</div>
+    <div class="diff-options">
+      <div class="diff-option easy" data-diff="easy">
+        <div class="diff-title">
+          <span data-i18n="easy">Kolay</span>
+          <span class="diff-badge">★</span>
+        </div>
+        <div class="diff-desc" data-i18n="easyDesc"></div>
+      </div>
+      <div class="diff-option medium selected" data-diff="medium">
+        <div class="diff-title">
+          <span data-i18n="medium">Orta</span>
+          <span class="diff-badge">★★</span>
+        </div>
+        <div class="diff-desc" data-i18n="mediumDesc"></div>
+      </div>
+      <div class="diff-option hard" data-diff="hard">
+        <div class="diff-title">
+          <span data-i18n="hard">Zor</span>
+          <span class="diff-badge">★★★</span>
+        </div>
+        <div class="diff-desc" data-i18n="hardDesc"></div>
+      </div>
+    </div>
+    <div class="diff-actions">
+      <button class="btn" id="diff-cancel" data-i18n="back">Geri</button>
+      <button class="btn primary" id="diff-start" data-i18n="startPlaying">Başla</button>
+    </div>
+  </div>
+</div>
+
+<div id="app" style="display:none;">
+  <!-- HUD -->
+  <div class="hud">
+    <div class="stat money">
+      <span class="icon">◈</span>
+      <span id="hud-money">100</span>
+    </div>
+    <div class="stat lives">
+      <span class="icon">♥</span>
+      <span id="hud-lives">20</span>
+    </div>
+    <div class="stat wave">
+      <span class="icon">▸</span>
+      <span data-i18n="wave">Dalga</span>:<span id="hud-wave">0</span>
+    </div>
+    <div class="stat score">
+      <span class="icon">★</span>
+      <span id="hud-score">0</span>
+    </div>
+    <div class="spacer"></div>
+    <button class="btn primary" id="btn-wave" data-i18n="startWave">Dalgayı Başlat</button>
+    <button class="btn" id="btn-pause" data-i18n="pause">Duraklat</button>
+    <button class="btn" id="btn-map" data-i18n="changeMap">Harita</button>
+    <button class="btn danger" id="btn-restart" data-i18n="restart">Yeniden</button>
+    <button class="lang-toggle" id="btn-lang">EN</button>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="canvas-wrap">
+      <canvas id="game" width="800" height="640"></canvas>
+    </div>
+    <div class="sidebar">
+      <div class="sidebar-title" data-i18n="towers">Kuleler</div>
+      <div id="tower-shop"></div>
+    </div>
+    <!-- Selected tower info panel -->
+    <div class="tower-panel" id="tower-panel">
+      <h3 id="tp-name">—</h3>
+      <div class="stats-row">
+        <div><span data-i18n="level">Seviye</span>: <span id="tp-level">1</span><span class="level-dots" id="tp-dots"></span></div>
+      </div>
+      <div class="stats-row">
+        <div><span data-i18n="dmg">Hasar</span>: <span id="tp-dmg">0</span></div>
+        <div><span data-i18n="range">Menzil</span>: <span id="tp-range">0</span></div>
+        <div><span data-i18n="rate">Hız</span>: <span id="tp-rate">0</span></div>
+      </div>
+      <div class="actions">
+        <button class="btn primary" id="tp-upgrade" data-i18n="upgrade">Yükselt</button>
+        <button class="btn danger" id="tp-sell" data-i18n="sell">Sat</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- MAP SELECT -->
+<div class="map-select" id="map-select">
+  <button class="menu-back" id="map-back" data-i18n="back">Geri</button>
+  <div class="map-select-header">
+    <h1>SİPER</h1>
+    <p data-i18n="selectMap">Harita Seç</p>
+  </div>
+  <div class="map-grid" id="map-grid"></div>
+</div>
+
+<!-- GAME OVER MODAL -->
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <h2 id="m-title" data-i18n="gameOver">Oyun Bitti</h2>
+    <p id="m-sub" data-i18n="gameOverSub">Üssünüz düştü.</p>
+    <div class="big" id="m-score">0</div>
+    <p><span data-i18n="wavesReached">Dalga</span>: <span id="m-wave">0</span></p>
+    <div class="modal-actions">
+      <button class="btn primary" id="m-restart" data-i18n="playAgain">Tekrar Oyna</button>
+      <button class="btn" id="m-maps" data-i18n="backToMaps">Haritalara Dön</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   SIPER — Tower Defense
+   Single-file, Canvas-based, offline
+   ============================================================ */
+
+/* ---------- I18N ---------- */
+const I18N = {
+  tr: {
+    wave: "Dalga", startWave: "Dalgayı Başlat", nextWave: "Sonraki Dalga",
+    pause: "Duraklat", resume: "Devam", restart: "Yeniden",
+    towers: "Kuleler", level: "Seviye", dmg: "Hasar", range: "Menzil", rate: "Hız",
+    upgrade: "Yükselt", sell: "Sat",
+    gameOver: "Oyun Bitti", gameOverSub: "Üssünüz düştü.",
+    wavesReached: "Ulaşılan Dalga", playAgain: "Tekrar Oyna",
+    tMG: "Makineli Tüfek", tMGd: "Hızlı ateş, düşük hasar. Piyadelere karşı etkili.",
+    tRocket: "Roketatar", tRocketd: "Yavaş ama patlama hasarı. Grup hedeflere ideal.",
+    tTank: "Tank Topu", tTankd: "Yüksek hasar, zırh delici. Tek hedefi biçer.",
+    tSAM: "Hava Savunma", tSAMd: "Sadece hava hedeflerini vurur. Menzili geniş.",
+    notEnoughMoney: "Yetersiz para",
+    cantPlaceHere: "Buraya yerleştirilemez",
+    maxLevel: "Maksimum seviye",
+    sold: "Satıldı", placed: "Yerleştirildi",
+    best: "En İyi",
+    changeMap: "Harita", selectMap: "Harita Seç",
+    mapSingle: "Tek Yol", mapMulti: "Çoklu Yol",
+    backToMaps: "Haritalara Dön",
+    // Splash
+    splashTagline: "Hattı Tut, Üssü Koru.",
+    startGame: "Oyuna Başla!",
+    // Main menu
+    mainMenu: "Ana Menü",
+    menuMaps: "Haritalar",
+    menuSettings: "Ayarlar",
+    menuAbout: "Oyun Hakkında",
+    online: "Çevrimiçi",
+    back: "Geri",
+    // Difficulty
+    selectDifficulty: "Zorluk Seç",
+    difficultyFor: "Harita",
+    easy: "Kolay", medium: "Orta", hard: "Zor",
+    easyDesc: "+50 para, +10 can, yavaş HP artışı. Acemiler için.",
+    mediumDesc: "Standart denge. Önerilen zorluk.",
+    hardDesc: "-50 para, -5 can, hızlı HP, sık hava ve zırhlı. Veteranlar için.",
+    startPlaying: "Başla",
+    // Settings
+    sound: "Ses",
+    language: "Dil",
+    resetData: "Tüm Verileri Sıfırla",
+    resetConfirm: "Tüm kayıtlı skorlar ve ayarlar silinecek. Emin misin?",
+    resetDone: "Veriler sıfırlandı",
+    on: "Açık", off: "Kapalı",
+    // About
+    aboutDesc: "Siper, 10×8 grid üzerinde modern askeri temalı bir kule savunma oyunudur. 4 kule tipi, 3 düşman sınıfı ve 8 farklı harita ile sonsuz dalgalara karşı üssünü savun.",
+    howToPlay: "Nasıl Oynanır",
+    howToPlay1: "Sol paneldeki kulelerden birini seç ve grid üzerinde boş bir hücreye tıklayarak yerleştir.",
+    howToPlay2: "Dalga başlat butonuna bas, düşmanlar yolda ilerlerken kuleleri otomatik ateş eder.",
+    howToPlay3: "Düşman öldürerek para kazan, yeni kule al veya mevcut kuleleri yükselt.",
+    howToPlay4: "Düşman üsse ulaşırsa can kaybedersin. Can bitince oyun biter.",
+    features: "Özellikler",
+    feat1: "8 farklı harita (tek yol + çoklu yol)",
+    feat2: "3 zorluk seviyesi",
+    feat3: "4 kule tipi, 3 seviye yükseltme",
+    feat4: "Sonsuz dalga modu, harita bazlı skor",
+    feat5: "TR/EN dil desteği, PWA offline",
+    changelog: "Sürüm Notları",
+    changelog150: "İlk resmi sürüm. 8 harita, 3 zorluk, Firebase presence ve feedback.",
+    otherGames: "Diğer Oyunlarım",
+    credits: "Geliştiren: mrtrclb",
+    version: "Sürüm",
+    // Feedback
+    feedback: "Geri Bildirim",
+    feedbackPlaceholder: "Düşüncelerin, önerilerin veya bulduğun hatalar...",
+    feedbackSend: "Gönder",
+    feedbackThanks: "Teşekkürler! Geri bildirimin alındı.",
+    feedbackEmpty: "Lütfen bir şeyler yaz"
+  },
+  en: {
+    wave: "Wave", startWave: "Start Wave", nextWave: "Next Wave",
+    pause: "Pause", resume: "Resume", restart: "Restart",
+    towers: "Towers", level: "Level", dmg: "Dmg", range: "Range", rate: "Rate",
+    upgrade: "Upgrade", sell: "Sell",
+    gameOver: "Game Over", gameOverSub: "Your base has fallen.",
+    wavesReached: "Wave Reached", playAgain: "Play Again",
+    tMG: "Machine Gun", tMGd: "Fast fire, low damage. Good vs infantry.",
+    tRocket: "Rocket Launcher", tRocketd: "Slow, splash damage. Best for groups.",
+    tTank: "Tank Cannon", tTankd: "High damage, armor piercing. Melts singles.",
+    tSAM: "Anti-Air (SAM)", tSAMd: "Air targets only. Long range.",
+    notEnoughMoney: "Not enough money",
+    cantPlaceHere: "Cannot place here",
+    maxLevel: "Max level",
+    sold: "Sold", placed: "Placed",
+    best: "Best",
+    changeMap: "Map", selectMap: "Select Map",
+    mapSingle: "Single Path", mapMulti: "Multi Path",
+    backToMaps: "Back to Maps",
+    splashTagline: "Hold the Line. Protect the Base.",
+    startGame: "Start Game!",
+    mainMenu: "Main Menu",
+    menuMaps: "Maps",
+    menuSettings: "Settings",
+    menuAbout: "About",
+    online: "Online",
+    back: "Back",
+    selectDifficulty: "Select Difficulty",
+    difficultyFor: "Map",
+    easy: "Easy", medium: "Medium", hard: "Hard",
+    easyDesc: "+50 money, +10 lives, slow HP scaling. For beginners.",
+    mediumDesc: "Standard balance. Recommended difficulty.",
+    hardDesc: "-50 money, -5 lives, fast HP, more air and armor. For veterans.",
+    startPlaying: "Start",
+    sound: "Sound",
+    language: "Language",
+    resetData: "Reset All Data",
+    resetConfirm: "All saved scores and settings will be deleted. Are you sure?",
+    resetDone: "Data reset",
+    on: "On", off: "Off",
+    aboutDesc: "Siper is a modern military-themed tower defense game on a 10×8 grid. Defend your base against endless waves with 4 tower types, 3 enemy classes, and 8 different maps.",
+    howToPlay: "How to Play",
+    howToPlay1: "Select a tower from the left panel and click an empty cell on the grid to place it.",
+    howToPlay2: "Press Start Wave — towers automatically fire at enemies moving along the path.",
+    howToPlay3: "Earn money by killing enemies, buy new towers or upgrade existing ones.",
+    howToPlay4: "If enemies reach your base you lose lives. Game ends when lives hit zero.",
+    features: "Features",
+    feat1: "8 different maps (single + multi-path)",
+    feat2: "3 difficulty levels",
+    feat3: "4 tower types, 3 upgrade levels",
+    feat4: "Endless wave mode, per-map scores",
+    feat5: "TR/EN language support, PWA offline",
+    changelog: "Changelog",
+    changelog150: "First official release. 8 maps, 3 difficulties, Firebase presence and feedback.",
+    otherGames: "My Other Games",
+    credits: "Developed by mrtrclb",
+    version: "Version",
+    feedback: "Feedback",
+    feedbackPlaceholder: "Your thoughts, suggestions, or bugs you found...",
+    feedbackSend: "Send",
+    feedbackThanks: "Thanks! Your feedback was received.",
+    feedbackEmpty: "Please write something"
+  }
+};
+let LANG = localStorage.getItem('siper_lang') || 'tr';
+function t(k){ return I18N[LANG][k] || k; }
+function applyI18n() {
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    el.textContent = t(el.dataset.i18n);
+  });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    el.placeholder = t(el.dataset.i18nPlaceholder);
+  });
+  const langBtn = document.getElementById('btn-lang');
+  if (langBtn) langBtn.textContent = LANG === 'tr' ? 'EN' : 'TR';
+  // update splash lang buttons
+  document.querySelectorAll('.splash-lang .lang-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.lang === LANG);
+  });
+  // update settings lang buttons
+  document.querySelectorAll('[data-set-lang]').forEach(b => {
+    b.classList.toggle('active', b.dataset.setLang === LANG);
+  });
+  if (typeof buildShop === 'function') buildShop();
+  if (typeof updateWaveButton === 'function') updateWaveButton();
+}
+
+/* ---------- CONFIG ---------- */
+const COLS = 10, ROWS = 8;
+let CELL = 64; // will be rescaled
+const CANVAS_W = COLS * CELL, CANVAS_H = ROWS * CELL;
+
+/* ---------- MAPS ----------
+   Each map has:
+   - id, name, type: 'single' | 'multi'
+   - paths: array of path arrays ([[c,r], ...]); single-path maps have 1, multi-path have 2
+   - palette: { road1, road2, ground, dots, patches } — subtle color variations
+*/
+const MAPS = [
+  {
+    id: 'alpha',
+    name: { tr: 'Alfa Hattı', en: 'Alpha Line' },
+    desc: { tr: 'Klasik zigzag — ilk harita için ideal.', en: 'Classic zigzag — ideal for beginners.' },
+    type: 'single',
+    paths: [[
+      [0,1],[1,1],[2,1],[3,1],[4,1],[5,1],[6,1],[7,1],[8,1],
+      [8,2],[8,3],
+      [7,3],[6,3],[5,3],[4,3],[3,3],[2,3],[1,3],
+      [1,4],[1,5],
+      [2,5],[3,5],[4,5],[5,5],[6,5],[7,5],[8,5],
+      [8,6],[8,7],[9,7]
+    ]],
+    palette: { road1: '#3a2f1c', road2: '#2a2414', ground: '#0f0e0a', accent: '#d97e2a' }
+  },
+  {
+    id: 'bravo',
+    name: { tr: 'Bravo Vadisi', en: 'Bravo Valley' },
+    desc: { tr: 'U şeklinde geniş vadi, orta alan savunma için iyi.', en: 'U-shaped valley, strong center defense.' },
+    type: 'single',
+    paths: [[
+      [0,4],[1,4],[2,4],[2,3],[2,2],[2,1],
+      [3,1],[4,1],[5,1],[6,1],
+      [6,2],[6,3],[6,4],[6,5],[6,6],
+      [5,6],[4,6],[3,6],[2,6],
+      [2,7],[3,7],[4,7],[5,7],[6,7],[7,7],[8,7],[9,7]
+    ]],
+    palette: { road1: '#3d3320', road2: '#2d2616', ground: '#0e0d0a', accent: '#e88a32' }
+  },
+  {
+    id: 'charlie',
+    name: { tr: 'Charlie Zikzak', en: 'Charlie Zigzag' },
+    desc: { tr: 'Dar ve sık dönüşlü — splash hasar için harika.', en: 'Tight zigzag — splash damage shines here.' },
+    type: 'single',
+    paths: [[
+      [0,0],[1,0],[2,0],[3,0],
+      [3,1],[3,2],
+      [4,2],[5,2],[6,2],
+      [6,3],[6,4],
+      [5,4],[4,4],[3,4],[2,4],
+      [2,5],[2,6],
+      [3,6],[4,6],[5,6],[6,6],[7,6],
+      [7,7],[8,7],[9,7]
+    ]],
+    palette: { road1: '#362d1a', road2: '#26201a', ground: '#0a0b08', accent: '#c87028' }
+  },
+  {
+    id: 'delta',
+    name: { tr: 'Delta Sarmal', en: 'Delta Wind' },
+    desc: { tr: 'Uzun düz hatlar — menzilli kulelerin cenneti.', en: 'Long straights — ranged towers thrive.' },
+    type: 'single',
+    paths: [[
+      [0,1],[1,1],[2,1],[3,1],[4,1],[5,1],[6,1],[7,1],[8,1],[9,1],
+      [9,2],[9,3],
+      [8,3],[7,3],[6,3],[5,3],[4,3],[3,3],[2,3],[1,3],[0,3],
+      [0,4],[0,5],
+      [1,5],[2,5],[3,5],[4,5],[5,5],[6,5],[7,5],[8,5],[9,5],
+      [9,6],[9,7]
+    ]],
+    palette: { road1: '#34301e', road2: '#24201a', ground: '#0d0c0a', accent: '#d9842a' }
+  },
+  {
+    id: 'echo',
+    name: { tr: 'Echo Ters S', en: 'Echo Reverse S' },
+    desc: { tr: 'Sağdan giriş, alttan çıkış. Çok dönüş noktası.', en: 'Entry right, exit bottom. Many turns.' },
+    type: 'single',
+    paths: [[
+      [9,0],[8,0],[7,0],[6,0],[5,0],
+      [5,1],[5,2],[5,3],
+      [4,3],[3,3],[2,3],[1,3],
+      [1,4],[1,5],
+      [2,5],[3,5],[4,5],[5,5],[6,5],[7,5],[8,5],
+      [8,6],[8,7],[7,7],[6,7],[5,7],[4,7],[3,7],[2,7],[1,7],[0,7]
+    ]],
+    palette: { road1: '#382e1c', road2: '#281f16', ground: '#0b0a08', accent: '#d0722a' }
+  },
+  {
+    id: 'foxtrot',
+    name: { tr: 'Foxtrot İkiz', en: 'Foxtrot Twin' },
+    desc: { tr: 'İki giriş ortada birleşir. Merkez kritik.', en: 'Two entries merge at center. Center is critical.' },
+    type: 'multi',
+    paths: [
+      [
+        [0,1],[1,1],[2,1],[3,1],[4,1],
+        [4,2],[4,3],[4,4],
+        [5,4],[6,4],[7,4],[8,4],[9,4]
+      ],
+      [
+        [0,6],[1,6],[2,6],[3,6],[4,6],
+        [4,5],[4,4],
+        [5,4],[6,4],[7,4],[8,4],[9,4]
+      ]
+    ],
+    palette: { road1: '#3a3320', road2: '#2a2618', ground: '#0c0d0a', accent: '#d97e2a' }
+  },
+  {
+    id: 'golf',
+    name: { tr: 'Golf Çatal', en: 'Golf Fork' },
+    desc: { tr: 'Tek giriş, ikiye ayrılır ve birleşir. Orta kuşak.', en: 'Single entry splits then rejoins. Central belt.' },
+    type: 'multi',
+    paths: [
+      [
+        [0,3],[1,3],[2,3],
+        [2,2],[2,1],[3,1],[4,1],[5,1],[6,1],[7,1],
+        [7,2],[7,3],[7,4],[7,5],
+        [8,5],[9,5]
+      ],
+      [
+        [0,3],[1,3],[2,3],
+        [2,4],[2,5],[2,6],[3,6],[4,6],[5,6],[6,6],[7,6],
+        [7,5],
+        [8,5],[9,5]
+      ]
+    ],
+    palette: { road1: '#3d3220', road2: '#2d2518', ground: '#0e0c0a', accent: '#e08030' }
+  },
+  {
+    id: 'hotel',
+    name: { tr: 'Hotel Kıskaç', en: 'Hotel Pincer' },
+    desc: { tr: 'İki yandan gelir, ortadan alta iner. Zordur.', en: 'Two flanks, center drop to base. Tough.' },
+    type: 'multi',
+    paths: [
+      [
+        [0,1],[1,1],[2,1],[3,1],[4,1],
+        [4,2],[4,3],[4,4],[4,5],
+        [5,5],[5,6],[5,7],[6,7]
+      ],
+      [
+        [9,1],[8,1],[7,1],[6,1],[5,1],
+        [5,2],[5,3],[5,4],[5,5],
+        [5,6],[5,7],[6,7]
+      ]
+    ],
+    palette: { road1: '#352c1c', road2: '#25201a', ground: '#0a0b09', accent: '#cc742a' }
+  }
+];
+
+let currentMap = MAPS[0];
+
+/* ---------- TOWER DEFS ---------- */
+const TOWER_DEFS = {
+  mg: {
+    nameKey: 'tMG', descKey: 'tMGd',
+    color: '#8a7d52', accent: '#d97e2a',
+    levels: [
+      { cost: 50,  dmg: 6,   range: 2.3, rate: 0.18, targets: 'both', airDmgMul: 0.5, piercing: 0 },
+      { cost: 75,  dmg: 10,  range: 2.6, rate: 0.14, targets: 'both', airDmgMul: 0.5, piercing: 0 },
+      { cost: 120, dmg: 16,  range: 2.9, rate: 0.11, targets: 'both', airDmgMul: 0.5, piercing: 0.2 }
+    ]
+  },
+  rocket: {
+    nameKey: 'tRocket', descKey: 'tRocketd',
+    color: '#6b5a3a', accent: '#d97e2a',
+    levels: [
+      { cost: 100, dmg: 30,  range: 2.8, rate: 1.2, targets: 'both', airDmgMul: 0.5, splash: 50, piercing: 0.3 },
+      { cost: 160, dmg: 55,  range: 3.1, rate: 1.0, targets: 'both', airDmgMul: 0.5, splash: 65, piercing: 0.4 },
+      { cost: 240, dmg: 95,  range: 3.4, rate: 0.85, targets: 'both', airDmgMul: 0.5, splash: 80, piercing: 0.5 }
+    ]
+  },
+  tank: {
+    nameKey: 'tTank', descKey: 'tTankd',
+    color: '#4d4530', accent: '#f2953a',
+    levels: [
+      { cost: 140, dmg: 55,  range: 3.0, rate: 1.1, targets: 'both', airDmgMul: 0.5, piercing: 0.6 },
+      { cost: 220, dmg: 110, range: 3.3, rate: 0.95, targets: 'both', airDmgMul: 0.5, piercing: 0.75 },
+      { cost: 340, dmg: 220, range: 3.6, rate: 0.8, targets: 'both', airDmgMul: 0.5, piercing: 0.9 }
+    ]
+  },
+  sam: {
+    nameKey: 'tSAM', descKey: 'tSAMd',
+    color: '#3a4a3a', accent: '#7a9f3f',
+    levels: [
+      { cost: 70,  dmg: 28,  range: 3.5, rate: 0.55, targets: 'air', piercing: 0 },
+      { cost: 110, dmg: 50,  range: 3.9, rate: 0.45, targets: 'air', piercing: 0 },
+      { cost: 170, dmg: 90,  range: 4.3, rate: 0.35, targets: 'air', piercing: 0 }
+    ]
+  }
+};
+
+/* ---------- ENEMY DEFS ---------- */
+// type: 'infantry' | 'armor' | 'air'
+// armor: damage reduction 0..0.9 (piercing reduces this)
+const ENEMY_TEMPLATES = {
+  infantry: { name: 'Piyade', hp: 30,  speed: 1.2, armor: 0.0, reward: 6,  flying: false, color: '#a08660', size: 9 },
+  armor:    { name: 'Zırhlı', hp: 110, speed: 0.7, armor: 0.55, reward: 14, flying: false, color: '#4d4530', size: 12 },
+  air:      { name: 'Hava',   hp: 55,  speed: 1.6, armor: 0.1, reward: 12, flying: true,  color: '#6b7a8a', size: 10 }
+};
+
+/* ---------- DIFFICULTY ---------- */
+const DIFFICULTIES = {
+  easy:   { startMoney: 250, startLives: 30, hpMul: 1.15, airChanceBonus: 0, armorChanceBonus: 0, bountyMul: 1.1 },
+  medium: { startMoney: 200, startLives: 20, hpMul: 1.22, airChanceBonus: 0, armorChanceBonus: 0, bountyMul: 1.0 },
+  hard:   { startMoney: 130, startLives: 15, hpMul: 1.30, airChanceBonus: 0.08, armorChanceBonus: 0.10, bountyMul: 0.9 }
+};
+let currentDifficulty = 'medium';
+
+/* ---------- GAME STATE ---------- */
+const state = {
+  money: 150,
+  lives: 20,
+  wave: 0,
+  score: 0,
+  best: 0, // loaded per-map
+  towers: [],
+  enemies: [],
+  projectiles: [],
+  fx: [], // floating text / explosions
+  placing: null, // tower key being placed
+  selected: null, // index of selected tower
+  waveActive: false,
+  spawnQueue: [],
+  spawnTimer: 0,
+  paused: false,
+  gameOver: false,
+  pathWaypoints: [], // array of waypoint arrays (one per path)
+  mouseCell: { c: -1, r: -1 }
+};
+
+function loadMapIntoState(mapDef, difficulty) {
+  currentMap = mapDef;
+  if (difficulty) currentDifficulty = difficulty;
+  state.pathWaypoints = mapDef.paths.map(buildWaypointsForPath);
+  state.best = parseInt(localStorage.getItem('siper_best_' + mapDef.id + '_' + currentDifficulty) || '0');
+}
+loadMapIntoState(MAPS[0]);
+
+/* ---------- WAVE GENERATION (endless) ---------- */
+function generateWave(n) {
+  const diff = DIFFICULTIES[currentDifficulty];
+  const out = [];
+  const difficulty = 1 + (n - 1) * 0.18;
+  // Gentler early waves
+  const count = n === 1 ? 6 : n === 2 ? 8 : 8 + Math.floor(n * 1.3);
+  // No air before wave 3
+  let airChance = n < 3 ? 0 : Math.min(0.40, 0.05 + (n - 2) * 0.02 + diff.airChanceBonus);
+  // Reduced armor in wave 1
+  let armorChance = n === 1 ? 0.05 : Math.min(0.50, 0.08 + n * 0.025 + diff.armorChanceBonus);
+
+  for (let i = 0; i < count; i++) {
+    let type = 'infantry';
+    const r = Math.random();
+    if (r < airChance) type = 'air';
+    else if (r < airChance + armorChance) type = 'armor';
+    out.push({ type, delay: 0.5 + Math.random() * 0.4 });
+  }
+  return { list: out, difficulty, hpMul: Math.pow(diff.hpMul, n - 1), bounty: 20 + n * 3 };
+}
+
+/* ---------- CANVAS ---------- */
+const canvas = document.getElementById('game');
+const ctx = canvas.getContext('2d');
+canvas.width = CANVAS_W;
+canvas.height = CANVAS_H;
+
+function resizeCanvas() {
+  const wrap = canvas.parentElement;
+  const maxW = wrap.clientWidth - 16;
+  const maxH = wrap.clientHeight - 16;
+  const ratio = CANVAS_W / CANVAS_H;
+  let w = maxW, h = maxW / ratio;
+  if (h > maxH) { h = maxH; w = h * ratio; }
+  canvas.style.width = w + 'px';
+  canvas.style.height = h + 'px';
+}
+window.addEventListener('resize', resizeCanvas);
+
+/* ---------- HELPERS ---------- */
+function cellCenter(c, r) { return { x: c*CELL + CELL/2, y: r*CELL + CELL/2 }; }
+function buildWaypointsForPath(pathCells) {
+  return pathCells.map(([c,r]) => cellCenter(c,r));
+}
+function allPathCells() {
+  // flat list of all cells across all paths (for blocking tower placement)
+  const s = new Set();
+  for (const p of currentMap.paths) {
+    for (const [c,r] of p) s.add(c + ',' + r);
+  }
+  return s;
+}
+function isPathCell(c, r) {
+  for (const p of currentMap.paths) {
+    for (const [pc, pr] of p) {
+      if (pc === c && pr === r) return true;
+    }
+  }
+  return false;
+}
+function cellAt(x, y) {
+  const c = Math.floor(x / CELL), r = Math.floor(y / CELL);
+  if (c < 0 || c >= COLS || r < 0 || r >= ROWS) return null;
+  return { c, r };
+}
+function towerAt(c, r) {
+  return state.towers.find(t => t.c === c && t.r === r) || null;
+}
+function dist(ax, ay, bx, by) { return Math.hypot(ax - bx, ay - by); }
+function toast(msg, color) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  if (color) el.style.borderColor = color;
+  el.classList.add('show');
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => el.classList.remove('show'), 1400);
+}
+
+/* ---------- RENDER ---------- */
+function drawBackground() {
+  const pal = currentMap.palette;
+  // Dark terrain with subtle grid and topographic texture
+  ctx.fillStyle = pal.ground;
+  ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
+
+  // Soft noise-like patches (color shifts per-map via accent)
+  ctx.save();
+  ctx.globalAlpha = 0.08;
+  for (let i = 0; i < 40; i++) {
+    const x = (i * 137) % CANVAS_W;
+    const y = (i * 89) % CANVAS_H;
+    ctx.fillStyle = i % 3 === 0 ? pal.road1 : '#1f1c14';
+    ctx.beginPath();
+    ctx.arc(x, y, 20 + (i % 5) * 4, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.restore();
+
+  // Grid
+  ctx.strokeStyle = 'rgba(138,125,82,0.08)';
+  ctx.lineWidth = 1;
+  for (let c = 0; c <= COLS; c++) {
+    ctx.beginPath(); ctx.moveTo(c*CELL, 0); ctx.lineTo(c*CELL, CANVAS_H); ctx.stroke();
+  }
+  for (let r = 0; r <= ROWS; r++) {
+    ctx.beginPath(); ctx.moveTo(0, r*CELL); ctx.lineTo(CANVAS_W, r*CELL); ctx.stroke();
+  }
+
+  // Path cells (dirt road) - dedup across paths
+  const drawnPathCells = new Set();
+  for (const path of currentMap.paths) {
+    for (const [c,r] of path) {
+      const key = c + ',' + r;
+      if (drawnPathCells.has(key)) continue;
+      drawnPathCells.add(key);
+      const x = c*CELL, y = r*CELL;
+      const grd = ctx.createLinearGradient(x, y, x, y+CELL);
+      grd.addColorStop(0, pal.road1);
+      grd.addColorStop(1, pal.road2);
+      ctx.fillStyle = grd;
+      ctx.fillRect(x+1, y+1, CELL-2, CELL-2);
+      // texture
+      ctx.fillStyle = 'rgba(217,126,42,0.08)';
+      for (let i = 0; i < 3; i++) {
+        const rx = x + 5 + ((c*7 + i*13) % (CELL-10));
+        const ry = y + 5 + ((r*11 + i*17) % (CELL-10));
+        ctx.fillRect(rx, ry, 3, 3);
+      }
+    }
+  }
+
+  // Start markers (one per path) and end marker (last waypoint of last path)
+  for (let i = 0; i < state.pathWaypoints.length; i++) {
+    const start = state.pathWaypoints[i][0];
+    ctx.fillStyle = 'rgba(122,159,63,0.25)';
+    ctx.beginPath(); ctx.arc(start.x, start.y, CELL*0.35, 0, Math.PI*2); ctx.fill();
+  }
+  // Collect unique end points
+  const endSet = new Set();
+  const endPts = [];
+  for (const wps of state.pathWaypoints) {
+    const last = wps[wps.length - 1];
+    const key = Math.round(last.x) + ',' + Math.round(last.y);
+    if (!endSet.has(key)) { endSet.add(key); endPts.push(last); }
+  }
+  for (const end of endPts) {
+    ctx.fillStyle = 'rgba(200,71,47,0.3)';
+    ctx.beginPath(); ctx.arc(end.x, end.y, CELL*0.4, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = '#c8472f';
+    ctx.font = 'bold 14px Courier New';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText('HQ', end.x, end.y);
+  }
+}
+
+function drawPlacementPreview() {
+  if (!state.placing) return;
+  const { c, r } = state.mouseCell;
+  if (c < 0) return;
+  const def = TOWER_DEFS[state.placing];
+  const x = c*CELL + CELL/2, y = r*CELL + CELL/2;
+  const valid = !isPathCell(c, r) && !towerAt(c, r) && state.money >= def.levels[0].cost;
+  // cell tint
+  ctx.fillStyle = valid ? 'rgba(122,159,63,0.2)' : 'rgba(200,71,47,0.25)';
+  ctx.fillRect(c*CELL, r*CELL, CELL, CELL);
+  // range circle
+  ctx.strokeStyle = valid ? 'rgba(217,126,42,0.5)' : 'rgba(200,71,47,0.5)';
+  ctx.lineWidth = 1.5;
+  ctx.setLineDash([4, 4]);
+  ctx.beginPath();
+  ctx.arc(x, y, def.levels[0].range * CELL, 0, Math.PI*2);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  // ghost tower
+  ctx.globalAlpha = 0.6;
+  drawTowerShape(state.placing, 0, x, y, 0);
+  ctx.globalAlpha = 1;
+}
+
+function drawTowerShape(key, level, x, y, angle) {
+  const def = TOWER_DEFS[key];
+  const lv = def.levels[level];
+  const s = CELL * 0.38;
+  // Base pad
+  ctx.fillStyle = '#2a2618';
+  ctx.fillRect(x - s*1.1, y - s*1.1, s*2.2, s*2.2);
+  ctx.strokeStyle = '#4a4230';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(x - s*1.1, y - s*1.1, s*2.2, s*2.2);
+
+  // Tower color by level
+  const baseCol = def.color;
+  const accent = def.accent;
+
+  // Different silhouettes
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.rotate(angle);
+
+  if (key === 'mg') {
+    // Tripod + barrel
+    ctx.fillStyle = baseCol;
+    ctx.beginPath();
+    ctx.arc(0, 0, s*0.6, 0, Math.PI*2);
+    ctx.fill();
+    ctx.fillStyle = accent;
+    ctx.fillRect(-s*0.15, -s*0.15, s*1.3, s*0.3);
+    ctx.fillStyle = '#1a1812';
+    ctx.fillRect(s*0.9, -s*0.08, s*0.3, s*0.16);
+  } else if (key === 'rocket') {
+    // Box launcher with tubes
+    ctx.fillStyle = baseCol;
+    ctx.fillRect(-s*0.7, -s*0.55, s*1.4, s*1.1);
+    ctx.fillStyle = '#1a1812';
+    for (let i = 0; i < 3; i++) {
+      ctx.fillRect(s*0.0 + i*s*0.25, -s*0.4, s*0.2, s*0.25);
+      ctx.fillRect(s*0.0 + i*s*0.25,  s*0.15, s*0.2, s*0.25);
+    }
+    ctx.fillStyle = accent;
+    ctx.fillRect(-s*0.3, -s*0.1, s*0.3, s*0.2);
+  } else if (key === 'tank') {
+    // Body + big cannon
+    ctx.fillStyle = baseCol;
+    ctx.fillRect(-s*0.85, -s*0.65, s*1.7, s*1.3);
+    ctx.fillStyle = '#2d2a1e';
+    ctx.fillRect(-s*0.5, -s*0.4, s*1.0, s*0.8);
+    ctx.fillStyle = accent;
+    ctx.fillRect(s*0.2, -s*0.12, s*1.3, s*0.24);
+    ctx.fillStyle = '#1a1812';
+    ctx.fillRect(s*1.35, -s*0.08, s*0.2, s*0.16);
+  } else if (key === 'sam') {
+    // Missile rack on pedestal
+    ctx.fillStyle = '#2a3220';
+    ctx.beginPath();
+    ctx.arc(0, 0, s*0.7, 0, Math.PI*2);
+    ctx.fill();
+    ctx.fillStyle = baseCol;
+    ctx.fillRect(-s*0.3, -s*0.6, s*0.6, s*1.2);
+    // missiles pointing up
+    ctx.fillStyle = accent;
+    ctx.fillRect(-s*0.55, -s*0.9, s*0.18, s*1.1);
+    ctx.fillRect(-s*0.08, -s*0.9, s*0.18, s*1.1);
+    ctx.fillRect( s*0.38, -s*0.9, s*0.18, s*1.1);
+  }
+  ctx.restore();
+
+  // Level pips
+  const pipY = y + s*1.25;
+  for (let i = 0; i < 3; i++) {
+    ctx.fillStyle = i <= level ? accent : '#2a2618';
+    ctx.beginPath();
+    ctx.arc(x - s*0.6 + i*s*0.6, pipY, 2.5, 0, Math.PI*2);
+    ctx.fill();
+  }
+}
+
+function drawTowers() {
+  for (let i = 0; i < state.towers.length; i++) {
+    const t = state.towers[i];
+    const { x, y } = cellCenter(t.c, t.r);
+    drawTowerShape(t.key, t.level, x, y, t.angle);
+    // selected highlight + range
+    if (state.selected === i) {
+      const def = TOWER_DEFS[t.key];
+      const lv = def.levels[t.level];
+      ctx.strokeStyle = 'rgba(242,149,58,0.6)';
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([5, 3]);
+      ctx.beginPath();
+      ctx.arc(x, y, lv.range * CELL, 0, Math.PI*2);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      // selection box
+      ctx.strokeStyle = 'var(--orange)';
+      ctx.strokeStyle = '#f2953a';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(t.c*CELL + 2, t.r*CELL + 2, CELL-4, CELL-4);
+    }
+  }
+}
+
+function drawEnemies() {
+  for (const e of state.enemies) {
+    // shadow
+    if (e.flying) {
+      ctx.fillStyle = 'rgba(0,0,0,0.35)';
+      ctx.beginPath();
+      ctx.ellipse(e.x + 6, e.y + 10, e.size * 0.9, e.size * 0.4, 0, 0, Math.PI*2);
+      ctx.fill();
+    }
+    // body
+    ctx.fillStyle = e.color;
+    if (e.flying) {
+      // rotor-like shape
+      ctx.save();
+      ctx.translate(e.x, e.y);
+      ctx.fillStyle = '#2a2a2a';
+      ctx.fillRect(-e.size, -e.size*0.4, e.size*2, e.size*0.8);
+      ctx.fillStyle = e.color;
+      ctx.beginPath(); ctx.arc(0, 0, e.size*0.6, 0, Math.PI*2); ctx.fill();
+      ctx.strokeStyle = '#1a1a1a';
+      ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(-e.size*1.4, 0); ctx.lineTo(e.size*1.4, 0); ctx.stroke();
+      ctx.restore();
+    } else if (e.type === 'armor') {
+      // Tank-ish box
+      ctx.fillRect(e.x - e.size, e.y - e.size*0.7, e.size*2, e.size*1.4);
+      ctx.fillStyle = '#1a1812';
+      ctx.fillRect(e.x - e.size*0.5, e.y - e.size*0.4, e.size*1.0, e.size*0.8);
+      ctx.fillStyle = '#6b6140';
+      ctx.fillRect(e.x - e.size*0.2, e.y - e.size*0.15, e.size*1.3, e.size*0.3);
+    } else {
+      // infantry — small figure
+      ctx.fillStyle = e.color;
+      ctx.beginPath(); ctx.arc(e.x, e.y - e.size*0.3, e.size*0.45, 0, Math.PI*2); ctx.fill();
+      ctx.fillStyle = '#4d4530';
+      ctx.fillRect(e.x - e.size*0.4, e.y - e.size*0.05, e.size*0.8, e.size*0.9);
+    }
+    // HP bar
+    const pct = Math.max(0, e.hp / e.maxHp);
+    const bw = e.size * 2, bh = 3;
+    ctx.fillStyle = '#1a1a1a';
+    ctx.fillRect(e.x - bw/2, e.y - e.size - 10, bw, bh);
+    ctx.fillStyle = pct > 0.5 ? '#7a9f3f' : pct > 0.25 ? '#d97e2a' : '#c8472f';
+    ctx.fillRect(e.x - bw/2, e.y - e.size - 10, bw * pct, bh);
+  }
+}
+
+function drawProjectiles() {
+  for (const p of state.projectiles) {
+    if (p.kind === 'bullet') {
+      ctx.strokeStyle = '#f2953a';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(p.x, p.y);
+      ctx.lineTo(p.x - p.vx*0.05, p.y - p.vy*0.05);
+      ctx.stroke();
+    } else if (p.kind === 'rocket') {
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(Math.atan2(p.vy, p.vx));
+      ctx.fillStyle = '#d97e2a';
+      ctx.fillRect(-8, -2, 12, 4);
+      ctx.fillStyle = '#f2953a';
+      ctx.beginPath();
+      ctx.arc(-8, 0, 4, 0, Math.PI*2);
+      ctx.fill();
+      ctx.restore();
+    } else if (p.kind === 'shell') {
+      ctx.fillStyle = '#f2953a';
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 4, 0, Math.PI*2);
+      ctx.fill();
+    } else if (p.kind === 'missile') {
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(Math.atan2(p.vy, p.vx));
+      ctx.fillStyle = '#7a9f3f';
+      ctx.fillRect(-6, -1.5, 10, 3);
+      ctx.restore();
+    }
+  }
+}
+
+function drawFX() {
+  for (const f of state.fx) {
+    if (f.kind === 'explosion') {
+      const a = 1 - f.t / f.dur;
+      ctx.strokeStyle = `rgba(242,149,58,${a})`;
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.arc(f.x, f.y, f.r, 0, Math.PI*2);
+      ctx.stroke();
+      ctx.fillStyle = `rgba(217,126,42,${a*0.3})`;
+      ctx.beginPath();
+      ctx.arc(f.x, f.y, f.r*0.8, 0, Math.PI*2);
+      ctx.fill();
+    } else if (f.kind === 'text') {
+      const a = 1 - f.t / f.dur;
+      ctx.fillStyle = f.color || `rgba(232,228,214,${a})`;
+      ctx.font = 'bold 12px Courier New';
+      ctx.textAlign = 'center';
+      ctx.fillText(f.msg, f.x, f.y - f.t * 30);
+    }
+  }
+}
+
+function render() {
+  ctx.clearRect(0, 0, CANVAS_W, CANVAS_H);
+  drawBackground();
+  drawPlacementPreview();
+  drawTowers();
+  drawProjectiles();
+  drawEnemies();
+  drawFX();
+}
+
+/* ---------- LOGIC ---------- */
+function spawnEnemy(type, hpMul) {
+  const tpl = ENEMY_TEMPLATES[type];
+  // pick a path at random (for multi-path maps)
+  const pathIdx = Math.floor(Math.random() * state.pathWaypoints.length);
+  const wps = state.pathWaypoints[pathIdx];
+  const e = {
+    type, name: tpl.name,
+    x: wps[0].x, y: wps[0].y,
+    hp: tpl.hp * hpMul, maxHp: tpl.hp * hpMul,
+    speed: tpl.speed * CELL, // pixels per sec
+    armor: tpl.armor, flying: tpl.flying,
+    reward: Math.round(tpl.reward * (0.9 + hpMul * 0.15)),
+    color: tpl.color, size: tpl.size,
+    pathIdx, wpIdx: 1, dead: false
+  };
+  state.enemies.push(e);
+}
+
+function startWave() {
+  if (state.waveActive || state.gameOver) return;
+  state.wave++;
+  const w = generateWave(state.wave);
+  state.spawnQueue = w.list.map(s => ({ ...s, hpMul: w.hpMul }));
+  state.spawnTimer = 0;
+  state.waveActive = true;
+  updateWaveButton();
+  toast(`${t('wave')} ${state.wave}`, '#d97e2a');
+}
+
+function updateWaveButton() {
+  const btn = document.getElementById('btn-wave');
+  if (state.waveActive) {
+    btn.textContent = '…';
+    btn.disabled = true;
+  } else {
+    btn.textContent = state.wave === 0 ? t('startWave') : t('nextWave');
+    btn.disabled = false;
+  }
+}
+
+function updateEnemies(dt) {
+  for (const e of state.enemies) {
+    if (e.dead) continue;
+    const wps = state.pathWaypoints[e.pathIdx];
+    const wp = wps[e.wpIdx];
+    if (!wp) {
+      // reached base
+      state.lives -= e.flying ? 2 : (e.type === 'armor' ? 3 : 1);
+      e.dead = true;
+      state.fx.push({ kind: 'text', x: e.x, y: e.y, msg: e.flying ? '−2' : (e.type==='armor'?'−3':'−1'), color: 'rgba(200,71,47,1)', t: 0, dur: 0.8 });
+      if (state.lives <= 0) { state.lives = 0; doGameOver(); }
+      continue;
+    }
+    const dx = wp.x - e.x, dy = wp.y - e.y;
+    const d = Math.hypot(dx, dy);
+    const step = e.speed * dt;
+    if (step >= d) {
+      e.x = wp.x; e.y = wp.y; e.wpIdx++;
+    } else {
+      e.x += dx/d * step; e.y += dy/d * step;
+    }
+  }
+  state.enemies = state.enemies.filter(e => !e.dead);
+}
+
+function pickTarget(tower) {
+  const def = TOWER_DEFS[tower.key];
+  const lv = def.levels[tower.level];
+  const tx = tower.c * CELL + CELL/2, ty = tower.r * CELL + CELL/2;
+  const range = lv.range * CELL;
+  let best = null, bestProg = -1;
+  for (const e of state.enemies) {
+    if (e.dead) continue;
+    if (lv.targets === 'air' && !e.flying) continue;
+    if (lv.targets === 'ground' && e.flying) continue;
+    // 'both' = all enemies eligible
+    const d = dist(tx, ty, e.x, e.y);
+    if (d > range) continue;
+    if (e.wpIdx > bestProg) { bestProg = e.wpIdx; best = e; }
+  }
+  return best;
+}
+
+function fireAt(tower, target) {
+  const def = TOWER_DEFS[tower.key];
+  const lv = def.levels[tower.level];
+  const tx = tower.c * CELL + CELL/2, ty = tower.r * CELL + CELL/2;
+  // Pre-aim (lead slightly)
+  const dx = target.x - tx, dy = target.y - ty;
+  tower.angle = Math.atan2(dy, dx);
+  let kind = 'bullet', speed = CELL * 14, splash = 0;
+  if (tower.key === 'mg') { kind = 'bullet'; speed = CELL * 16; }
+  else if (tower.key === 'rocket') { kind = 'rocket'; speed = CELL * 6; splash = lv.splash; }
+  else if (tower.key === 'tank') { kind = 'shell'; speed = CELL * 12; }
+  else if (tower.key === 'sam') { kind = 'missile'; speed = CELL * 9; }
+
+  const d = Math.hypot(dx, dy) || 1;
+  state.projectiles.push({
+    kind, x: tx, y: ty,
+    vx: dx/d * speed, vy: dy/d * speed,
+    dmg: lv.dmg, piercing: lv.piercing || 0,
+    airDmgMul: lv.airDmgMul || 1,
+    splash, target, life: 2.0,
+    ownerKind: tower.key
+  });
+}
+
+function updateTowers(dt) {
+  for (const tower of state.towers) {
+    const def = TOWER_DEFS[tower.key];
+    const lv = def.levels[tower.level];
+    tower.cd = (tower.cd || 0) - dt;
+    const target = pickTarget(tower);
+    if (target) {
+      // face target smoothly
+      const tx = tower.c * CELL + CELL/2, ty = tower.r * CELL + CELL/2;
+      const desired = Math.atan2(target.y - ty, target.x - tx);
+      let diff = desired - (tower.angle || 0);
+      while (diff > Math.PI) diff -= Math.PI*2;
+      while (diff < -Math.PI) diff += Math.PI*2;
+      tower.angle = (tower.angle || 0) + diff * Math.min(1, dt * 10);
+      if (tower.cd <= 0) {
+        fireAt(tower, target);
+        tower.cd = lv.rate;
+      }
+    }
+  }
+}
+
+function applyDamage(enemy, dmg, piercing) {
+  const effArmor = Math.max(0, enemy.armor - piercing);
+  const final = dmg * (1 - effArmor);
+  enemy.hp -= final;
+  if (enemy.hp <= 0 && !enemy.dead) {
+    enemy.dead = true;
+    state.money += enemy.reward;
+    state.score += enemy.reward;
+    state.fx.push({ kind: 'text', x: enemy.x, y: enemy.y, msg: '+' + enemy.reward, color: 'rgba(242,149,58,1)', t: 0, dur: 0.7 });
+  }
+}
+
+function updateProjectiles(dt) {
+  for (const p of state.projectiles) {
+    p.life -= dt;
+    if (p.life <= 0) { p.dead = true; continue; }
+    // Homing for rocket/missile
+    if (p.kind === 'rocket' || p.kind === 'missile') {
+      if (p.target && !p.target.dead) {
+        const dx = p.target.x - p.x, dy = p.target.y - p.y;
+        const d = Math.hypot(dx, dy) || 1;
+        const sp = Math.hypot(p.vx, p.vy);
+        p.vx = dx/d * sp; p.vy = dy/d * sp;
+      }
+    }
+    p.x += p.vx * dt; p.y += p.vy * dt;
+    // Collision
+    for (const e of state.enemies) {
+      if (e.dead) continue;
+      // SAM missile: air only
+      if (p.kind === 'missile' && !e.flying) continue;
+      // Other projectiles can hit both ground and air, but air hits use airDmgMul
+      if (dist(p.x, p.y, e.x, e.y) < e.size + 4) {
+        const mul = e.flying ? (p.airDmgMul || 1) : 1;
+        if (p.splash > 0 && !e.flying) {
+          // Explosion only on ground impact (rockets don't airburst)
+          state.fx.push({ kind: 'explosion', x: p.x, y: p.y, r: p.splash, t: 0, dur: 0.35 });
+          for (const e2 of state.enemies) {
+            if (e2.dead || e2.flying) continue;
+            if (dist(p.x, p.y, e2.x, e2.y) < p.splash) {
+              const falloff = 1 - dist(p.x, p.y, e2.x, e2.y) / p.splash * 0.4;
+              applyDamage(e2, p.dmg * falloff, p.piercing);
+            }
+          }
+        } else {
+          applyDamage(e, p.dmg * mul, p.piercing);
+        }
+        p.dead = true;
+        break;
+      }
+    }
+    // Out of bounds
+    if (p.x < -50 || p.x > CANVAS_W + 50 || p.y < -50 || p.y > CANVAS_H + 50) p.dead = true;
+  }
+  state.projectiles = state.projectiles.filter(p => !p.dead);
+}
+
+function updateFX(dt) {
+  for (const f of state.fx) {
+    f.t += dt;
+    if (f.kind === 'explosion') f.r += dt * 80;
+  }
+  state.fx = state.fx.filter(f => f.t < f.dur);
+}
+
+function updateSpawns(dt) {
+  if (!state.waveActive) return;
+  state.spawnTimer -= dt;
+  if (state.spawnTimer <= 0 && state.spawnQueue.length > 0) {
+    const next = state.spawnQueue.shift();
+    spawnEnemy(next.type, next.hpMul);
+    state.spawnTimer = next.delay;
+  }
+  if (state.spawnQueue.length === 0 && state.enemies.length === 0) {
+    // Wave done
+    state.waveActive = false;
+    const bonus = 20 + state.wave * 3;
+    state.money += bonus;
+    state.score += bonus;
+    state.fx.push({ kind: 'text', x: CANVAS_W/2, y: CANVAS_H/2, msg: `+${bonus}`, color: 'rgba(242,149,58,1)', t: 0, dur: 1.2 });
+    if (state.score > state.best) { state.best = state.score; localStorage.setItem('siper_best_' + currentMap.id + '_' + currentDifficulty, state.best); }
+    updateWaveButton();
+  }
+}
+
+function updateHUD() {
+  document.getElementById('hud-money').textContent = state.money;
+  document.getElementById('hud-lives').textContent = state.lives;
+  document.getElementById('hud-wave').textContent = state.wave;
+  document.getElementById('hud-score').textContent = state.score;
+}
+
+/* ---------- MAIN LOOP ---------- */
+let lastT = performance.now();
+function loop(now) {
+  const dt = Math.min(0.05, (now - lastT) / 1000);
+  lastT = now;
+  if (!state.paused && !state.gameOver) {
+    updateSpawns(dt);
+    updateEnemies(dt);
+    updateTowers(dt);
+    updateProjectiles(dt);
+    updateFX(dt);
+  }
+  render();
+  updateHUD();
+  requestAnimationFrame(loop);
+}
+
+/* ---------- INPUT ---------- */
+function canvasPos(evt) {
+  const rect = canvas.getBoundingClientRect();
+  const x = (evt.clientX - rect.left) * (canvas.width / rect.width);
+  const y = (evt.clientY - rect.top) * (canvas.height / rect.height);
+  return { x, y };
+}
+canvas.addEventListener('mousemove', (e) => {
+  const { x, y } = canvasPos(e);
+  const c = cellAt(x, y);
+  state.mouseCell = c || { c: -1, r: -1 };
+});
+canvas.addEventListener('mouseleave', () => { state.mouseCell = { c: -1, r: -1 }; });
+canvas.addEventListener('click', (e) => {
+  const { x, y } = canvasPos(e);
+  const c = cellAt(x, y);
+  if (!c) return;
+  handleClick(c.c, c.r);
+});
+// touch
+canvas.addEventListener('touchstart', (e) => {
+  e.preventDefault();
+  const t = e.touches[0];
+  const { x, y } = canvasPos(t);
+  const c = cellAt(x, y);
+  if (!c) return;
+  state.mouseCell = c;
+  handleClick(c.c, c.r);
+}, { passive: false });
+
+function handleClick(c, r) {
+  // Placing
+  if (state.placing) {
+    const def = TOWER_DEFS[state.placing];
+    if (isPathCell(c, r) || towerAt(c, r)) {
+      toast(t('cantPlaceHere'), '#c8472f'); return;
+    }
+    if (state.money < def.levels[0].cost) {
+      toast(t('notEnoughMoney'), '#c8472f'); return;
+    }
+    state.money -= def.levels[0].cost;
+    state.towers.push({
+      key: state.placing, level: 0, c, r, angle: 0, cd: 0
+    });
+    state.score += 2;
+    toast(t('placed') + ': ' + t(def.nameKey), '#7a9f3f');
+    state.placing = null;
+    refreshShopSelection();
+    return;
+  }
+  // Select existing tower
+  const idx = state.towers.findIndex(tw => tw.c === c && tw.r === r);
+  if (idx >= 0) {
+    state.selected = idx;
+    showTowerPanel();
+  } else {
+    state.selected = null;
+    hideTowerPanel();
+  }
+}
+
+/* ---------- TOWER SHOP UI ---------- */
+function buildShop() {
+  const wrap = document.getElementById('tower-shop');
+  wrap.innerHTML = '';
+  for (const key of Object.keys(TOWER_DEFS)) {
+    const def = TOWER_DEFS[key];
+    const lv = def.levels[0];
+    const el = document.createElement('div');
+    el.className = 'tower-card';
+    el.dataset.key = key;
+    el.innerHTML = `
+      <div class="name"><span class="tower-icon" style="background:${def.accent}"></span>${t(def.nameKey)}</div>
+      <div class="cost">◈ ${lv.cost}</div>
+      <div class="desc">${t(def.descKey)}</div>
+    `;
+    el.addEventListener('click', () => {
+      if (state.placing === key) {
+        state.placing = null;
+      } else {
+        state.placing = key;
+        state.selected = null;
+        hideTowerPanel();
+      }
+      refreshShopSelection();
+    });
+    wrap.appendChild(el);
+  }
+  refreshShopSelection();
+}
+function refreshShopSelection() {
+  document.querySelectorAll('.tower-card').forEach(el => {
+    const k = el.dataset.key;
+    el.classList.toggle('selected', state.placing === k);
+    const def = TOWER_DEFS[k];
+    el.classList.toggle('disabled', state.money < def.levels[0].cost);
+  });
+}
+
+/* ---------- TOWER INFO PANEL ---------- */
+function showTowerPanel() {
+  const panel = document.getElementById('tower-panel');
+  if (state.selected === null) { panel.classList.remove('active'); return; }
+  const tw = state.towers[state.selected];
+  const def = TOWER_DEFS[tw.key];
+  const lv = def.levels[tw.level];
+  document.getElementById('tp-name').textContent = t(def.nameKey);
+  document.getElementById('tp-level').textContent = tw.level + 1;
+  const dots = document.getElementById('tp-dots');
+  dots.innerHTML = '';
+  for (let i = 0; i < 3; i++) {
+    const d = document.createElement('span');
+    d.className = 'dot' + (i <= tw.level ? ' on' : '');
+    dots.appendChild(d);
+  }
+  document.getElementById('tp-dmg').textContent = lv.dmg;
+  document.getElementById('tp-range').textContent = lv.range.toFixed(1);
+  document.getElementById('tp-rate').textContent = (1/lv.rate).toFixed(1) + '/s';
+
+  const upBtn = document.getElementById('tp-upgrade');
+  const sellBtn = document.getElementById('tp-sell');
+  if (tw.level >= def.levels.length - 1) {
+    upBtn.textContent = t('maxLevel');
+    upBtn.disabled = true;
+  } else {
+    const nextCost = def.levels[tw.level + 1].cost;
+    upBtn.textContent = `${t('upgrade')} ◈${nextCost}`;
+    upBtn.disabled = state.money < nextCost;
+  }
+  // sell price = 70% of sunk cost
+  let spent = 0;
+  for (let i = 0; i <= tw.level; i++) spent += def.levels[i].cost;
+  const refund = Math.floor(spent * 0.7);
+  sellBtn.textContent = `${t('sell')} ◈${refund}`;
+  sellBtn.dataset.refund = refund;
+
+  panel.classList.add('active');
+}
+function hideTowerPanel() {
+  document.getElementById('tower-panel').classList.remove('active');
+}
+document.getElementById('tp-upgrade').addEventListener('click', () => {
+  if (state.selected === null) return;
+  const tw = state.towers[state.selected];
+  const def = TOWER_DEFS[tw.key];
+  if (tw.level >= def.levels.length - 1) return;
+  const cost = def.levels[tw.level + 1].cost;
+  if (state.money < cost) { toast(t('notEnoughMoney'), '#c8472f'); return; }
+  state.money -= cost;
+  tw.level++;
+  state.score += 5;
+  showTowerPanel();
+});
+document.getElementById('tp-sell').addEventListener('click', () => {
+  if (state.selected === null) return;
+  const refund = parseInt(document.getElementById('tp-sell').dataset.refund);
+  state.money += refund;
+  state.towers.splice(state.selected, 1);
+  state.selected = null;
+  hideTowerPanel();
+  toast(t('sold') + ' +' + refund, '#7a9f3f');
+});
+
+/* ---------- CONTROLS ---------- */
+document.getElementById('btn-wave').addEventListener('click', startWave);
+document.getElementById('btn-pause').addEventListener('click', () => {
+  state.paused = !state.paused;
+  document.getElementById('btn-pause').textContent = state.paused ? t('resume') : t('pause');
+});
+document.getElementById('btn-restart').addEventListener('click', () => {
+  if (!confirm(LANG === 'tr' ? 'Yeniden başlatılsın mı?' : 'Restart?')) return;
+  resetGame();
+});
+document.getElementById('m-restart').addEventListener('click', () => {
+  document.getElementById('modal').classList.remove('active');
+  resetGame();
+});
+document.getElementById('m-maps').addEventListener('click', () => {
+  document.getElementById('modal').classList.remove('active');
+  showMapSelect();
+});
+document.getElementById('btn-lang').addEventListener('click', () => {
+  LANG = (LANG === 'tr') ? 'en' : 'tr';
+  localStorage.setItem('siper_lang', LANG);
+  applyI18n();
+  if (state.selected !== null) showTowerPanel();
+  document.getElementById('btn-pause').textContent = state.paused ? t('resume') : t('pause');
+});
+
+function doGameOver() {
+  if (state.gameOver) return;
+  state.gameOver = true;
+  state.waveActive = false;
+  if (state.score > state.best) { state.best = state.score; localStorage.setItem('siper_best_' + currentMap.id + '_' + currentDifficulty, state.best); }
+  document.getElementById('m-score').textContent = state.score;
+  document.getElementById('m-wave').textContent = state.wave;
+  document.getElementById('modal').classList.add('active');
+}
+
+function resetGame() {
+  const diff = DIFFICULTIES[currentDifficulty];
+  state.money = diff.startMoney;
+  state.lives = diff.startLives;
+  state.wave = 0;
+  state.score = 0;
+  state.towers = [];
+  state.enemies = [];
+  state.projectiles = [];
+  state.fx = [];
+  state.placing = null;
+  state.selected = null;
+  state.waveActive = false;
+  state.spawnQueue = [];
+  state.spawnTimer = 0;
+  state.paused = false;
+  state.gameOver = false;
+  refreshShopSelection();
+  hideTowerPanel();
+  updateWaveButton();
+  document.getElementById('btn-pause').textContent = t('pause');
+}
+
+/* ---------- MAP SELECT UI ---------- */
+function renderMapPreview(canv, mapDef) {
+  const ctx2 = canv.getContext('2d');
+  const W = canv.width, H = canv.height;
+  const cellW = W / COLS, cellH = H / ROWS;
+  const pal = mapDef.palette;
+  // ground
+  ctx2.fillStyle = pal.ground;
+  ctx2.fillRect(0, 0, W, H);
+  // grid
+  ctx2.strokeStyle = 'rgba(138,125,82,0.1)';
+  ctx2.lineWidth = 0.5;
+  for (let c = 0; c <= COLS; c++) {
+    ctx2.beginPath(); ctx2.moveTo(c*cellW, 0); ctx2.lineTo(c*cellW, H); ctx2.stroke();
+  }
+  for (let r = 0; r <= ROWS; r++) {
+    ctx2.beginPath(); ctx2.moveTo(0, r*cellH); ctx2.lineTo(W, r*cellH); ctx2.stroke();
+  }
+  // path cells
+  const drawn = new Set();
+  for (const path of mapDef.paths) {
+    for (const [c,r] of path) {
+      const key = c+','+r;
+      if (drawn.has(key)) continue;
+      drawn.add(key);
+      const grd = ctx2.createLinearGradient(c*cellW, r*cellH, c*cellW, (r+1)*cellH);
+      grd.addColorStop(0, pal.road1);
+      grd.addColorStop(1, pal.road2);
+      ctx2.fillStyle = grd;
+      ctx2.fillRect(c*cellW+0.5, r*cellH+0.5, cellW-1, cellH-1);
+    }
+  }
+  // start markers
+  for (const path of mapDef.paths) {
+    const [c,r] = path[0];
+    ctx2.fillStyle = 'rgba(122,159,63,0.6)';
+    ctx2.beginPath();
+    ctx2.arc(c*cellW + cellW/2, r*cellH + cellH/2, Math.min(cellW,cellH)*0.25, 0, Math.PI*2);
+    ctx2.fill();
+  }
+  // end markers
+  const endSet = new Set();
+  for (const path of mapDef.paths) {
+    const [c,r] = path[path.length-1];
+    const key = c+','+r;
+    if (endSet.has(key)) continue;
+    endSet.add(key);
+    ctx2.fillStyle = 'rgba(200,71,47,0.7)';
+    ctx2.beginPath();
+    ctx2.arc(c*cellW + cellW/2, r*cellH + cellH/2, Math.min(cellW,cellH)*0.3, 0, Math.PI*2);
+    ctx2.fill();
+  }
+}
+function buildMapSelect() {
+  const grid = document.getElementById('map-grid');
+  grid.innerHTML = '';
+  for (const mapDef of MAPS) {
+    const card = document.createElement('div');
+    card.className = 'map-card';
+    // Best = max across all difficulties for this map
+    let best = 0, bestDiff = '';
+    for (const d of ['easy','medium','hard']) {
+      const s = parseInt(localStorage.getItem('siper_best_' + mapDef.id + '_' + d) || '0');
+      if (s > best) { best = s; bestDiff = d; }
+    }
+    const typeClass = mapDef.type === 'multi' ? 'multi' : '';
+    const typeLabel = mapDef.type === 'multi' ? t('mapMulti') : t('mapSingle');
+    const bestLabel = best > 0
+      ? `<span class="best-val">${best}</span> <span style="font-size:9px; color:var(--dim);">(${t(bestDiff)})</span>`
+      : `<span class="best-val">—</span>`;
+    card.innerHTML = `
+      <canvas width="200" height="160"></canvas>
+      <div class="map-name">${mapDef.name[LANG]} <span class="map-tag ${typeClass}">${typeLabel}</span></div>
+      <div class="map-desc">${mapDef.desc ? mapDef.desc[LANG] : ''}</div>
+      <div class="map-best"><span>${t('best')}</span> ${bestLabel}</div>
+    `;
+    const canv = card.querySelector('canvas');
+    renderMapPreview(canv, mapDef);
+    card.addEventListener('click', () => showDifficultyModal(mapDef));
+    grid.appendChild(card);
+  }
+}
+let pendingMap = null;
+let pendingDiff = 'medium';
+
+function showDifficultyModal(mapDef) {
+  pendingMap = mapDef;
+  pendingDiff = localStorage.getItem('siper_last_diff') || 'medium';
+  document.getElementById('diff-map-name').textContent = mapDef.name[LANG];
+  // Update selected state
+  document.querySelectorAll('.diff-option').forEach(el => {
+    el.classList.toggle('selected', el.dataset.diff === pendingDiff);
+  });
+  document.getElementById('diff-modal').classList.add('active');
+}
+function hideDifficultyModal() {
+  document.getElementById('diff-modal').classList.remove('active');
+  pendingMap = null;
+}
+function selectMap(mapDef, difficulty) {
+  loadMapIntoState(mapDef, difficulty);
+  localStorage.setItem('siper_last_diff', difficulty);
+  resetGame();
+  // hide all menus, show game
+  document.getElementById('map-select').classList.add('hidden');
+  document.getElementById('main-menu').classList.add('hidden');
+  document.getElementById('app').style.display = 'flex';
+  document.getElementById('online-indicator').style.display = 'flex';
+  playTrack('game');
+  resizeCanvas();
+}
+function showMapSelect() {
+  // hide other screens
+  document.getElementById('splash').classList.add('hidden');
+  document.getElementById('main-menu').classList.add('hidden');
+  document.getElementById('about-panel').classList.remove('active');
+  document.getElementById('settings-panel').classList.remove('active');
+  document.getElementById('app').style.display = 'none';
+  buildMapSelect();
+  document.getElementById('map-select').classList.remove('hidden');
+}
+document.getElementById('btn-map').addEventListener('click', () => {
+  // From in-game: go back to map select
+  showMapSelect();
+});
+
+// Diff modal wiring
+document.querySelectorAll('.diff-option').forEach(el => {
+  el.addEventListener('click', () => {
+    document.querySelectorAll('.diff-option').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+    pendingDiff = el.dataset.diff;
+  });
+});
+document.getElementById('diff-cancel').addEventListener('click', hideDifficultyModal);
+document.getElementById('diff-start').addEventListener('click', () => {
+  if (!pendingMap) return;
+  const map = pendingMap;
+  const diff = pendingDiff;
+  hideDifficultyModal();
+  selectMap(map, diff);
+});
+
+/* ---------- NAVIGATION: SPLASH, MAIN MENU ---------- */
+function showSplash() {
+  hideAllScreens();
+  document.getElementById('splash').classList.remove('hidden');
+}
+function showMainMenu() {
+  hideAllScreens();
+  document.getElementById('main-menu').classList.remove('hidden');
+  document.getElementById('online-indicator').style.display = 'flex';
+  playTrack('menu');
+}
+function hideAllScreens() {
+  document.getElementById('splash').classList.add('hidden');
+  document.getElementById('main-menu').classList.add('hidden');
+  document.getElementById('map-select').classList.add('hidden');
+  document.getElementById('settings-panel').classList.remove('active');
+  document.getElementById('about-panel').classList.remove('active');
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('online-indicator').style.display = 'none';
+}
+
+// Splash language buttons
+document.querySelectorAll('.splash-lang .lang-btn').forEach(b => {
+  b.addEventListener('click', () => {
+    LANG = b.dataset.lang;
+    localStorage.setItem('siper_lang', LANG);
+    applyI18n();
+  });
+});
+// Splash start
+document.getElementById('splash-start').addEventListener('click', () => {
+  initAudio();
+  playTrack('menu');
+  showMainMenu();
+});
+
+// Main menu buttons
+document.getElementById('menu-maps').addEventListener('click', () => {
+  showMapSelect();
+});
+document.getElementById('menu-settings').addEventListener('click', () => {
+  hideAllScreens();
+  document.getElementById('settings-panel').classList.add('active');
+  document.getElementById('online-indicator').style.display = 'flex';
+  refreshSettingsUI();
+});
+document.getElementById('menu-about').addEventListener('click', () => {
+  hideAllScreens();
+  document.getElementById('about-panel').classList.add('active');
+  document.getElementById('online-indicator').style.display = 'flex';
+});
+document.getElementById('map-back').addEventListener('click', () => {
+  showMainMenu();
+});
+
+// Back buttons
+document.querySelectorAll('[data-back]').forEach(b => {
+  b.addEventListener('click', () => {
+    const target = b.dataset.back;
+    if (target === 'main-menu') showMainMenu();
+  });
+});
+
+/* ---------- SETTINGS ---------- */
+let soundEnabled = localStorage.getItem('siper_sound') !== 'off';
+function refreshSettingsUI() {
+  document.querySelectorAll('[data-set-lang]').forEach(b => {
+    b.classList.toggle('active', b.dataset.setLang === LANG);
+  });
+  document.querySelectorAll('[data-sound]').forEach(b => {
+    b.classList.toggle('active',
+      (b.dataset.sound === 'on' && soundEnabled) ||
+      (b.dataset.sound === 'off' && !soundEnabled)
+    );
+  });
+}
+document.querySelectorAll('[data-set-lang]').forEach(b => {
+  b.addEventListener('click', () => {
+    LANG = b.dataset.setLang;
+    localStorage.setItem('siper_lang', LANG);
+    applyI18n();
+    refreshSettingsUI();
+  });
+});
+document.querySelectorAll('[data-sound]').forEach(b => {
+  b.addEventListener('click', () => {
+    setSoundEnabled(b.dataset.sound === 'on');
+    refreshSettingsUI();
+  });
+});
+document.getElementById('btn-reset-data').addEventListener('click', () => {
+  if (!confirm(t('resetConfirm'))) return;
+  // Clear all siper_ keys
+  const toDel = [];
+  for (let i = 0; i < localStorage.length; i++) {
+    const k = localStorage.key(i);
+    if (k && k.startsWith('siper_')) toDel.push(k);
+  }
+  toDel.forEach(k => localStorage.removeItem(k));
+  toast(t('resetDone'), '#7a9f3f');
+  setTimeout(() => location.reload(), 800);
+});
+
+/* ---------- AUDIO ---------- */
+// Place mp3 files next to index.html:
+//   music1.mp3  → menu music (splash + main menu + maps + settings)
+//   music2.mp3  → game music (plays when a map starts)
+//   music3.mp3  → game music (alternates with music2 on subsequent games)
+// If any file is missing, audio fails gracefully (oyun etkilenmez)
+const MUSIC_TRACKS = {
+  menu: 'music1.mp3',
+  game: ['music2.mp3', 'music3.mp3']
+};
+let audioEl = null;
+let currentTrack = null; // 'menu' | 'game'
+let gameTrackIdx = 0;
+
+function initAudio() {
+  audioEl = new Audio();
+  audioEl.loop = true;
+  audioEl.volume = 0.5;
+  audioEl.addEventListener('error', () => {
+    // Music file missing or failed — silently ignore
+    // console.warn('Music load failed:', audioEl.src);
+  });
+}
+
+function playTrack(which) {
+  if (!audioEl || !soundEnabled) return;
+  if (currentTrack === which && !audioEl.paused) return;
+  currentTrack = which;
+  let src;
+  if (which === 'menu') {
+    src = MUSIC_TRACKS.menu;
+  } else if (which === 'game') {
+    src = MUSIC_TRACKS.game[gameTrackIdx % MUSIC_TRACKS.game.length];
+    gameTrackIdx++;
+  }
+  if (audioEl.src.indexOf(src) === -1) {
+    audioEl.src = src;
+  }
+  const pr = audioEl.play();
+  if (pr && typeof pr.catch === 'function') {
+    pr.catch(() => {/* autoplay blocked, will retry on user gesture */});
+  }
+}
+
+function stopMusic() {
+  if (!audioEl) return;
+  audioEl.pause();
+  currentTrack = null;
+}
+
+function setSoundEnabled(on) {
+  soundEnabled = on;
+  localStorage.setItem('siper_sound', on ? 'on' : 'off');
+  if (!on) {
+    stopMusic();
+  } else {
+    // resume based on current screen
+    if (document.getElementById('app').style.display !== 'none') {
+      playTrack('game');
+    } else {
+      playTrack('menu');
+    }
+  }
+}
+// NOTE: Replace firebaseConfig with your own Firebase project config
+// before deploying to production. Presence uses RTDB onDisconnect,
+// feedback writes to /siper/feedback/.
+const firebaseConfig = {
+  apiKey: "REPLACE_ME",
+  authDomain: "siper-game.firebaseapp.com",
+  databaseURL: "https://siper-game-default-rtdb.firebaseio.com",
+  projectId: "siper-game",
+  storageBucket: "siper-game.appspot.com",
+  messagingSenderId: "0",
+  appId: "0"
+};
+
+let fbApp = null, fbDb = null, fbEnabled = false;
+try {
+  if (firebaseConfig.apiKey && firebaseConfig.apiKey !== "REPLACE_ME") {
+    fbApp = firebase.initializeApp(firebaseConfig);
+    fbDb = firebase.database();
+    fbEnabled = true;
+  }
+} catch (e) {
+  console.warn('Firebase init failed:', e);
+  fbEnabled = false;
+}
+
+function setOnlineIndicator(count, enabled) {
+  const el = document.getElementById('online-indicator');
+  if (!enabled) {
+    el.classList.add('offline');
+    document.getElementById('online-count').textContent = '—';
+  } else {
+    el.classList.remove('offline');
+    document.getElementById('online-count').textContent = count;
+  }
+}
+
+function initPresence() {
+  if (!fbEnabled) {
+    setOnlineIndicator(0, false);
+    return;
+  }
+  try {
+    const presenceRef = fbDb.ref('siper/online');
+    const myRef = presenceRef.push();
+    myRef.set({ joined: firebase.database.ServerValue.TIMESTAMP });
+    myRef.onDisconnect().remove();
+    // Count online users
+    presenceRef.on('value', (snap) => {
+      const count = snap.numChildren();
+      setOnlineIndicator(count, true);
+    });
+    // Heartbeat every 30s
+    setInterval(() => {
+      myRef.update({ lastSeen: firebase.database.ServerValue.TIMESTAMP }).catch(() => {});
+    }, 30000);
+  } catch (e) {
+    console.warn('Presence failed:', e);
+    setOnlineIndicator(0, false);
+  }
+}
+
+document.getElementById('feedback-send').addEventListener('click', () => {
+  const ta = document.getElementById('feedback-text');
+  const msg = ta.value.trim();
+  if (!msg) { toast(t('feedbackEmpty'), '#c8472f'); return; }
+  if (!fbEnabled) {
+    toast(t('feedbackThanks'), '#7a9f3f');
+    ta.value = '';
+    return;
+  }
+  try {
+    fbDb.ref('siper/feedback').push({
+      msg: msg.substring(0, 1000),
+      lang: LANG,
+      ts: firebase.database.ServerValue.TIMESTAMP,
+      version: '1.5.0',
+      ua: navigator.userAgent.substring(0, 200)
+    }).then(() => {
+      toast(t('feedbackThanks'), '#7a9f3f');
+      ta.value = '';
+    }).catch(err => {
+      console.warn('Feedback send failed:', err);
+      toast('Error', '#c8472f');
+    });
+  } catch (e) {
+    console.warn('Feedback failed:', e);
+    toast(t('feedbackThanks'), '#7a9f3f');
+    ta.value = '';
+  }
+});
+
+/* ---------- BOOT ---------- */
+applyI18n();
+resizeCanvas();
+// Start at splash
+showSplash();
+initPresence();
+requestAnimationFrame(loop);
+
+/* ---------- SERVICE WORKER (PWA OFFLINE) ---------- */
+// Only register SW when served over http(s) from same origin (skip file://, sandboxed previews, etc.)
+if ('serviceWorker' in navigator &&
+    (location.protocol === 'https:' || location.hostname === 'localhost')) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(() => {
+      // Silent fail — SW is optional. Common when previewing the file
+      // in a sandbox or before sw.js is deployed alongside index.html.
+    });
+  });
+}
+</script>
+</body>
+</html>

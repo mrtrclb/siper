@@ -1,0 +1,27 @@
+{
+  "name": "Siper — Kule Savunma Oyunu",
+  "short_name": "Siper",
+  "description": "Modern askeri temalı kule savunma oyunu. Hattı tut, üssü koru.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0a0a0a",
+  "theme_color": "#d97e2a",
+  "lang": "tr",
+  "categories": ["games", "strategy"],
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
