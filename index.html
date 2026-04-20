@@ -130,16 +130,16 @@
   .stat {
     display: flex;
     align-items: center;
-    gap: 6px;
-    font-size: 13px;
+    gap: 8px;
+    font-size: 15px;
     font-weight: bold;
-    padding: 4px 10px;
+    padding: 6px 14px;
     background: var(--bg-2);
     border: 1px solid var(--border);
     border-radius: 3px;
     min-width: 0;
   }
-  .stat .icon { font-size: 14px; }
+  .stat .icon { font-size: 16px; }
   .stat.money { color: var(--orange-2); border-color: var(--orange); }
   .stat.lives { color: var(--danger); }
   .stat.wave { color: var(--sand); }
@@ -152,9 +152,9 @@
     display: inline-block;
   }
   .hamburger-btn {
-    font-size: 18px;
+    font-size: 22px;
     line-height: 1;
-    padding: 6px 14px;
+    padding: 8px 18px;
     font-weight: bold;
   }
   .hamburger-dropdown {
@@ -216,9 +216,9 @@
     background: linear-gradient(180deg, var(--khaki) 0%, #4d4530 100%);
     color: var(--text);
     border: 1px solid var(--border);
-    padding: 6px 12px;
+    padding: 8px 16px;
     font-family: inherit;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: bold;
     cursor: pointer;
     border-radius: 3px;
@@ -1391,14 +1391,14 @@
 <!-- SPLASH SCREEN -->
 <div class="splash" id="splash">
   <div class="splash-logo">SİPER</div>
-  <div class="splash-sub">v2.0.1</div>
+  <div class="splash-sub">v2.1.0</div>
   <div class="splash-tagline" data-i18n="splashTagline">Hattı Tut, Üssü Koru.</div>
   <div class="splash-lang">
     <button class="lang-btn" data-lang="tr">TÜRKÇE</button>
     <button class="lang-btn" data-lang="en">ENGLISH</button>
   </div>
   <button class="splash-start" id="splash-start" data-i18n="startGame">Oyuna Başla!</button>
-  <div class="splash-footer">v2.0.1 · mrtrclb</div>
+  <div class="splash-footer">v2.1.0 · mrtrclb</div>
 </div>
 
 <!-- MAIN MENU -->
@@ -1549,7 +1549,7 @@
   <div class="panel-content">
     <h1>SİPER</h1>
     <p style="text-align:center; color: var(--sand); letter-spacing: 2px; margin-bottom: 20px;">
-      <span data-i18n="version">Sürüm</span> 2.0.1
+      <span data-i18n="version">Sürüm</span> 2.1.0
     </p>
     <p data-i18n="aboutDesc">Siper, 10×8 grid üzerinde modern askeri temalı bir kule savunma oyunudur.</p>
 
@@ -1600,6 +1600,7 @@
     </div>
 
     <h2 data-i18n="changelog">Sürüm Notları</h2>
+    <p><strong>v2.1.0</strong> — <span data-i18n="changelog210"></span></p>
     <p><strong>v2.0.1</strong> — <span data-i18n="changelog201"></span></p>
     <p><strong>v2.0.0</strong> — <span data-i18n="changelog200"></span></p>
     <p><strong>v1.9.0</strong> — <span data-i18n="changelog190"></span></p>
@@ -1853,6 +1854,7 @@ const I18N = {
     changelog190: "4 yeni düşman: Koşucu (hızlı), Kalkanlı (shield), Yenileyici (regen), Mega-Tank (boss). Her 10. dalgada boss. 2 yeni başarım. Toplam 32 başarım.",
     changelog200: "Büyük UI yenileme: hamburger dropdown menü. Kule taşıma özelliği (her kule 1 kez). Mobil kartlar büyütüldü. Kule seçiminde toast geri bildirimi. Bulut paneli geri dönüş hatası düzeltildi.",
     changelog201: "Hakkında sayfası ve meta etiketler güncel değerlerle (30 harita, 7 kule, 7 düşman, 32 başarım) güncellendi. Sürüm notları için 'Daha Fazla Göster' butonu.",
+    changelog210: "Otomatik Oynat: ▶ butonuna basınca ilk dalga başlar, sonraki dalgalar arasında 4 saniye bekleme ile otomatik akar. ⏸ ile durdurabilirsin. HUD butonları ve istatistikler büyütüldü. Oyun arka plana alınınca veya kapatılınca otomatik kaydediyor — 'Devam Et' artık swipe ile kapatılan oyunu da gösteriyor.",
     otherGames: "Diğer Oyunlarım",
     credits: "Geliştiren: mrtrclb",
     version: "Sürüm",
@@ -1979,6 +1981,7 @@ const I18N = {
     changelog190: "4 new enemies: Scout (fast), Shielded (shield HP), Regenerator (heals), Mega-Tank (boss). Boss spawns every 10th wave. 2 new achievements. 32 total.",
     changelog200: "Major UI overhaul: hamburger dropdown menu. Tower relocation feature (once per tower). Larger mobile cards. Toast feedback when selecting a tower. Fixed cloud panel return bug.",
     changelog201: "About page and meta tags updated with current values (30 maps, 7 towers, 7 enemies, 32 achievements). 'Show More' button for changelog.",
+    changelog210: "Autoplay: tap ▶ to start the first wave, subsequent waves flow automatically with a 4-second prep break. Tap ⏸ to pause autoplay. HUD buttons and stats are larger. Game auto-saves when tab is hidden or swiped away — 'Continue' now preserves your run even after app switch.",
     otherGames: "My Other Games",
     credits: "Developed by mrtrclb",
     version: "Version",
@@ -2379,7 +2382,7 @@ let MAPS = [
     ]],
     palette: { road1: '#34301e', road2: '#24201a', ground: '#0c0b09', accent: '#e88a32' }
   },
-  // ===== 12 NEW MAPS (v2.0.1) =====
+  // ===== 12 NEW MAPS (v2.1.0) =====
   // ===== 6 QUAD-ATTACK MAPS (4-way convergence on central HQ) =====
   {
     id: 'sierra',
@@ -2666,7 +2669,7 @@ const ENEMY_TEMPLATES = {
   infantry:  { name: 'Piyade',   hp: 30,  speed: 1.2, armor: 0.0,  reward: 6,  flying: false, color: '#a08660', size: 9 },
   armor:     { name: 'Zırhlı',   hp: 110, speed: 0.7, armor: 0.55, reward: 14, flying: false, color: '#4d4530', size: 12 },
   air:       { name: 'Hava',     hp: 55,  speed: 1.6, armor: 0.1,  reward: 12, flying: true,  color: '#6b7a8a', size: 10 },
-  // NEW v2.0.1:
+  // NEW v2.1.0:
   scout:     { name: 'Koşucu',   hp: 22,  speed: 2.6, armor: 0.0,  reward: 5,  flying: false, color: '#d97e2a', size: 7 },
   shielded:  { name: 'Kalkanlı', hp: 50,  speed: 0.9, armor: 0.25, reward: 22, flying: false, color: '#6b5a3a', size: 11, shield: 80 },
   regen:     { name: 'Yenileyici', hp: 80, speed: 0.95, armor: 0.15, reward: 20, flying: false, color: '#7a6f3f', size: 10, regenRate: 3 },
@@ -3494,14 +3497,65 @@ function startWave() {
   }
 }
 
+// Autoplay state: dalga biter → AUTOPLAY_DELAY sn sonra sonraki dalga otomatik başlar.
+// User can toggle off with the wave button.
+let autoplayEnabled = localStorage.getItem('siper_autoplay') === 'on';
+let autoplayCountdown = 0; // seconds until next auto-wave
+const AUTOPLAY_DELAY = 4; // seconds between waves
+
 function updateWaveButton() {
   const btn = document.getElementById('btn-wave');
+  if (!btn) return;
   if (state.waveActive) {
-    btn.textContent = '…';
-    btn.disabled = true;
-  } else {
-    btn.textContent = state.wave === 0 ? t('startWave') : t('nextWave');
+    // Wave in progress
+    if (autoplayEnabled) {
+      btn.innerHTML = '⏸';
+      btn.title = LANG === 'tr' ? 'Otomatik Oynat: Açık' : 'Autoplay: On';
+    } else {
+      btn.innerHTML = '…';
+      btn.title = '';
+    }
+    btn.disabled = false; // allow clicking to toggle autoplay during wave
+  } else if (autoplayCountdown > 0) {
+    // Between waves, countdown active
+    btn.innerHTML = '⏸ ' + Math.ceil(autoplayCountdown) + 's';
+    btn.title = LANG === 'tr' ? 'Otomatik Oynat: Açık' : 'Autoplay: On';
     btn.disabled = false;
+  } else {
+    // Ready for next wave, not in autoplay countdown
+    if (state.wave === 0) {
+      btn.innerHTML = '▶';
+      btn.title = t('startWave');
+    } else {
+      btn.innerHTML = '▶';
+      btn.title = t('nextWave');
+    }
+    btn.disabled = false;
+  }
+}
+
+function toggleAutoplay() {
+  autoplayEnabled = !autoplayEnabled;
+  localStorage.setItem('siper_autoplay', autoplayEnabled ? 'on' : 'off');
+  if (!autoplayEnabled) {
+    autoplayCountdown = 0; // cancel pending auto-wave
+  }
+  updateWaveButton();
+}
+
+// Called per frame from loop. Handles auto-wave countdown.
+function updateAutoplay(dt) {
+  if (!autoplayEnabled) return;
+  if (state.gameOver || state.paused) return;
+  if (state.waveActive) return;
+  // Countdown between waves (but only AFTER first wave has started once)
+  if (state.wave > 0 && autoplayCountdown > 0) {
+    autoplayCountdown -= dt;
+    if (autoplayCountdown <= 0) {
+      autoplayCountdown = 0;
+      startWave();
+    }
+    updateWaveButton();
   }
 }
 
@@ -3918,6 +3972,10 @@ function updateSpawns(dt) {
     } else {
       state.runNoSellWaves = 0;
     }
+    // If autoplay is enabled, start countdown for next wave
+    if (autoplayEnabled) {
+      autoplayCountdown = AUTOPLAY_DELAY;
+    }
     updateWaveButton();
   }
 }
@@ -3943,6 +4001,8 @@ function loop(now) {
     updateTowers(dt);
     updateProjectiles(dt);
     updateFX(dt);
+    // Autoplay countdown uses real time (not game speed) for consistency
+    updateAutoplay(rawDt);
   }
   // Ambient always runs at normal speed (visual continuity)
   updateAmbient(rawDt);
@@ -4201,7 +4261,24 @@ document.getElementById('tp-sell').addEventListener('click', () => {
 });
 
 /* ---------- CONTROLS ---------- */
-document.getElementById('btn-wave').addEventListener('click', startWave);
+document.getElementById('btn-wave').addEventListener('click', () => {
+  // If wave is active OR countdown is running → toggle autoplay
+  if (state.waveActive || autoplayCountdown > 0) {
+    toggleAutoplay();
+    if (autoplayEnabled) {
+      toast(LANG === 'tr' ? 'Otomatik Oynat: Açık' : 'Autoplay: On', '#7a9f3f');
+    } else {
+      toast(LANG === 'tr' ? 'Otomatik Oynat: Kapalı' : 'Autoplay: Off', '#8a7d52');
+    }
+    return;
+  }
+  // Otherwise start the next wave manually, AND enable autoplay for subsequent waves
+  if (!autoplayEnabled) {
+    autoplayEnabled = true;
+    localStorage.setItem('siper_autoplay', 'on');
+  }
+  startWave();
+});
 document.getElementById('btn-speed').addEventListener('click', () => {
   const next = gameSpeed === 1 ? 2 : gameSpeed === 2 ? 3 : 1;
   setGameSpeed(next);
@@ -4301,6 +4378,7 @@ function resetGame() {
   state.spawnTimer = 0;
   state.paused = false;
   state.gameOver = false;
+  autoplayCountdown = 0;
   initAchRunStats();
   refreshShopSelection();
   hideTowerPanel();
@@ -5050,7 +5128,7 @@ document.getElementById('feedback-send').addEventListener('click', () => {
       msg: msg.substring(0, 1000),
       lang: LANG,
       ts: firebase.database.ServerValue.TIMESTAMP,
-      version: '2.0.1',
+      version: '2.1.0',
       ua: navigator.userAgent.substring(0, 200)
     }).then(() => {
       toast(t('feedbackThanks'), '#7a9f3f');
@@ -5079,7 +5157,7 @@ document.getElementById('feedback-send').addEventListener('click', () => {
 
 function serializeGame() {
   return {
-    version: '2.0.1',
+    version: '2.1.0',
     mapId: currentMap.id,
     difficulty: currentDifficulty,
     money: state.money,
@@ -5106,6 +5184,43 @@ function saveCurrentGame() {
     return false;
   }
 }
+
+// Silent auto-save — no toast, no confirmation.
+// Used when the tab is hidden / unloaded (app swiped away, tab backgrounded, etc.)
+function silentAutoSave() {
+  if (state.gameOver) return false;
+  if (!currentMap || !currentMap.id) return false;
+  // Only save if there's actual progress (towers placed or wave advanced)
+  if (!state.towers || state.towers.length === 0) {
+    if (!state.wave || state.wave === 0) return false;
+  }
+  try {
+    const snap = serializeGame();
+    localStorage.setItem('siper_save_' + currentMap.id, JSON.stringify(snap));
+    return true;
+  } catch (e) {
+    console.warn('Silent save failed:', e);
+    return false;
+  }
+}
+
+// Auto-save on page hide (mobile app swipe, tab close, navigation)
+window.addEventListener('pagehide', () => {
+  // Only auto-save if user is actively in a game
+  const appEl = document.getElementById('app');
+  if (appEl && appEl.style.display !== 'none') {
+    silentAutoSave();
+  }
+});
+// Also auto-save when tab becomes hidden (iOS swipe to app switcher, tab minimized)
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'hidden') {
+    const appEl = document.getElementById('app');
+    if (appEl && appEl.style.display !== 'none') {
+      silentAutoSave();
+    }
+  }
+});
 
 function loadSavedGame(mapId) {
   try {
@@ -5514,7 +5629,7 @@ async function uploadToCloud() {
     await fbDb.ref('siper/saves/' + code).set({
       ts: firebase.database.ServerValue.TIMESTAMP,
       data: data,
-      version: '2.0.1'
+      version: '2.1.0'
     });
     // Also mirror scores into /siper/scores/<code> for quick lookup
     await fbDb.ref('siper/scores/' + code).set(data.scores);
