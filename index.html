@@ -1320,14 +1320,14 @@
 <!-- SPLASH SCREEN -->
 <div class="splash" id="splash">
   <div class="splash-logo">SİPER</div>
-  <div class="splash-sub">v1.8.0</div>
+  <div class="splash-sub">v1.9.0</div>
   <div class="splash-tagline" data-i18n="splashTagline">Hattı Tut, Üssü Koru.</div>
   <div class="splash-lang">
     <button class="lang-btn" data-lang="tr">TÜRKÇE</button>
     <button class="lang-btn" data-lang="en">ENGLISH</button>
   </div>
   <button class="splash-start" id="splash-start" data-i18n="startGame">Oyuna Başla!</button>
-  <div class="splash-footer">v1.8.0 · mrtrclb</div>
+  <div class="splash-footer">v1.9.0 · mrtrclb</div>
 </div>
 
 <!-- MAIN MENU -->
@@ -1478,7 +1478,7 @@
   <div class="panel-content">
     <h1>SİPER</h1>
     <p style="text-align:center; color: var(--sand); letter-spacing: 2px; margin-bottom: 20px;">
-      <span data-i18n="version">Sürüm</span> 1.8.0
+      <span data-i18n="version">Sürüm</span> 1.9.0
     </p>
     <p data-i18n="aboutDesc">Siper, 10×8 grid üzerinde modern askeri temalı bir kule savunma oyunudur.</p>
 
@@ -1486,7 +1486,7 @@
       <div class="about-stat"><div class="as-val">30</div><div class="as-lab" data-i18n="asMaps">Harita</div></div>
       <div class="about-stat"><div class="as-val">7</div><div class="as-lab" data-i18n="asTowers">Kule Tipi</div></div>
       <div class="about-stat"><div class="as-val">3</div><div class="as-lab" data-i18n="asDiff">Zorluk</div></div>
-      <div class="about-stat"><div class="as-val">30</div><div class="as-lab" data-i18n="asAchs">Başarım</div></div>
+      <div class="about-stat"><div class="as-val">32</div><div class="as-lab" data-i18n="asAchs">Başarım</div></div>
     </div>
 
     <h2 data-i18n="howToPlay">Nasıl Oynanır</h2>
@@ -1529,8 +1529,9 @@
     </div>
 
     <h2 data-i18n="changelog">Sürüm Notları</h2>
+    <p><strong>v1.9.0</strong> — <span data-i18n="changelog190"></span></p>
     <p><strong>v1.8.0</strong> — <span data-i18n="changelog180"></span></p>
-    <p><strong>v1.8.0</strong> — <span data-i18n="changelog170"></span></p>
+    <p><strong>v1.7.0</strong> — <span data-i18n="changelog170"></span></p>
     <p><strong>v1.6.0</strong> — <span data-i18n="changelog160"></span></p>
     <p><strong>v1.5.2</strong> — <span data-i18n="changelog152"></span></p>
     <p><strong>v1.5.1</strong> — <span data-i18n="changelog151"></span></p>
@@ -1703,6 +1704,7 @@ const I18N = {
     best: "En İyi",
     changeMap: "Menü", selectMap: "Harita Seç",
     mapSingle: "Tek Yol", mapMulti: "Çoklu Yol", mapQuad: "4 Yön",
+    bossWave: "BOSS DALGASI",
     backToMaps: "Haritalara Dön",
     // Splash
     splashTagline: "Hattı Tut, Üssü Koru.",
@@ -1749,7 +1751,7 @@ const I18N = {
     feat2: "3 zorluk seviyesi",
     feat3: "7 kule tipi, 3 seviye yükseltme",
     feat4: "Sonsuz dalga modu, harita bazlı skor",
-    feat5: "30 başarım sistemi",
+    feat5: "32 başarım sistemi",
     feat6: "1×, 2×, 3× hız kontrolü",
     feat7: "TR/EN dil desteği, PWA offline, bulut senkron",
     asMaps: "Harita", asTowers: "Kule Tipi", asDiff: "Zorluk", asAchs: "Başarım",
@@ -1761,7 +1763,8 @@ const I18N = {
     changelog152: "Web Audio ses efektleri (atış, patlama, dalga, game over). Dosya temizleme.",
     changelog160: "3 yeni kule (Keskin Nişancı, Alev Makinesi, Yavaşlatıcı). Müzik ve efekt sesleri ayrı toggle. Mobil düzeltmeler. Kule paneli kapama (X + ESC). Canlı arkaplan efektleri. Presence sayacı düzeltmesi.",
     changelog170: "12 yeni harita (toplam 30). 6 harita 4 yönlü saldırılı yeni tür. Menü butonu artık otomatik kaydediyor. Çoklu yollu haritalarda spawn dağılımı dengeli.",
-    changelog180: "30 başarım sistemi. Oyun hızı kontrolü (1×/2×/3×). Mobilde alt panel yatay kaydırılabilir. Butonlar büyütüldü. Oyun Hakkında sayfası yenilendi.",
+    changelog180: "Başarım sistemi eklendi. Oyun hızı kontrolü (1×/2×/3×). Mobilde alt panel yatay kaydırılabilir. Butonlar büyütüldü. Oyun Hakkında sayfası yenilendi.",
+    changelog190: "4 yeni düşman: Koşucu (hızlı), Kalkanlı (shield), Yenileyici (regen), Mega-Tank (boss). Her 10. dalgada boss. 2 yeni başarım. Toplam 32 başarım.",
     otherGames: "Diğer Oyunlarım",
     credits: "Geliştiren: mrtrclb",
     version: "Sürüm",
@@ -1827,6 +1830,7 @@ const I18N = {
     best: "Best",
     changeMap: "Menu", selectMap: "Select Map",
     mapSingle: "Single Path", mapMulti: "Multi Path", mapQuad: "4-Way",
+    bossWave: "BOSS WAVE",
     backToMaps: "Back to Maps",
     splashTagline: "Hold the Line. Protect the Base.",
     startGame: "Start Game!",
@@ -1868,7 +1872,7 @@ const I18N = {
     feat2: "3 difficulty levels",
     feat3: "7 tower types, 3 upgrade levels",
     feat4: "Endless wave mode, per-map scores",
-    feat5: "30-achievement system",
+    feat5: "32-achievement system",
     feat6: "1×, 2×, 3× speed control",
     feat7: "TR/EN language support, PWA offline, cloud sync",
     asMaps: "Maps", asTowers: "Towers", asDiff: "Difficulty", asAchs: "Achievements",
@@ -1880,7 +1884,8 @@ const I18N = {
     changelog152: "Web Audio SFX (shots, explosions, waves, game over). Polish.",
     changelog160: "3 new towers (Sniper, Flamethrower, Slow Field). Separate music + SFX toggles. Mobile fixes. Tower panel close (X + ESC). Live background effects. Presence counter fix.",
     changelog170: "12 new maps (30 total). 6 new quad-attack (4-way assault) maps. Menu button now auto-saves. Balanced spawn distribution for multi-path maps.",
-    changelog180: "30-achievement system. Game speed control (1×/2×/3×). Horizontal scrollable tower shop on mobile. Larger buttons. Refreshed About page.",
+    changelog180: "Achievements system added. Game speed control (1×/2×/3×). Horizontal scrollable tower shop on mobile. Larger buttons. Refreshed About page.",
+    changelog190: "4 new enemies: Scout (fast), Shielded (shield HP), Regenerator (heals), Mega-Tank (boss). Boss spawns every 10th wave. 2 new achievements. 32 total.",
     otherGames: "My Other Games",
     credits: "Developed by mrtrclb",
     version: "Version",
@@ -2281,7 +2286,7 @@ let MAPS = [
     ]],
     palette: { road1: '#34301e', road2: '#24201a', ground: '#0c0b09', accent: '#e88a32' }
   },
-  // ===== 12 NEW MAPS (v1.8.0) =====
+  // ===== 12 NEW MAPS (v1.9.0) =====
   // ===== 6 QUAD-ATTACK MAPS (4-way convergence on central HQ) =====
   {
     id: 'sierra',
@@ -2558,12 +2563,21 @@ const TOWER_DEFS = {
 };
 
 /* ---------- ENEMY DEFS ---------- */
-// type: 'infantry' | 'armor' | 'air'
+// type: 'infantry' | 'armor' | 'air' | 'scout' | 'shielded' | 'regen' | 'boss'
 // armor: damage reduction 0..0.9 (piercing reduces this)
+// Special fields:
+//   shield: starting shield HP (absorbs damage before body hp)
+//   regenRate: HP per second auto-regeneration
+//   isBoss: marks as boss (only 1 spawns at boss waves)
 const ENEMY_TEMPLATES = {
-  infantry: { name: 'Piyade', hp: 30,  speed: 1.2, armor: 0.0, reward: 6,  flying: false, color: '#a08660', size: 9 },
-  armor:    { name: 'Zırhlı', hp: 110, speed: 0.7, armor: 0.55, reward: 14, flying: false, color: '#4d4530', size: 12 },
-  air:      { name: 'Hava',   hp: 55,  speed: 1.6, armor: 0.1, reward: 12, flying: true,  color: '#6b7a8a', size: 10 }
+  infantry:  { name: 'Piyade',   hp: 30,  speed: 1.2, armor: 0.0,  reward: 6,  flying: false, color: '#a08660', size: 9 },
+  armor:     { name: 'Zırhlı',   hp: 110, speed: 0.7, armor: 0.55, reward: 14, flying: false, color: '#4d4530', size: 12 },
+  air:       { name: 'Hava',     hp: 55,  speed: 1.6, armor: 0.1,  reward: 12, flying: true,  color: '#6b7a8a', size: 10 },
+  // NEW v1.9.0:
+  scout:     { name: 'Koşucu',   hp: 22,  speed: 2.6, armor: 0.0,  reward: 5,  flying: false, color: '#d97e2a', size: 7 },
+  shielded:  { name: 'Kalkanlı', hp: 50,  speed: 0.9, armor: 0.25, reward: 22, flying: false, color: '#6b5a3a', size: 11, shield: 80 },
+  regen:     { name: 'Yenileyici', hp: 80, speed: 0.95, armor: 0.15, reward: 20, flying: false, color: '#7a6f3f', size: 10, regenRate: 3 },
+  boss:      { name: 'Mega-Tank', hp: 2200, speed: 0.35, armor: 0.75, reward: 250, flying: false, color: '#2a2418', size: 20, isBoss: true }
 };
 
 /* ---------- DIFFICULTY ---------- */
@@ -2611,18 +2625,46 @@ function generateWave(n) {
   const diff = DIFFICULTIES[currentDifficulty];
   const out = [];
   const difficulty = 1 + (n - 1) * 0.18;
-  // Gentler early waves
+
+  // BOSS WAVES: waves 10, 20, 30, 40, 50+ (every 10) → 1 boss + small escort
+  const isBossWave = n > 0 && n % 10 === 0;
+  if (isBossWave) {
+    // Small escort first (6-8 mixed enemies), then the boss at the end
+    const escortCount = 6 + Math.floor(n / 10);
+    for (let i = 0; i < escortCount; i++) {
+      let type = 'infantry';
+      const r = Math.random();
+      if (r < 0.25) type = 'armor';
+      else if (r < 0.45) type = 'scout';
+      else if (r < 0.55 && n >= 20) type = 'shielded';
+      else if (r < 0.65 && n >= 20) type = 'regen';
+      else if (r < 0.75) type = 'air';
+      out.push({ type, delay: 0.5 + Math.random() * 0.3 });
+    }
+    // Pause, then boss arrives
+    out.push({ type: 'boss', delay: 2.2 });
+    return { list: out, difficulty, hpMul: Math.pow(diff.hpMul, n - 1), bounty: 50 + n * 5 };
+  }
+
+  // Normal waves
   const count = n === 1 ? 6 : n === 2 ? 8 : 8 + Math.floor(n * 1.3);
-  // No air before wave 3
-  let airChance = n < 3 ? 0 : Math.min(0.40, 0.05 + (n - 2) * 0.02 + diff.airChanceBonus);
-  // Reduced armor in wave 1
-  let armorChance = n === 1 ? 0.05 : Math.min(0.50, 0.08 + n * 0.025 + diff.armorChanceBonus);
+  // Base probabilities
+  let airChance   = n < 3 ? 0 : Math.min(0.35, 0.05 + (n - 2) * 0.018 + diff.airChanceBonus);
+  let armorChance = n === 1 ? 0.05 : Math.min(0.40, 0.08 + n * 0.022 + diff.armorChanceBonus);
+  // New enemy types appear gradually
+  let scoutChance    = n < 4  ? 0 : Math.min(0.22, (n - 3) * 0.02);
+  let shieldedChance = n < 8  ? 0 : Math.min(0.15, (n - 7) * 0.015);
+  let regenChance    = n < 12 ? 0 : Math.min(0.12, (n - 11) * 0.012);
 
   for (let i = 0; i < count; i++) {
     let type = 'infantry';
     const r = Math.random();
-    if (r < airChance) type = 'air';
-    else if (r < airChance + armorChance) type = 'armor';
+    // Roll in priority order: rarest first → common
+    if (r < regenChance) type = 'regen';
+    else if (r < regenChance + shieldedChance) type = 'shielded';
+    else if (r < regenChance + shieldedChance + scoutChance) type = 'scout';
+    else if (r < regenChance + shieldedChance + scoutChance + airChance) type = 'air';
+    else if (r < regenChance + shieldedChance + scoutChance + airChance + armorChance) type = 'armor';
     out.push({ type, delay: 0.5 + Math.random() * 0.4 });
   }
   return { list: out, difficulty, hpMul: Math.pow(diff.hpMul, n - 1), bounty: 20 + n * 3 };
@@ -2964,6 +3006,12 @@ function drawEnemies() {
       ctx.beginPath();
       ctx.ellipse(e.x + 6, e.y + 10, e.size * 0.9, e.size * 0.4, 0, 0, Math.PI*2);
       ctx.fill();
+    } else if (e.isBoss) {
+      // Boss gets a bigger shadow
+      ctx.fillStyle = 'rgba(0,0,0,0.5)';
+      ctx.beginPath();
+      ctx.ellipse(e.x + 2, e.y + 4, e.size * 1.1, e.size * 0.5, 0, 0, Math.PI*2);
+      ctx.fill();
     }
     // body
     ctx.fillStyle = e.color;
@@ -2979,6 +3027,27 @@ function drawEnemies() {
       ctx.lineWidth = 2;
       ctx.beginPath(); ctx.moveTo(-e.size*1.4, 0); ctx.lineTo(e.size*1.4, 0); ctx.stroke();
       ctx.restore();
+    } else if (e.isBoss) {
+      // BOSS: Mega-tank — big menacing silhouette with double turret
+      ctx.fillStyle = e.color;
+      // Outer chassis
+      ctx.fillRect(e.x - e.size*1.2, e.y - e.size*0.8, e.size*2.4, e.size*1.6);
+      // Armor plates darker
+      ctx.fillStyle = '#1a1610';
+      ctx.fillRect(e.x - e.size*0.9, e.y - e.size*0.55, e.size*1.8, e.size*1.1);
+      // Turret base
+      ctx.fillStyle = '#3a2f1c';
+      ctx.beginPath(); ctx.arc(e.x, e.y - e.size*0.15, e.size*0.55, 0, Math.PI*2); ctx.fill();
+      // Dual cannons
+      ctx.fillStyle = e.color;
+      ctx.fillRect(e.x + e.size*0.2, e.y - e.size*0.35, e.size*1.0, e.size*0.14);
+      ctx.fillRect(e.x + e.size*0.2, e.y + e.size*0.1, e.size*1.0, e.size*0.14);
+      // Red hazard stripe
+      ctx.fillStyle = '#7a2020';
+      ctx.fillRect(e.x - e.size*1.1, e.y + e.size*0.65, e.size*2.2, e.size*0.15);
+      // Angry "eye" accent
+      ctx.fillStyle = '#f25e1a';
+      ctx.beginPath(); ctx.arc(e.x, e.y - e.size*0.15, e.size*0.12, 0, Math.PI*2); ctx.fill();
     } else if (e.type === 'armor') {
       // Tank-ish box
       ctx.fillRect(e.x - e.size, e.y - e.size*0.7, e.size*2, e.size*1.4);
@@ -2986,12 +3055,67 @@ function drawEnemies() {
       ctx.fillRect(e.x - e.size*0.5, e.y - e.size*0.4, e.size*1.0, e.size*0.8);
       ctx.fillStyle = '#6b6140';
       ctx.fillRect(e.x - e.size*0.2, e.y - e.size*0.15, e.size*1.3, e.size*0.3);
+    } else if (e.type === 'scout') {
+      // Small, fast, orange-tinted runner with motion lines
+      ctx.fillStyle = e.color;
+      ctx.beginPath(); ctx.arc(e.x, e.y - e.size*0.3, e.size*0.4, 0, Math.PI*2); ctx.fill();
+      ctx.fillStyle = '#8a4f20';
+      ctx.fillRect(e.x - e.size*0.3, e.y - e.size*0.05, e.size*0.6, e.size*0.75);
+      // Motion trail
+      ctx.strokeStyle = 'rgba(217,126,42,0.5)';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(e.x - e.size*1.0, e.y - e.size*0.3);
+      ctx.lineTo(e.x - e.size*0.5, e.y - e.size*0.3);
+      ctx.moveTo(e.x - e.size*0.9, e.y);
+      ctx.lineTo(e.x - e.size*0.4, e.y);
+      ctx.stroke();
+    } else if (e.type === 'shielded') {
+      // Soldier with a visible riot-shield in front
+      ctx.fillStyle = e.color;
+      ctx.beginPath(); ctx.arc(e.x, e.y - e.size*0.3, e.size*0.4, 0, Math.PI*2); ctx.fill();
+      ctx.fillStyle = '#3a3020';
+      ctx.fillRect(e.x - e.size*0.35, e.y - e.size*0.05, e.size*0.7, e.size*0.85);
+    } else if (e.type === 'regen') {
+      // Medic-ish figure with greenish tint and a plus cross
+      ctx.fillStyle = e.color;
+      ctx.beginPath(); ctx.arc(e.x, e.y - e.size*0.3, e.size*0.45, 0, Math.PI*2); ctx.fill();
+      ctx.fillStyle = '#2e3e1a';
+      ctx.fillRect(e.x - e.size*0.4, e.y - e.size*0.05, e.size*0.8, e.size*0.9);
+      // Green plus cross on chest
+      ctx.fillStyle = '#7a9f3f';
+      ctx.fillRect(e.x - e.size*0.06, e.y + e.size*0.1, e.size*0.12, e.size*0.5);
+      ctx.fillRect(e.x - e.size*0.25, e.y + e.size*0.28, e.size*0.5, e.size*0.12);
     } else {
-      // infantry — small figure
+      // infantry — small figure (default)
       ctx.fillStyle = e.color;
       ctx.beginPath(); ctx.arc(e.x, e.y - e.size*0.3, e.size*0.45, 0, Math.PI*2); ctx.fill();
       ctx.fillStyle = '#4d4530';
       ctx.fillRect(e.x - e.size*0.4, e.y - e.size*0.05, e.size*0.8, e.size*0.9);
+    }
+
+    // SHIELD visual (only if shield is still up)
+    if (e.shield && e.shield > 0 && e.maxShield) {
+      const shieldAlpha = 0.3 + (e.shield / e.maxShield) * 0.4;
+      ctx.strokeStyle = `rgba(220,230,255,${shieldAlpha})`;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(e.x, e.y, e.size + 5, 0, Math.PI*2);
+      ctx.stroke();
+      // Inner glow
+      ctx.strokeStyle = `rgba(106,184,217,${shieldAlpha * 0.6})`;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.arc(e.x, e.y, e.size + 3, 0, Math.PI*2);
+      ctx.stroke();
+    }
+    // Regen indicator — tiny green sparkle that pulses
+    if (e.regenRate && e.hp < e.maxHp) {
+      const pulse = 0.5 + 0.5 * Math.sin(performance.now() / 150);
+      ctx.fillStyle = `rgba(122,159,63,${pulse * 0.6})`;
+      ctx.beginPath();
+      ctx.arc(e.x + e.size*0.7, e.y - e.size*0.7, 2 + pulse, 0, Math.PI*2);
+      ctx.fill();
     }
     // Slow visual indicator
     if (isSlowed) {
@@ -3001,13 +3125,23 @@ function drawEnemies() {
       ctx.arc(e.x, e.y, e.size + 3, 0, Math.PI*2);
       ctx.stroke();
     }
-    // HP bar
-    const pct = Math.max(0, e.hp / e.maxHp);
-    const bw = e.size * 2, bh = 3;
-    ctx.fillStyle = '#1a1a1a';
-    ctx.fillRect(e.x - bw/2, e.y - e.size - 10, bw, bh);
-    ctx.fillStyle = pct > 0.5 ? '#7a9f3f' : pct > 0.25 ? '#d97e2a' : '#c8472f';
-    ctx.fillRect(e.x - bw/2, e.y - e.size - 10, bw * pct, bh);
+    // HP bar — bigger and different for boss
+    if (!e.isBoss) {
+      const pct = Math.max(0, e.hp / e.maxHp);
+      const bw = e.size * 2, bh = 3;
+      ctx.fillStyle = '#1a1a1a';
+      ctx.fillRect(e.x - bw/2, e.y - e.size - 10, bw, bh);
+      ctx.fillStyle = pct > 0.5 ? '#7a9f3f' : pct > 0.25 ? '#d97e2a' : '#c8472f';
+      ctx.fillRect(e.x - bw/2, e.y - e.size - 10, bw * pct, bh);
+      // Shield bar above HP bar
+      if (e.shield !== undefined && e.maxShield) {
+        const spct = Math.max(0, e.shield / e.maxShield);
+        ctx.fillStyle = '#0a1218';
+        ctx.fillRect(e.x - bw/2, e.y - e.size - 14, bw, bh);
+        ctx.fillStyle = '#dce6ff';
+        ctx.fillRect(e.x - bw/2, e.y - e.size - 14, bw * spct, bh);
+      }
+    }
   }
 }
 
@@ -3126,6 +3260,38 @@ function render() {
   drawProjectiles();
   drawEnemies();
   drawFX();
+  drawBossBanner();
+}
+
+function drawBossBanner() {
+  // Find an active boss
+  let boss = null;
+  for (const e of state.enemies) {
+    if (e.isBoss && !e.dead) { boss = e; break; }
+  }
+  if (!boss) return;
+  const pct = Math.max(0, boss.hp / boss.maxHp);
+  // Dark background strip
+  const barX = 30, barY = 12, barW = CANVAS_W - 60, barH = 14;
+  ctx.fillStyle = 'rgba(10,8,6,0.85)';
+  ctx.fillRect(barX - 4, barY - 4, barW + 8, barH + 24);
+  // Border
+  ctx.strokeStyle = '#c8472f';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(barX - 4, barY - 4, barW + 8, barH + 24);
+  // Bar bg
+  ctx.fillStyle = '#1a1a1a';
+  ctx.fillRect(barX, barY, barW, barH);
+  // Bar fill
+  ctx.fillStyle = pct > 0.5 ? '#c8472f' : pct > 0.25 ? '#d97e2a' : '#f2953a';
+  ctx.fillRect(barX, barY, barW * pct, barH);
+  // Label
+  ctx.fillStyle = '#f2c93a';
+  ctx.font = 'bold 10px Courier New, monospace';
+  ctx.textAlign = 'center';
+  const label = (LANG === 'tr' ? '★ MEGA-TANK ★' : '★ MEGA-TANK ★') + '   ' + Math.ceil(boss.hp) + ' / ' + Math.ceil(boss.maxHp);
+  ctx.fillText(label, CANVAS_W / 2, barY + barH + 14);
+  ctx.textAlign = 'left';
 }
 
 /* ---------- LOGIC ---------- */
@@ -3157,6 +3323,17 @@ function spawnEnemy(type, hpMul) {
     color: tpl.color, size: tpl.size,
     pathIdx, wpIdx: 1, dead: false
   };
+  // Optional special fields
+  if (tpl.shield) {
+    e.shield = tpl.shield * hpMul;
+    e.maxShield = tpl.shield * hpMul;
+  }
+  if (tpl.regenRate) {
+    e.regenRate = tpl.regenRate; // HP per sec
+  }
+  if (tpl.isBoss) {
+    e.isBoss = true;
+  }
   state.enemies.push(e);
 }
 
@@ -3171,7 +3348,12 @@ function startWave() {
   state.spawnTimer = 0;
   state.waveActive = true;
   updateWaveButton();
-  toast(`${t('wave')} ${state.wave}`, '#d97e2a');
+  const isBossWave = state.wave > 0 && state.wave % 10 === 0;
+  if (isBossWave) {
+    toast(`⚠ ${t('bossWave')} ${state.wave} ⚠`, '#c8472f');
+  } else {
+    toast(`${t('wave')} ${state.wave}`, '#d97e2a');
+  }
   sfxWaveStart();
 
   // Wave progression achievements
@@ -3205,14 +3387,22 @@ function updateWaveButton() {
 function updateEnemies(dt) {
   for (const e of state.enemies) {
     if (e.dead) continue;
+    // Regen (only if not at full HP)
+    if (e.regenRate && e.hp < e.maxHp) {
+      e.hp = Math.min(e.maxHp, e.hp + e.regenRate * dt);
+    }
     const wps = state.pathWaypoints[e.pathIdx];
     const wp = wps[e.wpIdx];
     if (!wp) {
-      // reached base
-      state.lives -= e.flying ? 2 : (e.type === 'armor' ? 3 : 1);
+      // reached base — damage based on enemy type
+      let damage = 1;
+      if (e.isBoss) damage = 10;
+      else if (e.flying) damage = 2;
+      else if (e.type === 'armor') damage = 3;
+      state.lives -= damage;
       e.dead = true;
       sfxLifeLost();
-      state.fx.push({ kind: 'text', x: e.x, y: e.y, msg: e.flying ? '−2' : (e.type==='armor'?'−3':'−1'), color: 'rgba(200,71,47,1)', t: 0, dur: 0.8 });
+      state.fx.push({ kind: 'text', x: e.x, y: e.y, msg: '−' + damage, color: 'rgba(200,71,47,1)', t: 0, dur: 0.8 });
       if (state.lives <= 0) { state.lives = 0; doGameOver(); }
       continue;
     }
@@ -3375,14 +3565,43 @@ function updateTowers(dt) {
 
 function applyDamage(enemy, dmg, piercing) {
   const effArmor = Math.max(0, enemy.armor - piercing);
-  const final = dmg * (1 - effArmor);
+  let final = dmg * (1 - effArmor);
+  // Shield absorbs damage first (shield ignores armor for simplicity, takes full dmg)
+  if (enemy.shield && enemy.shield > 0) {
+    // Raw damage (pre-armor) hits shield. If shield breaks, overflow goes to hp.
+    const shieldHit = Math.min(dmg, enemy.shield);
+    enemy.shield -= shieldHit;
+    if (enemy.shield < 0) enemy.shield = 0;
+    // Any leftover raw dmg goes to hp (post-armor)
+    const overflow = Math.max(0, dmg - shieldHit);
+    final = overflow * (1 - effArmor);
+    if (enemy.shield > 0) {
+      // Pure shield hit, no hp damage
+      sfxEnemyHit();
+      return;
+    }
+  }
   enemy.hp -= final;
   if (enemy.hp <= 0 && !enemy.dead) {
     enemy.dead = true;
     state.money += enemy.reward;
     state.score += enemy.reward;
-    state.fx.push({ kind: 'text', x: enemy.x, y: enemy.y, msg: '+' + enemy.reward, color: 'rgba(242,149,58,1)', t: 0, dur: 0.7 });
-    sfxEnemyDie();
+    const fxColor = enemy.isBoss ? 'rgba(242,201,58,1)' : 'rgba(242,149,58,1)';
+    const fxMsg = enemy.isBoss ? ('★ +' + enemy.reward) : ('+' + enemy.reward);
+    state.fx.push({ kind: 'text', x: enemy.x, y: enemy.y, msg: fxMsg, color: fxColor, t: 0, dur: 1.2 });
+    if (enemy.isBoss) {
+      // Big explosion visual + toast
+      state.fx.push({ kind: 'explosion', x: enemy.x, y: enemy.y, r: 20, t: 0, dur: 0.8 });
+      sfxExplosion();
+      toast(LANG === 'tr' ? '★ BOSS DÜŞTÜ!' : '★ BOSS DOWN!', '#f2c93a');
+      // Boss kill achievements
+      unlockAch('bossFirst');
+      const totalKills = parseInt(localStorage.getItem('siper_bosses_killed') || '0') + 1;
+      localStorage.setItem('siper_bosses_killed', String(totalKills));
+      if (totalKills >= 5) unlockAch('bossMaster');
+    } else {
+      sfxEnemyDie();
+    }
     // Track run kills + thresholds
     state.runKills = (state.runKills || 0) + 1;
     if (state.runKills === 50)  unlockAch('kill50');
@@ -4615,7 +4834,7 @@ document.getElementById('feedback-send').addEventListener('click', () => {
       msg: msg.substring(0, 1000),
       lang: LANG,
       ts: firebase.database.ServerValue.TIMESTAMP,
-      version: '1.8.0',
+      version: '1.9.0',
       ua: navigator.userAgent.substring(0, 200)
     }).then(() => {
       toast(t('feedbackThanks'), '#7a9f3f');
@@ -4644,7 +4863,7 @@ document.getElementById('feedback-send').addEventListener('click', () => {
 
 function serializeGame() {
   return {
-    version: '1.8.0',
+    version: '1.9.0',
     mapId: currentMap.id,
     difficulty: currentDifficulty,
     money: state.money,
@@ -4866,7 +5085,9 @@ const ACHIEVEMENTS = [
   { id: 'speed3x', name: { tr: 'Şimşek', en: 'Lightning' }, desc: { tr: '3× hızda oyna', en: 'Play at 3× speed' } },
   { id: 'cloud',   name: { tr: 'Bulutta', en: 'In the Cloud' }, desc: { tr: 'Buluta kayıt yükle', en: 'Upload a save to cloud' } },
   { id: 'quad5',   name: { tr: 'Dört Yön', en: 'Four Fronts' }, desc: { tr: '4 yönlü haritada 15 dalga geç', en: 'Clear 15 waves on a 4-way map' } },
-  { id: 'perfect', name: { tr: 'Mükemmeliyet', en: 'Perfection' }, desc: { tr: 'Tüm 30 başarımı kazan', en: 'Unlock all 30 achievements' } }
+  { id: 'bossFirst', name: { tr: 'Boss Avcısı', en: 'Boss Hunter' }, desc: { tr: 'İlk Mega-Tank\'ı yok et', en: 'Destroy your first Mega-Tank' } },
+  { id: 'bossMaster', name: { tr: 'Boss Ustası', en: 'Boss Master' }, desc: { tr: '5 Mega-Tank yok et (toplam)', en: 'Destroy 5 Mega-Tanks (total)' } },
+  { id: 'perfect', name: { tr: 'Mükemmeliyet', en: 'Perfection' }, desc: { tr: 'Tüm başarımları kazan', en: 'Unlock all achievements' } }
 ];
 
 function isAchUnlocked(id) {
@@ -5077,7 +5298,7 @@ async function uploadToCloud() {
     await fbDb.ref('siper/saves/' + code).set({
       ts: firebase.database.ServerValue.TIMESTAMP,
       data: data,
-      version: '1.8.0'
+      version: '1.9.0'
     });
     // Also mirror scores into /siper/scores/<code> for quick lookup
     await fbDb.ref('siper/scores/' + code).set(data.scores);
