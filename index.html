@@ -683,6 +683,108 @@
     cursor: not-allowed;
     pointer-events: none;
   }
+  .mb-badge {
+    margin-left: auto;
+    background: rgba(242,201,58,0.18);
+    border: 1px solid var(--sand);
+    color: var(--sand);
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    letter-spacing: 0;
+  }
+  .mb-badge:empty { display: none; }
+
+  /* Achievements grid */
+  .ach-progress-bar-wrap { margin: 10px 0 20px; }
+  .ach-progress-label { color: var(--dim); font-size: 12px; margin-bottom: 8px; letter-spacing: 1px; }
+  .ach-progress-label span:first-child { color: var(--sand); font-weight: bold; font-size: 14px; }
+  .ach-progress-bar {
+    height: 6px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .ach-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--orange) 0%, var(--sand) 100%);
+    width: 0%;
+    transition: width 0.4s ease;
+  }
+  .ach-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 10px;
+    margin-top: 10px;
+  }
+  .ach-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 10px 12px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    transition: all 0.2s;
+  }
+  .ach-card.unlocked {
+    border-color: var(--sand);
+    background: linear-gradient(180deg, rgba(242,201,58,0.08) 0%, rgba(217,126,42,0.04) 100%);
+  }
+  .ach-card .ach-icon {
+    font-size: 22px;
+    color: var(--khaki);
+    flex-shrink: 0;
+    line-height: 1;
+  }
+  .ach-card.unlocked .ach-icon { color: var(--sand); }
+  .ach-card .ach-text { flex: 1; min-width: 0; }
+  .ach-card .ach-name {
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--dim);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 2px;
+  }
+  .ach-card.unlocked .ach-name { color: var(--sand); }
+  .ach-card .ach-desc {
+    font-size: 11px;
+    color: var(--dim);
+    line-height: 1.3;
+  }
+
+  /* About page stats */
+  .about-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin: 20px 0;
+  }
+  .about-stat {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    padding: 14px 8px;
+    text-align: center;
+    border-radius: 3px;
+  }
+  .about-stat .as-val {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--orange);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .about-stat .as-lab {
+    font-size: 10px;
+    color: var(--dim);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  @media (max-width: 540px) {
+    .about-stats { grid-template-columns: repeat(2, 1fr); }
+  }
   .menu-btn .mb-badge {
     margin-left: auto;
     background: var(--orange);
@@ -1145,18 +1247,33 @@
   @media (max-width: 720px) {
     .sidebar {
       width: 100%;
-      height: 120px;
+      height: 130px;
       border-left: none;
       border-top: 1px solid var(--border);
+      padding: 6px;
+      overflow: hidden;
+    }
+    #tower-shop {
+      display: flex;
       flex-direction: row;
+      gap: 8px;
       overflow-x: auto;
       overflow-y: hidden;
-      padding: 8px;
+      -webkit-overflow-scrolling: touch;
+      touch-action: pan-x;
+      width: 100%;
+      height: 100%;
+      padding: 2px 4px;
+      scroll-snap-type: x proximity;
     }
+    #tower-shop::-webkit-scrollbar { height: 4px; }
+    #tower-shop::-webkit-scrollbar-thumb { background: var(--khaki); border-radius: 2px; }
     .main { flex-direction: column; }
     .tower-card {
-      min-width: 120px;
+      min-width: 130px;
+      max-width: 140px;
       flex-shrink: 0;
+      scroll-snap-align: start;
     }
     .sidebar-title { display: none; }
     .hud {
@@ -1164,25 +1281,25 @@
       gap: 4px;
       flex-wrap: wrap;
     }
-    .stat { font-size: 10px; padding: 3px 6px; }
-    .stat .icon { font-size: 11px; }
-    .btn { font-size: 10px; padding: 5px 8px; letter-spacing: 0.3px; }
-    .tower-panel { min-width: 200px; left: 5px; bottom: 130px; }
+    .stat { font-size: 11px; padding: 4px 8px; }
+    .stat .icon { font-size: 12px; }
+    .btn { font-size: 11px; padding: 6px 10px; letter-spacing: 0.3px; min-height: 32px; }
+    .tower-panel { min-width: 200px; left: 5px; bottom: 140px; }
     .canvas-wrap { padding: 4px; }
   }
   @media (max-width: 540px) {
-    .hud { gap: 3px; padding: 4px; }
-    .stat { font-size: 10px; padding: 2px 5px; min-width: 0; }
-    .btn { font-size: 9px; padding: 4px 6px; }
+    .hud { gap: 3px; padding: 5px; }
+    .stat { font-size: 11px; padding: 3px 7px; }
+    .btn { font-size: 10px; padding: 6px 8px; min-height: 34px; }
     .spacer { display: none; }
-    .sidebar { height: 110px; }
+    .sidebar { height: 120px; }
     .tower-card {
-      min-width: 100px;
-      padding: 6px;
+      min-width: 120px;
+      padding: 8px;
     }
     .tower-card .name { font-size: 11px; }
-    .tower-card .cost { font-size: 10px; }
-    .tower-card .desc { font-size: 9px; line-height: 1.2; }
+    .tower-card .cost { font-size: 11px; }
+    .tower-card .desc { font-size: 10px; line-height: 1.25; }
   }
 
   /* Lang toggle */
@@ -1203,14 +1320,14 @@
 <!-- SPLASH SCREEN -->
 <div class="splash" id="splash">
   <div class="splash-logo">SİPER</div>
-  <div class="splash-sub">v1.7.0</div>
+  <div class="splash-sub">v1.8.0</div>
   <div class="splash-tagline" data-i18n="splashTagline">Hattı Tut, Üssü Koru.</div>
   <div class="splash-lang">
     <button class="lang-btn" data-lang="tr">TÜRKÇE</button>
     <button class="lang-btn" data-lang="en">ENGLISH</button>
   </div>
   <button class="splash-start" id="splash-start" data-i18n="startGame">Oyuna Başla!</button>
-  <div class="splash-footer">v1.7.0 · mrtrclb</div>
+  <div class="splash-footer">v1.8.0 · mrtrclb</div>
 </div>
 
 <!-- MAIN MENU -->
@@ -1239,6 +1356,11 @@
     <button class="menu-btn" id="menu-settings">
       <span class="mb-icon">⚙</span>
       <span data-i18n="menuSettings">Ayarlar</span>
+    </button>
+    <button class="menu-btn" id="menu-achievements">
+      <span class="mb-icon">★</span>
+      <span data-i18n="menuAchievements">Başarımlar</span>
+      <span class="mb-badge" id="menu-ach-badge"></span>
     </button>
     <button class="menu-btn" id="menu-about">
       <span class="mb-icon">ℹ</span>
@@ -1333,14 +1455,39 @@
 </div>
 
 <!-- ABOUT PANEL -->
+<!-- ACHIEVEMENTS PANEL -->
+<div class="panel-screen" id="achievements-panel">
+  <button class="menu-back" data-back="main-menu" data-i18n="back">Geri</button>
+  <div class="panel-content">
+    <h1 data-i18n="menuAchievements">Başarımlar</h1>
+    <div class="ach-progress-bar-wrap">
+      <div class="ach-progress-label">
+        <span id="ach-unlocked-count">0</span> / <span id="ach-total-count">30</span>
+        <span data-i18n="achUnlocked">açıldı</span>
+      </div>
+      <div class="ach-progress-bar">
+        <div class="ach-progress-fill" id="ach-progress-fill"></div>
+      </div>
+    </div>
+    <div class="ach-grid" id="ach-grid"></div>
+  </div>
+</div>
+
 <div class="panel-screen" id="about-panel">
   <button class="menu-back" data-back="main-menu" data-i18n="back">Geri</button>
   <div class="panel-content">
     <h1>SİPER</h1>
     <p style="text-align:center; color: var(--sand); letter-spacing: 2px; margin-bottom: 20px;">
-      <span data-i18n="version">Sürüm</span> 1.7.0
+      <span data-i18n="version">Sürüm</span> 1.8.0
     </p>
     <p data-i18n="aboutDesc">Siper, 10×8 grid üzerinde modern askeri temalı bir kule savunma oyunudur.</p>
+
+    <div class="about-stats">
+      <div class="about-stat"><div class="as-val">30</div><div class="as-lab" data-i18n="asMaps">Harita</div></div>
+      <div class="about-stat"><div class="as-val">7</div><div class="as-lab" data-i18n="asTowers">Kule Tipi</div></div>
+      <div class="about-stat"><div class="as-val">3</div><div class="as-lab" data-i18n="asDiff">Zorluk</div></div>
+      <div class="about-stat"><div class="as-val">30</div><div class="as-lab" data-i18n="asAchs">Başarım</div></div>
+    </div>
 
     <h2 data-i18n="howToPlay">Nasıl Oynanır</h2>
     <ul>
@@ -1348,6 +1495,18 @@
       <li data-i18n="howToPlay2"></li>
       <li data-i18n="howToPlay3"></li>
       <li data-i18n="howToPlay4"></li>
+      <li data-i18n="howToPlay5"></li>
+    </ul>
+
+    <h2 data-i18n="towers">Kuleler</h2>
+    <ul>
+      <li><strong data-i18n="tMG">Makineli Tüfek</strong> — <span data-i18n="tMGd"></span></li>
+      <li><strong data-i18n="tRocket">Roketatar</strong> — <span data-i18n="tRocketd"></span></li>
+      <li><strong data-i18n="tTank">Tank Topu</strong> — <span data-i18n="tTankd"></span></li>
+      <li><strong data-i18n="tSAM">Hava Savunma</strong> — <span data-i18n="tSAMd"></span></li>
+      <li><strong data-i18n="tSniper">Keskin Nişancı</strong> — <span data-i18n="tSniperd"></span></li>
+      <li><strong data-i18n="tFlame">Alev Makinesi</strong> — <span data-i18n="tFlamed"></span></li>
+      <li><strong data-i18n="tSlow">Yavaşlatıcı</strong> — <span data-i18n="tSlowd"></span></li>
     </ul>
 
     <h2 data-i18n="features">Özellikler</h2>
@@ -1357,6 +1516,8 @@
       <li data-i18n="feat3"></li>
       <li data-i18n="feat4"></li>
       <li data-i18n="feat5"></li>
+      <li data-i18n="feat6"></li>
+      <li data-i18n="feat7"></li>
     </ul>
 
     <h2 data-i18n="feedback">Geri Bildirim</h2>
@@ -1368,7 +1529,8 @@
     </div>
 
     <h2 data-i18n="changelog">Sürüm Notları</h2>
-    <p><strong>v1.7.0</strong> — <span data-i18n="changelog170"></span></p>
+    <p><strong>v1.8.0</strong> — <span data-i18n="changelog180"></span></p>
+    <p><strong>v1.8.0</strong> — <span data-i18n="changelog170"></span></p>
     <p><strong>v1.6.0</strong> — <span data-i18n="changelog160"></span></p>
     <p><strong>v1.5.2</strong> — <span data-i18n="changelog152"></span></p>
     <p><strong>v1.5.1</strong> — <span data-i18n="changelog151"></span></p>
@@ -1379,12 +1541,12 @@
       <a href="https://watchempire.net" target="_blank" class="game-link">
         <div class="gl-name">Watch Empire</div>
         <div class="gl-url">watchempire.net</div>
-        <div class="gl-desc">Saat üretim imparatorluğu kur</div>
+        <div class="gl-desc" data-i18n="weDesc">Saat üretim imparatorluğu kur</div>
       </a>
       <a href="https://tradegame.net" target="_blank" class="game-link">
         <div class="gl-name">Trade Game</div>
         <div class="gl-url">tradegame.net</div>
-        <div class="gl-desc">Borsa ve yatırım simülasyonu</div>
+        <div class="gl-desc" data-i18n="tgDesc">Borsa ve yatırım simülasyonu</div>
       </a>
     </div>
 
@@ -1448,6 +1610,7 @@
     </div>
     <div class="spacer"></div>
     <button class="btn primary" id="btn-wave" data-i18n="startWave">Dalgayı Başlat</button>
+    <button class="btn" id="btn-speed" title="Hız">1×</button>
     <button class="btn" id="btn-pause" data-i18n="pause">Duraklat</button>
     <button class="btn save-quit" id="btn-save-quit" data-i18n="saveAndQuit">Kaydet & Çık</button>
     <button class="btn" id="btn-map" data-i18n="changeMap">Harita</button>
@@ -1549,6 +1712,9 @@ const I18N = {
     menuMaps: "Haritalar",
     menuSettings: "Ayarlar",
     menuAbout: "Oyun Hakkında",
+    menuAchievements: "Başarımlar",
+    achUnlocked: "açıldı",
+    achievements: "Başarımlar",
     online: "Çevrimiçi",
     back: "Geri",
     // Difficulty
@@ -1576,18 +1742,26 @@ const I18N = {
     howToPlay2: "Dalga başlat butonuna bas, düşmanlar yolda ilerlerken kuleleri otomatik ateş eder.",
     howToPlay3: "Düşman öldürerek para kazan, yeni kule al veya mevcut kuleleri yükselt.",
     howToPlay4: "Düşman üsse ulaşırsa can kaybedersin. Can bitince oyun biter.",
+    howToPlay5: "Hız butonuyla 2× veya 3× hıza geç. Kuleyi seçip yükselt veya sat.",
+    towers: "Kuleler",
     features: "Özellikler",
-    feat1: "8 farklı harita (tek yol + çoklu yol)",
+    feat1: "30 farklı harita (15 tek yol + 15 çoklu yol + 6 dört yönlü saldırı)",
     feat2: "3 zorluk seviyesi",
-    feat3: "4 kule tipi, 3 seviye yükseltme",
+    feat3: "7 kule tipi, 3 seviye yükseltme",
     feat4: "Sonsuz dalga modu, harita bazlı skor",
-    feat5: "TR/EN dil desteği, PWA offline",
+    feat5: "30 başarım sistemi",
+    feat6: "1×, 2×, 3× hız kontrolü",
+    feat7: "TR/EN dil desteği, PWA offline, bulut senkron",
+    asMaps: "Harita", asTowers: "Kule Tipi", asDiff: "Zorluk", asAchs: "Başarım",
+    weDesc: "Saat üretim imparatorluğu kur",
+    tgDesc: "Borsa ve yatırım simülasyonu",
     changelog: "Sürüm Notları",
     changelog150: "İlk resmi sürüm. 8 harita, 3 zorluk, Firebase presence ve feedback.",
     changelog151: "10 yeni harita (toplam 18). Kaydet & Çık + Bulut senkron (SI-XXXXXX kod). Feedback günlük 3 limit.",
     changelog152: "Web Audio ses efektleri (atış, patlama, dalga, game over). Dosya temizleme.",
     changelog160: "3 yeni kule (Keskin Nişancı, Alev Makinesi, Yavaşlatıcı). Müzik ve efekt sesleri ayrı toggle. Mobil düzeltmeler. Kule paneli kapama (X + ESC). Canlı arkaplan efektleri. Presence sayacı düzeltmesi.",
     changelog170: "12 yeni harita (toplam 30). 6 harita 4 yönlü saldırılı yeni tür. Menü butonu artık otomatik kaydediyor. Çoklu yollu haritalarda spawn dağılımı dengeli.",
+    changelog180: "30 başarım sistemi. Oyun hızı kontrolü (1×/2×/3×). Mobilde alt panel yatay kaydırılabilir. Butonlar büyütüldü. Oyun Hakkında sayfası yenilendi.",
     otherGames: "Diğer Oyunlarım",
     credits: "Geliştiren: mrtrclb",
     version: "Sürüm",
@@ -1660,6 +1834,9 @@ const I18N = {
     menuMaps: "Maps",
     menuSettings: "Settings",
     menuAbout: "About",
+    menuAchievements: "Achievements",
+    achUnlocked: "unlocked",
+    achievements: "Achievements",
     online: "Online",
     back: "Back",
     selectDifficulty: "Select Difficulty",
@@ -1684,18 +1861,26 @@ const I18N = {
     howToPlay2: "Press Start Wave — towers automatically fire at enemies moving along the path.",
     howToPlay3: "Earn money by killing enemies, buy new towers or upgrade existing ones.",
     howToPlay4: "If enemies reach your base you lose lives. Game ends when lives hit zero.",
+    howToPlay5: "Use the speed button for 2× or 3× speed. Click a tower to upgrade or sell it.",
+    towers: "Towers",
     features: "Features",
-    feat1: "8 different maps (single + multi-path)",
+    feat1: "30 different maps (15 single-path + 15 multi-path + 6 four-way assault)",
     feat2: "3 difficulty levels",
-    feat3: "4 tower types, 3 upgrade levels",
+    feat3: "7 tower types, 3 upgrade levels",
     feat4: "Endless wave mode, per-map scores",
-    feat5: "TR/EN language support, PWA offline",
+    feat5: "30-achievement system",
+    feat6: "1×, 2×, 3× speed control",
+    feat7: "TR/EN language support, PWA offline, cloud sync",
+    asMaps: "Maps", asTowers: "Towers", asDiff: "Difficulty", asAchs: "Achievements",
+    weDesc: "Build a watchmaking empire",
+    tgDesc: "Stock market and investment sim",
     changelog: "Changelog",
     changelog150: "First official release. 8 maps, 3 difficulties, Firebase presence and feedback.",
     changelog151: "10 new maps (18 total). Save & Quit + Cloud sync (SI-XXXXXX code). Feedback 3/day limit.",
     changelog152: "Web Audio SFX (shots, explosions, waves, game over). Polish.",
     changelog160: "3 new towers (Sniper, Flamethrower, Slow Field). Separate music + SFX toggles. Mobile fixes. Tower panel close (X + ESC). Live background effects. Presence counter fix.",
     changelog170: "12 new maps (30 total). 6 new quad-attack (4-way assault) maps. Menu button now auto-saves. Balanced spawn distribution for multi-path maps.",
+    changelog180: "30-achievement system. Game speed control (1×/2×/3×). Horizontal scrollable tower shop on mobile. Larger buttons. Refreshed About page.",
     otherGames: "My Other Games",
     credits: "Developed by mrtrclb",
     version: "Version",
@@ -2096,7 +2281,7 @@ let MAPS = [
     ]],
     palette: { road1: '#34301e', road2: '#24201a', ground: '#0c0b09', accent: '#e88a32' }
   },
-  // ===== 12 NEW MAPS (v1.7.0) =====
+  // ===== 12 NEW MAPS (v1.8.0) =====
   // ===== 6 QUAD-ATTACK MAPS (4-way convergence on central HQ) =====
   {
     id: 'sierra',
@@ -2978,6 +3163,9 @@ function spawnEnemy(type, hpMul) {
 function startWave() {
   if (state.waveActive || state.gameOver) return;
   state.wave++;
+  // Snapshot lives at start of wave for no-hit tracking
+  state.runLivesAtWaveStart = state.lives;
+  state._runTowersSoldAtWaveStart = state.runTowersSold || 0;
   const w = generateWave(state.wave);
   state.spawnQueue = w.list.map(s => ({ ...s, hpMul: w.hpMul }));
   state.spawnTimer = 0;
@@ -2985,6 +3173,22 @@ function startWave() {
   updateWaveButton();
   toast(`${t('wave')} ${state.wave}`, '#d97e2a');
   sfxWaveStart();
+
+  // Wave progression achievements
+  if (state.wave >= 5)  unlockAch('w5');
+  if (state.wave >= 10) unlockAch('w10');
+  if (state.wave >= 20) {
+    unlockAch('w20');
+    if (currentDifficulty === 'easy')   unlockAch('easyWin');
+    if (currentDifficulty === 'medium') unlockAch('medWin');
+    if (currentDifficulty === 'hard')   unlockAch('hardWin');
+  }
+  if (state.wave >= 30) unlockAch('w30');
+  if (state.wave >= 50) unlockAch('w50');
+  // Quad-attack map wave 15 achievement
+  if (state.wave >= 15 && currentMap.type === 'multi' && currentMap.paths.length === 4) {
+    unlockAch('quad5');
+  }
 }
 
 function updateWaveButton() {
@@ -3179,6 +3383,16 @@ function applyDamage(enemy, dmg, piercing) {
     state.score += enemy.reward;
     state.fx.push({ kind: 'text', x: enemy.x, y: enemy.y, msg: '+' + enemy.reward, color: 'rgba(242,149,58,1)', t: 0, dur: 0.7 });
     sfxEnemyDie();
+    // Track run kills + thresholds
+    state.runKills = (state.runKills || 0) + 1;
+    if (state.runKills === 50)  unlockAch('kill50');
+    if (state.runKills === 200) unlockAch('kill200');
+    if (state.runKills === 500) unlockAch('kill500');
+    if (state.money > (state.runMaxMoney || 0)) state.runMaxMoney = state.money;
+    if (state.runMaxMoney >= 500)  unlockAch('rich500');
+    if (state.runMaxMoney >= 2000) unlockAch('rich2k');
+    if (state.score >= 1000) unlockAch('score1k');
+    if (state.score >= 5000) unlockAch('score5k');
   } else if (!enemy.dead) {
     sfxEnemyHit();
   }
@@ -3345,6 +3559,25 @@ function updateSpawns(dt) {
     state.score += bonus;
     state.fx.push({ kind: 'text', x: CANVAS_W/2, y: CANVAS_H/2, msg: `+${bonus}`, color: 'rgba(242,149,58,1)', t: 0, dur: 1.2 });
     if (state.score > state.best) { state.best = state.score; localStorage.setItem('siper_best_' + currentMap.id + '_' + currentDifficulty, state.best); }
+    if (state.score >= 1000) unlockAch('score1k');
+    if (state.score >= 5000) unlockAch('score5k');
+    if (state.money >= 500)  unlockAch('rich500');
+    if (state.money >= 2000) unlockAch('rich2k');
+    // No-hit streak: lost no lives during this wave
+    if (state.lives >= (state.runLivesAtWaveStart || state.lives)) {
+      state.runNoHitWaves = (state.runNoHitWaves || 0) + 1;
+      if (state.runNoHitWaves >= 10) unlockAch('noHit');
+    } else {
+      state.runNoHitWaves = 0;
+    }
+    // No-sell streak: didn't sell a tower during this wave
+    const soldThisWave = (state.runTowersSold || 0) - (state._runTowersSoldAtWaveStart || 0);
+    if (soldThisWave === 0) {
+      state.runNoSellWaves = (state.runNoSellWaves || 0) + 1;
+      if (state.runNoSellWaves >= 15) unlockAch('noSell');
+    } else {
+      state.runNoSellWaves = 0;
+    }
     updateWaveButton();
   }
 }
@@ -3358,9 +3591,12 @@ function updateHUD() {
 
 /* ---------- MAIN LOOP ---------- */
 let lastT = performance.now();
+let gameSpeed = parseInt(localStorage.getItem('siper_game_speed') || '1'); // 1, 2, or 3
 function loop(now) {
-  const dt = Math.min(0.05, (now - lastT) / 1000);
+  const rawDt = Math.min(0.05, (now - lastT) / 1000);
   lastT = now;
+  // Apply speed multiplier to gameplay but not to ambient/render
+  const dt = rawDt * gameSpeed;
   if (!state.paused && !state.gameOver) {
     updateSpawns(dt);
     updateEnemies(dt);
@@ -3368,11 +3604,21 @@ function loop(now) {
     updateProjectiles(dt);
     updateFX(dt);
   }
-  // Ambient always runs (even when paused) for visual continuity
-  updateAmbient(dt);
+  // Ambient always runs at normal speed (visual continuity)
+  updateAmbient(rawDt);
   render();
   updateHUD();
   requestAnimationFrame(loop);
+}
+function setGameSpeed(s) {
+  gameSpeed = s;
+  localStorage.setItem('siper_game_speed', String(s));
+  const btn = document.getElementById('btn-speed');
+  if (btn) btn.textContent = s + '×';
+  if (typeof unlockAch === 'function') {
+    if (s >= 2) unlockAch('speed2x');
+    if (s >= 3) unlockAch('speed3x');
+  }
 }
 
 /* ---------- INPUT ---------- */
@@ -3421,6 +3667,13 @@ function handleClick(c, r) {
     });
     state.score += 2;
     toast(t('placed') + ': ' + t(def.nameKey), '#7a9f3f');
+    // Achievement tracking
+    state.runTowersPlaced = (state.runTowersPlaced || 0) + 1;
+    if (state.runTowersPlaced >= 5)  unlockAch('tower5');
+    if (state.runTowersPlaced >= 10) unlockAch('tower10');
+    if (!state.runTowerTypesUsed) state.runTowerTypesUsed = new Set();
+    state.runTowerTypesUsed.add(state.placing);
+    if (state.runTowerTypesUsed.size >= 7) unlockAch('allTypes');
     state.placing = null;
     refreshShopSelection();
     return;
@@ -3542,6 +3795,7 @@ document.getElementById('tp-upgrade').addEventListener('click', () => {
   state.money -= cost;
   tw.level++;
   state.score += 5;
+  if (tw.level >= def.levels.length - 1) unlockAch('maxUp');
   showTowerPanel();
 });
 document.getElementById('tp-sell').addEventListener('click', () => {
@@ -3549,6 +3803,7 @@ document.getElementById('tp-sell').addEventListener('click', () => {
   const refund = parseInt(document.getElementById('tp-sell').dataset.refund);
   state.money += refund;
   state.towers.splice(state.selected, 1);
+  state.runTowersSold = (state.runTowersSold || 0) + 1;
   state.selected = null;
   hideTowerPanel();
   toast(t('sold') + ' +' + refund, '#7a9f3f');
@@ -3556,6 +3811,10 @@ document.getElementById('tp-sell').addEventListener('click', () => {
 
 /* ---------- CONTROLS ---------- */
 document.getElementById('btn-wave').addEventListener('click', startWave);
+document.getElementById('btn-speed').addEventListener('click', () => {
+  const next = gameSpeed === 1 ? 2 : gameSpeed === 2 ? 3 : 1;
+  setGameSpeed(next);
+});
 document.getElementById('btn-pause').addEventListener('click', () => {
   state.paused = !state.paused;
   document.getElementById('btn-pause').textContent = state.paused ? t('resume') : t('pause');
@@ -3611,6 +3870,7 @@ function resetGame() {
   state.spawnTimer = 0;
   state.paused = false;
   state.gameOver = false;
+  initAchRunStats();
   refreshShopSelection();
   hideTowerPanel();
   updateWaveButton();
@@ -3731,6 +3991,7 @@ function selectMap(mapDef, difficulty) {
   loadMapIntoState(mapDef, difficulty);
   localStorage.setItem('siper_last_diff', difficulty);
   resetGame();
+  trackMapPlayed(mapDef.id);
   // hide all menus, show game
   document.getElementById('map-select').classList.add('hidden');
   document.getElementById('main-menu').classList.add('hidden');
@@ -3797,6 +4058,7 @@ function showMainMenu() {
   hideAllScreens();
   document.getElementById('main-menu').classList.remove('hidden');
   document.getElementById('online-indicator').style.display = 'flex';
+  refreshAchievementMenuBadge();
   playTrack('menu');
 }
 function hideAllScreens() {
@@ -3805,6 +4067,8 @@ function hideAllScreens() {
   document.getElementById('map-select').classList.add('hidden');
   document.getElementById('settings-panel').classList.remove('active');
   document.getElementById('about-panel').classList.remove('active');
+  const achPanel = document.getElementById('achievements-panel');
+  if (achPanel) achPanel.classList.remove('active');
   document.getElementById('app').style.display = 'none';
   document.getElementById('online-indicator').style.display = 'none';
 }
@@ -4351,7 +4615,7 @@ document.getElementById('feedback-send').addEventListener('click', () => {
       msg: msg.substring(0, 1000),
       lang: LANG,
       ts: firebase.database.ServerValue.TIMESTAMP,
-      version: '1.7.0',
+      version: '1.8.0',
       ua: navigator.userAgent.substring(0, 200)
     }).then(() => {
       toast(t('feedbackThanks'), '#7a9f3f');
@@ -4380,7 +4644,7 @@ document.getElementById('feedback-send').addEventListener('click', () => {
 
 function serializeGame() {
   return {
-    version: '1.7.0',
+    version: '1.8.0',
     mapId: currentMap.id,
     difficulty: currentDifficulty,
     money: state.money,
@@ -4555,7 +4819,138 @@ document.getElementById('menu-continue').addEventListener('click', () => {
   showContinuePanel();
 });
 
-/* Save & Quit in-game */
+/* ============================================================
+   ACHIEVEMENTS (30 total)
+   Unlocked achievements stored in localStorage: siper_ach_<id> = timestamp
+============================================================ */
+const ACHIEVEMENTS = [
+  // Progression (waves reached)
+  { id: 'w5',   name: { tr: 'Hayatta Kal', en: 'Survivor' }, desc: { tr: '5. dalgaya ulaş', en: 'Reach wave 5' } },
+  { id: 'w10',  name: { tr: 'Veteran', en: 'Veteran' }, desc: { tr: '10. dalgaya ulaş', en: 'Reach wave 10' } },
+  { id: 'w20',  name: { tr: 'Dayanıklı', en: 'Tough' }, desc: { tr: '20. dalgaya ulaş', en: 'Reach wave 20' } },
+  { id: 'w30',  name: { tr: 'Çelik İrade', en: 'Iron Will' }, desc: { tr: '30. dalgaya ulaş', en: 'Reach wave 30' } },
+  { id: 'w50',  name: { tr: 'Efsane', en: 'Legend' }, desc: { tr: '50. dalgaya ulaş', en: 'Reach wave 50' } },
+
+  // Maps played
+  { id: 'maps3',  name: { tr: 'Gezgin', en: 'Traveler' }, desc: { tr: '3 farklı harita oyna', en: 'Play 3 different maps' } },
+  { id: 'maps10', name: { tr: 'Kâşif', en: 'Explorer' }, desc: { tr: '10 farklı harita oyna', en: 'Play 10 different maps' } },
+  { id: 'maps20', name: { tr: 'Seyyah', en: 'Wanderer' }, desc: { tr: '20 farklı harita oyna', en: 'Play 20 different maps' } },
+  { id: 'mapsAll',name: { tr: 'Her Harita', en: 'All Maps' }, desc: { tr: 'Tüm 30 haritayı oyna', en: 'Play all 30 maps' } },
+
+  // Difficulty
+  { id: 'easyWin', name: { tr: 'İlk Zafer', en: 'First Win' }, desc: { tr: 'Kolayda 20 dalgaya ulaş', en: 'Reach wave 20 on Easy' } },
+  { id: 'medWin',  name: { tr: 'Usta', en: 'Master' }, desc: { tr: 'Orta\'da 20 dalgaya ulaş', en: 'Reach wave 20 on Medium' } },
+  { id: 'hardWin', name: { tr: 'Kahraman', en: 'Hero' }, desc: { tr: 'Zor\'da 20 dalgaya ulaş', en: 'Reach wave 20 on Hard' } },
+
+  // Kills
+  { id: 'kill50',  name: { tr: 'Nişancı', en: 'Marksman' }, desc: { tr: '50 düşman öldür (tek oyun)', en: 'Kill 50 enemies (single run)' } },
+  { id: 'kill200', name: { tr: 'Katliamcı', en: 'Exterminator' }, desc: { tr: '200 düşman öldür (tek oyun)', en: 'Kill 200 enemies (single run)' } },
+  { id: 'kill500', name: { tr: 'Afet', en: 'Calamity' }, desc: { tr: '500 düşman öldür (tek oyun)', en: 'Kill 500 enemies (single run)' } },
+
+  // Towers
+  { id: 'tower5',  name: { tr: 'Kuran', en: 'Builder' }, desc: { tr: 'Tek oyunda 5 kule yerleştir', en: 'Place 5 towers in one run' } },
+  { id: 'tower10', name: { tr: 'Mimar', en: 'Architect' }, desc: { tr: 'Tek oyunda 10 kule yerleştir', en: 'Place 10 towers in one run' } },
+  { id: 'maxUp',   name: { tr: 'En Yüksek', en: 'Maxed Out' }, desc: { tr: 'Bir kuleyi en yüksek seviyeye yükselt', en: 'Upgrade a tower to max level' } },
+  { id: 'allTypes',name: { tr: 'Çeşitli Ordu', en: 'Varied Army' }, desc: { tr: '7 farklı kule tipini kullan', en: 'Use all 7 tower types' } },
+  { id: 'noSell',  name: { tr: 'Vazgeçmem', en: 'No Regrets' }, desc: { tr: 'Hiç kule satmadan 15 dalga geç', en: 'Clear 15 waves without selling' } },
+
+  // Economy
+  { id: 'rich500', name: { tr: 'Zengin', en: 'Wealthy' }, desc: { tr: '500 para biriktir', en: 'Amass 500 money' } },
+  { id: 'rich2k',  name: { tr: 'Milyoner', en: 'Millionaire' }, desc: { tr: '2000 para biriktir', en: 'Amass 2000 money' } },
+  { id: 'score1k', name: { tr: 'Skor Avcısı', en: 'Score Hunter' }, desc: { tr: '1000 skor yap', en: 'Reach 1000 score' } },
+  { id: 'score5k', name: { tr: 'Skor Ustası', en: 'Score Master' }, desc: { tr: '5000 skor yap', en: 'Reach 5000 score' } },
+
+  // Special
+  { id: 'noHit',   name: { tr: 'Bozulmaz Üs', en: 'Flawless' }, desc: { tr: 'Can kaybetmeden 10 dalga geç', en: '10 waves without losing a life' } },
+  { id: 'speed2x', name: { tr: 'Hızlı Yol', en: 'Fast Lane' }, desc: { tr: '2× hızda oyna', en: 'Play at 2× speed' } },
+  { id: 'speed3x', name: { tr: 'Şimşek', en: 'Lightning' }, desc: { tr: '3× hızda oyna', en: 'Play at 3× speed' } },
+  { id: 'cloud',   name: { tr: 'Bulutta', en: 'In the Cloud' }, desc: { tr: 'Buluta kayıt yükle', en: 'Upload a save to cloud' } },
+  { id: 'quad5',   name: { tr: 'Dört Yön', en: 'Four Fronts' }, desc: { tr: '4 yönlü haritada 15 dalga geç', en: 'Clear 15 waves on a 4-way map' } },
+  { id: 'perfect', name: { tr: 'Mükemmeliyet', en: 'Perfection' }, desc: { tr: 'Tüm 30 başarımı kazan', en: 'Unlock all 30 achievements' } }
+];
+
+function isAchUnlocked(id) {
+  return !!localStorage.getItem('siper_ach_' + id);
+}
+function unlockAch(id) {
+  if (isAchUnlocked(id)) return;
+  localStorage.setItem('siper_ach_' + id, String(Date.now()));
+  const ach = ACHIEVEMENTS.find(a => a.id === id);
+  if (!ach) return;
+  toast('★ ' + ach.name[LANG], '#f2c93a');
+  // Check if all 30 now unlocked → unlock "perfect"
+  if (id !== 'perfect') {
+    const nonPerfect = ACHIEVEMENTS.filter(a => a.id !== 'perfect').every(a => isAchUnlocked(a.id));
+    if (nonPerfect) unlockAch('perfect');
+  }
+}
+function countAchievementsUnlocked() {
+  return ACHIEVEMENTS.filter(a => isAchUnlocked(a.id)).length;
+}
+
+// Per-run tracking (reset on resetGame)
+function initAchRunStats() {
+  state.runKills = 0;
+  state.runTowersPlaced = 0;
+  state.runTowersSold = 0;
+  state.runMaxMoney = state.money || 0;
+  state.runMaxScore = 0;
+  state.runTowerTypesUsed = new Set();
+  state.runLivesAtWaveStart = state.lives || 20;
+  state.runNoHitWaves = 0;
+  state.runNoSellWaves = 0;
+}
+
+// Check map-play count achievements (call when starting a new game)
+function trackMapPlayed(mapId) {
+  const key = 'siper_maps_played';
+  let played;
+  try { played = JSON.parse(localStorage.getItem(key) || '[]'); } catch (e) { played = []; }
+  if (!played.includes(mapId)) {
+    played.push(mapId);
+    localStorage.setItem(key, JSON.stringify(played));
+  }
+  if (played.length >= 3) unlockAch('maps3');
+  if (played.length >= 10) unlockAch('maps10');
+  if (played.length >= 20) unlockAch('maps20');
+  if (played.length >= 30) unlockAch('mapsAll');
+}
+
+/* Render achievements panel */
+function renderAchievementsPanel() {
+  const grid = document.getElementById('ach-grid');
+  grid.innerHTML = '';
+  for (const a of ACHIEVEMENTS) {
+    const unlocked = isAchUnlocked(a.id);
+    const card = document.createElement('div');
+    card.className = 'ach-card' + (unlocked ? ' unlocked' : '');
+    card.innerHTML = `
+      <div class="ach-icon">${unlocked ? '★' : '☆'}</div>
+      <div class="ach-text">
+        <div class="ach-name">${a.name[LANG]}</div>
+        <div class="ach-desc">${a.desc[LANG]}</div>
+      </div>
+    `;
+    grid.appendChild(card);
+  }
+  const unlocked = countAchievementsUnlocked();
+  document.getElementById('ach-unlocked-count').textContent = unlocked;
+  document.getElementById('ach-total-count').textContent = ACHIEVEMENTS.length;
+  document.getElementById('ach-progress-fill').style.width = (unlocked / ACHIEVEMENTS.length * 100) + '%';
+}
+
+function refreshAchievementMenuBadge() {
+  const el = document.getElementById('menu-ach-badge');
+  if (!el) return;
+  const n = countAchievementsUnlocked();
+  el.textContent = n > 0 ? (n + '/' + ACHIEVEMENTS.length) : '';
+}
+
+document.getElementById('menu-achievements').addEventListener('click', () => {
+  renderAchievementsPanel();
+  document.getElementById('main-menu').classList.add('hidden');
+  document.getElementById('achievements-panel').classList.add('active');
+});
 document.getElementById('btn-save-quit').addEventListener('click', () => {
   if (saveCurrentGame()) {
     setTimeout(() => {
@@ -4682,13 +5077,14 @@ async function uploadToCloud() {
     await fbDb.ref('siper/saves/' + code).set({
       ts: firebase.database.ServerValue.TIMESTAMP,
       data: data,
-      version: '1.7.0'
+      version: '1.8.0'
     });
     // Also mirror scores into /siper/scores/<code> for quick lookup
     await fbDb.ref('siper/scores/' + code).set(data.scores);
     incrementUploadToday();
     localStorage.setItem('siper_last_sync', String(Date.now()));
     toast(t('uploadSuccess'), '#7a9f3f');
+    unlockAch('cloud');
     document.getElementById('upload-status').textContent = t('lastSync') + ': ' + formatRelTime(Date.now());
   } catch (e) {
     console.warn('Upload failed:', e);
@@ -4779,10 +5175,12 @@ document.getElementById('btn-download').addEventListener('click', downloadFromCl
 /* ---------- BOOT ---------- */
 applyI18n();
 resizeCanvas();
+setGameSpeed(gameSpeed);
 // Start at splash
 showSplash();
 initPresence();
 refreshContinueButton();
+refreshAchievementMenuBadge();
 requestAnimationFrame(loop);
 
 /* ---------- SERVICE WORKER (PWA OFFLINE) ---------- */
