@@ -144,6 +144,28 @@
   .stat.lives { color: var(--danger); }
   .stat.wave { color: var(--sand); }
   .stat.score { color: var(--khaki-2); }
+  .stat.repairable {
+    cursor: pointer;
+    transition: all 0.15s;
+    position: relative;
+  }
+  .stat.repairable:hover {
+    border-color: var(--green);
+    box-shadow: 0 0 10px rgba(122,159,63,0.4);
+  }
+  .stat.repairable.affordable:hover { color: var(--green); }
+  .stat.repairable .repair-badge {
+    display: none;
+    font-size: 10px;
+    color: var(--green);
+    margin-left: 4px;
+    padding: 1px 5px;
+    background: rgba(122,159,63,0.15);
+    border: 1px solid rgba(122,159,63,0.4);
+    border-radius: 3px;
+    letter-spacing: 0;
+  }
+  .stat.repairable.affordable .repair-badge { display: inline-block; }
   .spacer { flex: 1; }
 
   /* Hamburger dropdown menu */
@@ -1402,14 +1424,14 @@
 <!-- SPLASH SCREEN -->
 <div class="splash" id="splash">
   <div class="splash-logo">SİPER</div>
-  <div class="splash-sub">v2.3.0</div>
+  <div class="splash-sub">v2.4.0</div>
   <div class="splash-tagline" data-i18n="splashTagline">Hattı Tut, Üssü Koru.</div>
   <div class="splash-lang">
     <button class="lang-btn" data-lang="tr">TÜRKÇE</button>
     <button class="lang-btn" data-lang="en">ENGLISH</button>
   </div>
   <button class="splash-start" id="splash-start" data-i18n="startGame">Oyuna Başla!</button>
-  <div class="splash-footer">v2.3.0 · mrtrclb</div>
+  <div class="splash-footer">v2.4.0 · mrtrclb</div>
 </div>
 
 <!-- MAIN MENU -->
@@ -1560,7 +1582,7 @@
   <div class="panel-content">
     <h1>SİPER</h1>
     <p style="text-align:center; color: var(--sand); letter-spacing: 2px; margin-bottom: 20px;">
-      <span data-i18n="version">Sürüm</span> 2.3.0
+      <span data-i18n="version">Sürüm</span> 2.4.0
     </p>
     <p data-i18n="aboutDesc">Siper, 10×8 grid üzerinde modern askeri temalı bir kule savunma oyunudur.</p>
 
@@ -1578,6 +1600,7 @@
       <li data-i18n="howToPlay3"></li>
       <li data-i18n="howToPlay4"></li>
       <li data-i18n="howToPlay5"></li>
+      <li data-i18n="howToPlay6"></li>
     </ul>
 
     <h2 data-i18n="towers">Kuleler</h2>
@@ -1611,6 +1634,7 @@
     </div>
 
     <h2 data-i18n="changelog">Sürüm Notları</h2>
+    <p><strong>v2.4.0</strong> — <span data-i18n="changelog240"></span></p>
     <p><strong>v2.3.0</strong> — <span data-i18n="changelog230"></span></p>
     <p><strong>v2.2.0</strong> — <span data-i18n="changelog220"></span></p>
     <p><strong>v2.1.0</strong> — <span data-i18n="changelog210"></span></p>
@@ -1687,9 +1711,10 @@
       <span class="icon">◈</span>
       <span id="hud-money">100</span>
     </div>
-    <div class="stat lives">
+    <div class="stat lives repairable" id="stat-lives" title="Tamir: 100◈ → +1 can">
       <span class="icon">♥</span>
       <span id="hud-lives">20</span>
+      <span class="repair-badge">+1</span>
     </div>
     <div class="stat wave">
       <span class="icon">▸</span>
@@ -1845,6 +1870,7 @@ const I18N = {
     howToPlay3: "Düşman öldürerek para kazan, yeni kule al veya mevcut kuleleri yükselt.",
     howToPlay4: "Düşman üsse ulaşırsa can kaybedersin. Can bitince oyun biter.",
     howToPlay5: "Hız butonuyla 2× veya 3× hıza geç. Kuleyi seçip yükselt veya sat.",
+    howToPlay6: "Her 5 dalgada +2 can, her 10 dalgada +5 can otomatik kazanırsın. ♥ simgesine tıklayarak para karşılığı tamir satın alabilirsin (başlangıç 50◈, her alımda +25◈ pahalanır).",
     towers: "Kuleler",
     features: "Özellikler",
     feat1: "30 farklı harita (15 tek yol + 15 çoklu yol + 6 dört yönlü saldırı)",
@@ -1872,6 +1898,7 @@ const I18N = {
     changelog210: "Otomatik Oynat: ▶ butonuna basınca ilk dalga başlar, sonraki dalgalar arasında 4 saniye bekleme ile otomatik akar. ⏸ ile durdurabilirsin. HUD butonları ve istatistikler büyütüldü. Oyun arka plana alınınca veya kapatılınca otomatik kaydediyor — 'Devam Et' artık swipe ile kapatılan oyunu da gösteriyor.",
     changelog220: "Mobilde iki aşamalı kule yerleştirme: ilk dokunuş preview gösterir (pulse yeşil çerçeve), ikinci dokunuş (400ms içinde) yerleştirir — artık istemeden yanlış yere yerleşmez. ▶/⏸ butonu artık oyunu duraklatır (dalga donar). Otomatik Oynat toggle'ı hamburger menüye taşındı. Masaüstünde kule kartlarının hover efekti güçlendirildi.",
     changelog230: "Görsel geri bildirim paketi: her vuruşta turuncu hasar sayısı yukarı uçar (50+ hasar = sarı kritik). Düşmanlar vurulunca beyaz flash, kalkan vuruşlarında mavi flash. Kuleler ateş ederken parlıyor ve namlu hafif geri tepiyor. Namlu ucundan muzzle flash. Patlamada ve boss ölümünde screen shake. Boss'un sürekli kırmızı nefes alan glow'u var.",
+    changelog240: "Can sistemi: Her 5 dalgada otomatik +2 can, her 10 dalgada +5 can. Ayrıca HUD'daki ♥ simgesine tıklayarak para karşılığı tamir satın alabilirsin (50◈ başlangıç, her alımda +25◈ pahalanır). Üst sınır yok — istediğin kadar biriktir.",
     otherGames: "Diğer Oyunlarım",
     credits: "Geliştiren: mrtrclb",
     version: "Sürüm",
@@ -1976,6 +2003,7 @@ const I18N = {
     howToPlay3: "Earn money by killing enemies, buy new towers or upgrade existing ones.",
     howToPlay4: "If enemies reach your base you lose lives. Game ends when lives hit zero.",
     howToPlay5: "Use the speed button for 2× or 3× speed. Click a tower to upgrade or sell it.",
+    howToPlay6: "You gain +2 lives every 5 waves and +5 lives every 10 waves automatically. Click the ♥ icon to buy repairs (starts at 50◈, +25◈ per additional purchase).",
     towers: "Towers",
     features: "Features",
     feat1: "30 different maps (15 single-path + 15 multi-path + 6 four-way assault)",
@@ -2003,6 +2031,7 @@ const I18N = {
     changelog210: "Autoplay: tap ▶ to start the first wave, subsequent waves flow automatically with a 4-second prep break. Tap ⏸ to pause autoplay. HUD buttons and stats are larger. Game auto-saves when tab is hidden or swiped away — 'Continue' now preserves your run even after app switch.",
     changelog220: "Two-phase tower placement on mobile: first tap shows a pulsing green preview, second tap (within 400ms, same cell) confirms placement — no more accidental misplacements. ▶/⏸ button now pauses the entire game (freeze). Autoplay toggle moved to the hamburger menu. Stronger hover effect for tower cards on desktop.",
     changelog230: "Visual feedback pack: every hit shows a rising orange damage number (50+ damage = yellow critical). Enemies flash white when hit, blue when shield absorbs. Towers glow while firing with a small barrel recoil. Muzzle flash at barrel tip. Screen shake on explosions and boss kills. Boss now has a constant breathing red glow.",
+    changelog240: "Life system: Every 5 waves auto-grants +2 lives, every 10 waves +5 lives. Click the ♥ icon in the HUD to buy repairs (starts at 50◈, +25◈ per additional purchase). No upper limit — stockpile as much as you want.",
     otherGames: "My Other Games",
     credits: "Developed by mrtrclb",
     version: "Version",
@@ -2403,7 +2432,7 @@ let MAPS = [
     ]],
     palette: { road1: '#34301e', road2: '#24201a', ground: '#0c0b09', accent: '#e88a32' }
   },
-  // ===== 12 NEW MAPS (v2.3.0) =====
+  // ===== 12 NEW MAPS (v2.4.0) =====
   // ===== 6 QUAD-ATTACK MAPS (4-way convergence on central HQ) =====
   {
     id: 'sierra',
@@ -2690,7 +2719,7 @@ const ENEMY_TEMPLATES = {
   infantry:  { name: 'Piyade',   hp: 30,  speed: 1.2, armor: 0.0,  reward: 6,  flying: false, color: '#a08660', size: 9 },
   armor:     { name: 'Zırhlı',   hp: 110, speed: 0.7, armor: 0.55, reward: 14, flying: false, color: '#4d4530', size: 12 },
   air:       { name: 'Hava',     hp: 55,  speed: 1.6, armor: 0.1,  reward: 12, flying: true,  color: '#6b7a8a', size: 10 },
-  // NEW v2.3.0:
+  // NEW v2.4.0:
   scout:     { name: 'Koşucu',   hp: 22,  speed: 2.6, armor: 0.0,  reward: 5,  flying: false, color: '#d97e2a', size: 7 },
   shielded:  { name: 'Kalkanlı', hp: 50,  speed: 0.9, armor: 0.25, reward: 22, flying: false, color: '#6b5a3a', size: 11, shield: 80 },
   regen:     { name: 'Yenileyici', hp: 80, speed: 0.95, armor: 0.15, reward: 20, flying: false, color: '#7a6f3f', size: 10, regenRate: 3 },
@@ -4142,6 +4171,17 @@ function updateSpawns(dt) {
     state.money += bonus;
     state.score += bonus;
     state.fx.push({ kind: 'text', x: CANVAS_W/2, y: CANVAS_H/2, msg: `+${bonus}`, color: 'rgba(242,149,58,1)', t: 0, dur: 1.2 });
+    // Life milestones: every 5 waves +2 lives, every 10 waves +5 lives (stacks on multiples of 10)
+    let lifeBonus = 0;
+    if (state.wave % 5 === 0 && state.wave > 0) lifeBonus += 2;
+    if (state.wave % 10 === 0 && state.wave > 0) lifeBonus += 3; // total +5 on wave 10/20/30...
+    if (lifeBonus > 0) {
+      state.lives += lifeBonus;
+      const msg = (LANG === 'tr' ? '⚕ +' : '⚕ +') + lifeBonus + ' ' + (LANG === 'tr' ? 'CAN' : 'HP');
+      toast(msg, '#7a9f3f');
+      // floating green text on HQ for visual
+      state.fx.push({ kind: 'text', x: CANVAS_W/2, y: CANVAS_H/2 + 30, msg: '⚕ +' + lifeBonus, color: 'rgba(122,199,95,1)', t: 0, dur: 1.5 });
+    }
     if (state.score > state.best) { state.best = state.score; localStorage.setItem('siper_best_' + currentMap.id + '_' + currentDifficulty, state.best); }
     if (state.score >= 1000) unlockAch('score1k');
     if (state.score >= 5000) unlockAch('score5k');
@@ -4170,12 +4210,52 @@ function updateSpawns(dt) {
   }
 }
 
+// Repair cost scales — starts at 50, +25 per repair (prevents farming abuse)
+function repairCost() {
+  const bought = state.runRepairs || 0;
+  return 50 + bought * 25;
+}
+function buyRepair() {
+  const cost = repairCost();
+  if (state.money < cost) {
+    toast(t('notEnoughMoney'), '#c8472f');
+    return;
+  }
+  state.money -= cost;
+  state.lives += 1;
+  state.runRepairs = (state.runRepairs || 0) + 1;
+  // Visual feedback
+  toast((LANG === 'tr' ? '⚕ Tamir: +1 CAN' : '⚕ Repair: +1 HP'), '#7a9f3f');
+  // Floating green text on the lives stat area
+  state.fx.push({ kind: 'text', x: CANVAS_W/2, y: 40, msg: '⚕ +1', color: 'rgba(122,199,95,1)', t: 0, dur: 1.0 });
+}
+
 function updateHUD() {
   document.getElementById('hud-money').textContent = state.money;
   document.getElementById('hud-lives').textContent = state.lives;
   document.getElementById('hud-wave').textContent = state.wave;
   document.getElementById('hud-score').textContent = state.score;
+  // Update repair button affordability
+  const livesStat = document.getElementById('stat-lives');
+  if (livesStat) {
+    const cost = repairCost();
+    const affordable = state.money >= cost && !state.gameOver;
+    livesStat.classList.toggle('affordable', affordable);
+    livesStat.title = (LANG === 'tr' ? 'Tamir: ' : 'Repair: ') + cost + '◈ → +1 ' + (LANG === 'tr' ? 'can' : 'HP');
+    const badge = livesStat.querySelector('.repair-badge');
+    if (badge) badge.textContent = cost + '◈';
+  }
 }
+
+// Wire up repair click
+(function() {
+  const livesStat = document.getElementById('stat-lives');
+  if (livesStat) {
+    livesStat.addEventListener('click', () => {
+      buyRepair();
+    });
+  }
+})();
 
 /* ---------- MAIN LOOP ---------- */
 let lastT = performance.now();
@@ -5403,7 +5483,7 @@ document.getElementById('feedback-send').addEventListener('click', () => {
       msg: msg.substring(0, 1000),
       lang: LANG,
       ts: firebase.database.ServerValue.TIMESTAMP,
-      version: '2.3.0',
+      version: '2.4.0',
       ua: navigator.userAgent.substring(0, 200)
     }).then(() => {
       toast(t('feedbackThanks'), '#7a9f3f');
@@ -5432,13 +5512,14 @@ document.getElementById('feedback-send').addEventListener('click', () => {
 
 function serializeGame() {
   return {
-    version: '2.3.0',
+    version: '2.4.0',
     mapId: currentMap.id,
     difficulty: currentDifficulty,
     money: state.money,
     lives: state.lives,
     wave: state.wave,
     score: state.score,
+    runRepairs: state.runRepairs || 0,
     towers: state.towers.map(tw => ({
       key: tw.key, level: tw.level, c: tw.c, r: tw.r, angle: tw.angle || 0
     })),
@@ -5511,6 +5592,7 @@ function loadSavedGame(mapId) {
     state.lives = snap.lives;
     state.wave = snap.wave;
     state.score = snap.score;
+    state.runRepairs = snap.runRepairs || 0;
     state.towers = snap.towers.map(tw => ({ ...tw, cd: 0 }));
     state.enemies = [];
     state.projectiles = [];
@@ -5725,6 +5807,7 @@ function initAchRunStats() {
   state.runLivesAtWaveStart = state.lives || 20;
   state.runNoHitWaves = 0;
   state.runNoSellWaves = 0;
+  state.runRepairs = 0;
 }
 
 // Check map-play count achievements (call when starting a new game)
@@ -5903,7 +5986,7 @@ async function uploadToCloud() {
     await fbDb.ref('siper/saves/' + code).set({
       ts: firebase.database.ServerValue.TIMESTAMP,
       data: data,
-      version: '2.3.0'
+      version: '2.4.0'
     });
     // Also mirror scores into /siper/scores/<code> for quick lookup
     await fbDb.ref('siper/scores/' + code).set(data.scores);
