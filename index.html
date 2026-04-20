@@ -291,19 +291,30 @@
     border-radius: 3px;
     padding: 8px;
     cursor: pointer;
-    transition: all 0.15s;
+    transition: all 0.2s;
     position: relative;
   }
   .tower-card:hover {
-    border-color: var(--khaki-2);
-    background: #2d2b22;
+    border-color: var(--orange);
+    background: #332c1a;
+    box-shadow: 0 0 14px rgba(217,126,42,0.25), 0 0 0 1px rgba(217,126,42,0.4) inset;
+    transform: translateY(-1px);
+  }
+  .tower-card:active {
+    transform: translateY(0);
   }
   .tower-card.selected {
     border-color: var(--orange);
-    background: #2d2617;
-    box-shadow: 0 0 0 1px var(--orange) inset, 0 0 10px rgba(217,126,42,0.3);
+    background: #3a2c18;
+    box-shadow: 0 0 0 2px var(--orange) inset, 0 0 16px rgba(217,126,42,0.5);
   }
   .tower-card.disabled { opacity: 0.4; cursor: not-allowed; }
+  .tower-card.disabled:hover {
+    border-color: var(--border);
+    background: var(--panel-2);
+    box-shadow: none;
+    transform: none;
+  }
   .tower-card .name {
     font-size: 12px;
     font-weight: bold;
@@ -1391,14 +1402,14 @@
 <!-- SPLASH SCREEN -->
 <div class="splash" id="splash">
   <div class="splash-logo">SİPER</div>
-  <div class="splash-sub">v2.1.0</div>
+  <div class="splash-sub">v2.2.0</div>
   <div class="splash-tagline" data-i18n="splashTagline">Hattı Tut, Üssü Koru.</div>
   <div class="splash-lang">
     <button class="lang-btn" data-lang="tr">TÜRKÇE</button>
     <button class="lang-btn" data-lang="en">ENGLISH</button>
   </div>
   <button class="splash-start" id="splash-start" data-i18n="startGame">Oyuna Başla!</button>
-  <div class="splash-footer">v2.1.0 · mrtrclb</div>
+  <div class="splash-footer">v2.2.0 · mrtrclb</div>
 </div>
 
 <!-- MAIN MENU -->
@@ -1549,7 +1560,7 @@
   <div class="panel-content">
     <h1>SİPER</h1>
     <p style="text-align:center; color: var(--sand); letter-spacing: 2px; margin-bottom: 20px;">
-      <span data-i18n="version">Sürüm</span> 2.1.0
+      <span data-i18n="version">Sürüm</span> 2.2.0
     </p>
     <p data-i18n="aboutDesc">Siper, 10×8 grid üzerinde modern askeri temalı bir kule savunma oyunudur.</p>
 
@@ -1600,6 +1611,7 @@
     </div>
 
     <h2 data-i18n="changelog">Sürüm Notları</h2>
+    <p><strong>v2.2.0</strong> — <span data-i18n="changelog220"></span></p>
     <p><strong>v2.1.0</strong> — <span data-i18n="changelog210"></span></p>
     <p><strong>v2.0.1</strong> — <span data-i18n="changelog201"></span></p>
     <p><strong>v2.0.0</strong> — <span data-i18n="changelog200"></span></p>
@@ -1692,7 +1704,7 @@
     <div class="hamburger-wrap">
       <button class="btn hamburger-btn" id="btn-hamburger" aria-label="menu">≡</button>
       <div class="hamburger-dropdown" id="hamburger-dropdown">
-        <button class="dropdown-item" id="btn-pause" data-i18n="pause">Duraklat</button>
+        <button class="dropdown-item" id="btn-autoplay"><span data-i18n="autoplayLabel">Otomatik Oynat</span>: <span id="btn-autoplay-val">AÇIK</span></button>
         <button class="dropdown-item save-quit" id="btn-save-quit" data-i18n="saveAndQuit">Kaydet & Çık</button>
         <button class="dropdown-item" id="btn-map" data-i18n="changeMap">Menü</button>
         <button class="dropdown-item danger" id="btn-restart" data-i18n="restart">Yeniden Başla</button>
@@ -1770,6 +1782,7 @@ const I18N = {
   tr: {
     wave: "Dalga", startWave: "Dalgayı Başlat", nextWave: "Sonraki Dalga",
     pause: "Duraklat", resume: "Devam", restart: "Yeniden",
+    paused: "Duraklatıldı", resumed: "Devam ediyor",
     towers: "Kuleler", level: "Seviye", dmg: "Hasar", range: "Menzil", rate: "Hız",
     upgrade: "Yükselt", sell: "Sat", move: "Taşı",
     gameOver: "Oyun Bitti", gameOverSub: "Üssünüz düştü.",
@@ -1818,6 +1831,7 @@ const I18N = {
     sfx: "Efekt Sesleri",
     language: "Dil",
     langLabel: "Dil",
+    autoplayLabel: "Otomatik Oynat",
     resetData: "Tüm Verileri Sıfırla",
     resetConfirm: "Tüm kayıtlı skorlar ve ayarlar silinecek. Emin misin?",
     resetDone: "Veriler sıfırlandı",
@@ -1855,6 +1869,7 @@ const I18N = {
     changelog200: "Büyük UI yenileme: hamburger dropdown menü. Kule taşıma özelliği (her kule 1 kez). Mobil kartlar büyütüldü. Kule seçiminde toast geri bildirimi. Bulut paneli geri dönüş hatası düzeltildi.",
     changelog201: "Hakkında sayfası ve meta etiketler güncel değerlerle (30 harita, 7 kule, 7 düşman, 32 başarım) güncellendi. Sürüm notları için 'Daha Fazla Göster' butonu.",
     changelog210: "Otomatik Oynat: ▶ butonuna basınca ilk dalga başlar, sonraki dalgalar arasında 4 saniye bekleme ile otomatik akar. ⏸ ile durdurabilirsin. HUD butonları ve istatistikler büyütüldü. Oyun arka plana alınınca veya kapatılınca otomatik kaydediyor — 'Devam Et' artık swipe ile kapatılan oyunu da gösteriyor.",
+    changelog220: "Mobilde iki aşamalı kule yerleştirme: ilk dokunuş preview gösterir (pulse yeşil çerçeve), ikinci dokunuş (400ms içinde) yerleştirir — artık istemeden yanlış yere yerleşmez. ▶/⏸ butonu artık oyunu duraklatır (dalga donar). Otomatik Oynat toggle'ı hamburger menüye taşındı. Masaüstünde kule kartlarının hover efekti güçlendirildi.",
     otherGames: "Diğer Oyunlarım",
     credits: "Geliştiren: mrtrclb",
     version: "Sürüm",
@@ -1902,6 +1917,7 @@ const I18N = {
   en: {
     wave: "Wave", startWave: "Start Wave", nextWave: "Next Wave",
     pause: "Pause", resume: "Resume", restart: "Restart",
+    paused: "Paused", resumed: "Resumed",
     towers: "Towers", level: "Level", dmg: "Dmg", range: "Range", rate: "Rate",
     upgrade: "Upgrade", sell: "Sell", move: "Move",
     gameOver: "Game Over", gameOverSub: "Your base has fallen.",
@@ -1946,6 +1962,7 @@ const I18N = {
     sfx: "Sound FX",
     language: "Language",
     langLabel: "Language",
+    autoplayLabel: "Autoplay",
     resetData: "Reset All Data",
     resetConfirm: "All saved scores and settings will be deleted. Are you sure?",
     resetDone: "Data reset",
@@ -1982,6 +1999,7 @@ const I18N = {
     changelog200: "Major UI overhaul: hamburger dropdown menu. Tower relocation feature (once per tower). Larger mobile cards. Toast feedback when selecting a tower. Fixed cloud panel return bug.",
     changelog201: "About page and meta tags updated with current values (30 maps, 7 towers, 7 enemies, 32 achievements). 'Show More' button for changelog.",
     changelog210: "Autoplay: tap ▶ to start the first wave, subsequent waves flow automatically with a 4-second prep break. Tap ⏸ to pause autoplay. HUD buttons and stats are larger. Game auto-saves when tab is hidden or swiped away — 'Continue' now preserves your run even after app switch.",
+    changelog220: "Two-phase tower placement on mobile: first tap shows a pulsing green preview, second tap (within 400ms, same cell) confirms placement — no more accidental misplacements. ▶/⏸ button now pauses the entire game (freeze). Autoplay toggle moved to the hamburger menu. Stronger hover effect for tower cards on desktop.",
     otherGames: "My Other Games",
     credits: "Developed by mrtrclb",
     version: "Version",
@@ -2382,7 +2400,7 @@ let MAPS = [
     ]],
     palette: { road1: '#34301e', road2: '#24201a', ground: '#0c0b09', accent: '#e88a32' }
   },
-  // ===== 12 NEW MAPS (v2.1.0) =====
+  // ===== 12 NEW MAPS (v2.2.0) =====
   // ===== 6 QUAD-ATTACK MAPS (4-way convergence on central HQ) =====
   {
     id: 'sierra',
@@ -2669,7 +2687,7 @@ const ENEMY_TEMPLATES = {
   infantry:  { name: 'Piyade',   hp: 30,  speed: 1.2, armor: 0.0,  reward: 6,  flying: false, color: '#a08660', size: 9 },
   armor:     { name: 'Zırhlı',   hp: 110, speed: 0.7, armor: 0.55, reward: 14, flying: false, color: '#4d4530', size: 12 },
   air:       { name: 'Hava',     hp: 55,  speed: 1.6, armor: 0.1,  reward: 12, flying: true,  color: '#6b7a8a', size: 10 },
-  // NEW v2.1.0:
+  // NEW v2.2.0:
   scout:     { name: 'Koşucu',   hp: 22,  speed: 2.6, armor: 0.0,  reward: 5,  flying: false, color: '#d97e2a', size: 7 },
   shielded:  { name: 'Kalkanlı', hp: 50,  speed: 0.9, armor: 0.25, reward: 22, flying: false, color: '#6b5a3a', size: 11, shield: 80 },
   regen:     { name: 'Yenileyici', hp: 80, speed: 0.95, armor: 0.15, reward: 20, flying: false, color: '#7a6f3f', size: 10, regenRate: 3 },
@@ -2935,17 +2953,38 @@ function drawPlacementPreview() {
   const def = TOWER_DEFS[state.placing];
   const x = c*CELL + CELL/2, y = r*CELL + CELL/2;
   const valid = !isPathCell(c, r) && !towerAt(c, r) && state.money >= def.levels[0].cost;
-  // cell tint
-  ctx.fillStyle = valid ? 'rgba(122,159,63,0.2)' : 'rgba(200,71,47,0.25)';
-  ctx.fillRect(c*CELL, r*CELL, CELL, CELL);
-  // range circle
-  ctx.strokeStyle = valid ? 'rgba(217,126,42,0.5)' : 'rgba(200,71,47,0.5)';
-  ctx.lineWidth = 1.5;
-  ctx.setLineDash([4, 4]);
-  ctx.beginPath();
-  ctx.arc(x, y, def.levels[0].range * CELL, 0, Math.PI*2);
-  ctx.stroke();
-  ctx.setLineDash([]);
+  // Is this cell pending confirmation (mobile two-phase)?
+  const pending = pendingTapCell && pendingTapCell.c === c && pendingTapCell.r === r &&
+                  (Date.now() - pendingTapTime) < DOUBLE_TAP_WINDOW;
+  if (pending) {
+    // Pulsing green — "tap again to confirm"
+    const pulse = 0.5 + 0.5 * Math.sin(Date.now() * 0.012);
+    ctx.fillStyle = `rgba(122,159,63,${0.25 + pulse * 0.25})`;
+    ctx.fillRect(c*CELL, r*CELL, CELL, CELL);
+    ctx.strokeStyle = `rgba(160,210,100,${0.7 + pulse * 0.3})`;
+    ctx.lineWidth = 2.5;
+    ctx.strokeRect(c*CELL + 2, r*CELL + 2, CELL - 4, CELL - 4);
+    // range circle
+    ctx.strokeStyle = 'rgba(217,126,42,0.6)';
+    ctx.lineWidth = 1.5;
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath();
+    ctx.arc(x, y, def.levels[0].range * CELL, 0, Math.PI*2);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  } else {
+    // cell tint
+    ctx.fillStyle = valid ? 'rgba(122,159,63,0.2)' : 'rgba(200,71,47,0.25)';
+    ctx.fillRect(c*CELL, r*CELL, CELL, CELL);
+    // range circle
+    ctx.strokeStyle = valid ? 'rgba(217,126,42,0.5)' : 'rgba(200,71,47,0.5)';
+    ctx.lineWidth = 1.5;
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath();
+    ctx.arc(x, y, def.levels[0].range * CELL, 0, Math.PI*2);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
   // ghost tower
   ctx.globalAlpha = 0.6;
   drawTowerShape(state.placing, 0, x, y, 0);
@@ -3498,40 +3537,44 @@ function startWave() {
 }
 
 // Autoplay state: dalga biter → AUTOPLAY_DELAY sn sonra sonraki dalga otomatik başlar.
-// User can toggle off with the wave button.
+// Toggled from hamburger menu.
 let autoplayEnabled = localStorage.getItem('siper_autoplay') === 'on';
 let autoplayCountdown = 0; // seconds until next auto-wave
 const AUTOPLAY_DELAY = 4; // seconds between waves
 
+// Wave/pause button logic:
+// - Wave not started & not paused: ▶ (Start)
+// - Wave active & not paused: ⏸ (Pause game)
+// - Wave active & paused: ▶ (Resume)
+// - Wave done, autoplay countdown running: shows countdown + ⏸
+// - Wave done, no autoplay: ▶ (Next wave)
 function updateWaveButton() {
   const btn = document.getElementById('btn-wave');
   if (!btn) return;
-  if (state.waveActive) {
-    // Wave in progress
-    if (autoplayEnabled) {
-      btn.innerHTML = '⏸';
-      btn.title = LANG === 'tr' ? 'Otomatik Oynat: Açık' : 'Autoplay: On';
-    } else {
-      btn.innerHTML = '…';
-      btn.title = '';
-    }
-    btn.disabled = false; // allow clicking to toggle autoplay during wave
-  } else if (autoplayCountdown > 0) {
-    // Between waves, countdown active
-    btn.innerHTML = '⏸ ' + Math.ceil(autoplayCountdown) + 's';
-    btn.title = LANG === 'tr' ? 'Otomatik Oynat: Açık' : 'Autoplay: On';
+  if (state.paused) {
+    btn.innerHTML = '▶';
+    btn.title = t('resume');
     btn.disabled = false;
-  } else {
-    // Ready for next wave, not in autoplay countdown
-    if (state.wave === 0) {
-      btn.innerHTML = '▶';
-      btn.title = t('startWave');
-    } else {
-      btn.innerHTML = '▶';
-      btn.title = t('nextWave');
-    }
-    btn.disabled = false;
+    return;
   }
+  if (state.waveActive) {
+    // Game is running → button pauses game
+    btn.innerHTML = '⏸';
+    btn.title = t('pause');
+    btn.disabled = false;
+    return;
+  }
+  if (autoplayCountdown > 0) {
+    // Between waves, autoplay counting down — button pauses game
+    btn.innerHTML = '⏸ ' + Math.ceil(autoplayCountdown) + 's';
+    btn.title = t('pause');
+    btn.disabled = false;
+    return;
+  }
+  // Idle: next wave not started
+  btn.innerHTML = '▶';
+  btn.title = state.wave === 0 ? t('startWave') : t('nextWave');
+  btn.disabled = false;
 }
 
 function toggleAutoplay() {
@@ -4040,16 +4083,73 @@ canvas.addEventListener('click', (e) => {
   if (!c) return;
   handleClick(c.c, c.r);
 });
-// touch
+// Detect touch device at runtime
+let isTouchDevice = false;
+// Pending placement/move cell for mobile two-phase tap
+let pendingTapCell = null;
+let pendingTapTime = 0;
+const DOUBLE_TAP_WINDOW = 400; // ms — same-cell second tap within this confirms placement
+
 canvas.addEventListener('touchstart', (e) => {
   e.preventDefault();
+  isTouchDevice = true;
   const t = e.touches[0];
   const { x, y } = canvasPos(t);
   const c = cellAt(x, y);
   if (!c) return;
   state.mouseCell = c;
+
+  const now = Date.now();
+
+  // Two-phase placement on touch devices: first tap shows preview, second tap confirms
+  if (state.placing) {
+    // Validity check
+    const def = TOWER_DEFS[state.placing];
+    const valid = !isPathCell(c.c, c.r) && !towerAt(c.c, c.r) && state.money >= def.levels[0].cost;
+    if (!valid) {
+      if (isPathCell(c.c, c.r) || towerAt(c.c, c.r)) {
+        toast(t2('cantPlaceHere'), '#c8472f');
+      } else {
+        toast(t2('notEnoughMoney'), '#c8472f');
+      }
+      return;
+    }
+    // Same cell tapped twice within window → confirm placement
+    if (pendingTapCell && pendingTapCell.c === c.c && pendingTapCell.r === c.r && (now - pendingTapTime) < DOUBLE_TAP_WINDOW) {
+      pendingTapCell = null;
+      handleClick(c.c, c.r);
+      return;
+    }
+    // First tap on a new valid cell → show preview, don't place yet
+    pendingTapCell = c;
+    pendingTapTime = now;
+    toast(LANG === 'tr' ? 'Onaylamak için tekrar dokun' : 'Tap again to confirm', '#d97e2a');
+    return;
+  }
+
+  // Move mode: same two-phase flow
+  if (state.moving !== null && state.moving !== undefined) {
+    if (isPathCell(c.c, c.r) || towerAt(c.c, c.r)) {
+      toast(t2('cantPlaceHere'), '#c8472f');
+      return;
+    }
+    if (pendingTapCell && pendingTapCell.c === c.c && pendingTapCell.r === c.r && (now - pendingTapTime) < DOUBLE_TAP_WINDOW) {
+      pendingTapCell = null;
+      handleClick(c.c, c.r);
+      return;
+    }
+    pendingTapCell = c;
+    pendingTapTime = now;
+    toast(LANG === 'tr' ? 'Onaylamak için tekrar dokun' : 'Tap again to confirm', '#6ab8d9');
+    return;
+  }
+
+  // Not placing/moving — single tap selects an existing tower immediately
   handleClick(c.c, c.r);
 }, { passive: false });
+
+// Alias for t function used inside touch handler (t conflicts with local 't' var)
+function t2(k) { return t(k); }
 
 function handleClick(c, r) {
   // Moving (relocate an existing tower)
@@ -4209,6 +4309,7 @@ document.getElementById('tp-close').addEventListener('click', () => {
 // ESC key closes tower panel / cancels placing / cancels move
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
+    pendingTapCell = null;
     if (state.moving !== null && state.moving !== undefined) {
       state.moving = null;
       toast(LANG === 'tr' ? 'Taşıma iptal' : 'Move cancelled', '#8a7d52');
@@ -4262,31 +4363,48 @@ document.getElementById('tp-sell').addEventListener('click', () => {
 
 /* ---------- CONTROLS ---------- */
 document.getElementById('btn-wave').addEventListener('click', () => {
-  // If wave is active OR countdown is running → toggle autoplay
-  if (state.waveActive || autoplayCountdown > 0) {
-    toggleAutoplay();
-    if (autoplayEnabled) {
-      toast(LANG === 'tr' ? 'Otomatik Oynat: Açık' : 'Autoplay: On', '#7a9f3f');
-    } else {
-      toast(LANG === 'tr' ? 'Otomatik Oynat: Kapalı' : 'Autoplay: Off', '#8a7d52');
-    }
+  // If game is paused → resume
+  if (state.paused) {
+    state.paused = false;
+    updateWaveButton();
+    toast(t('resumed') || 'Resumed', '#7a9f3f');
     return;
   }
-  // Otherwise start the next wave manually, AND enable autoplay for subsequent waves
-  if (!autoplayEnabled) {
-    autoplayEnabled = true;
-    localStorage.setItem('siper_autoplay', 'on');
+  // If wave is active or autoplay counting down → pause the game
+  if (state.waveActive || autoplayCountdown > 0) {
+    state.paused = true;
+    updateWaveButton();
+    toast(t('paused') || 'Paused', '#8a7d52');
+    return;
   }
+  // Otherwise, start the next wave manually
   startWave();
 });
 document.getElementById('btn-speed').addEventListener('click', () => {
   const next = gameSpeed === 1 ? 2 : gameSpeed === 2 ? 3 : 1;
   setGameSpeed(next);
 });
-document.getElementById('btn-pause').addEventListener('click', () => {
-  state.paused = !state.paused;
-  document.getElementById('btn-pause').textContent = state.paused ? t('resume') : t('pause');
+// Autoplay toggle (in hamburger menu)
+document.getElementById('btn-autoplay').addEventListener('click', (e) => {
+  e.stopPropagation();
+  toggleAutoplay();
+  updateAutoplayLabel();
+  toast((autoplayEnabled
+    ? (LANG === 'tr' ? 'Otomatik Oynat: AÇIK' : 'Autoplay: ON')
+    : (LANG === 'tr' ? 'Otomatik Oynat: KAPALI' : 'Autoplay: OFF')),
+    autoplayEnabled ? '#7a9f3f' : '#8a7d52');
+  // Close dropdown after toggle
+  document.getElementById('hamburger-dropdown').classList.remove('active');
 });
+function updateAutoplayLabel() {
+  const valEl = document.getElementById('btn-autoplay-val');
+  if (!valEl) return;
+  if (LANG === 'tr') {
+    valEl.textContent = autoplayEnabled ? 'AÇIK' : 'KAPALI';
+  } else {
+    valEl.textContent = autoplayEnabled ? 'ON' : 'OFF';
+  }
+}
 document.getElementById('btn-restart').addEventListener('click', () => {
   if (!confirm(LANG === 'tr' ? 'Yeniden başlatılsın mı?' : 'Restart?')) return;
   resetGame();
@@ -4305,7 +4423,8 @@ document.getElementById('btn-lang').addEventListener('click', (e) => {
   localStorage.setItem('siper_lang', LANG);
   applyI18n();
   if (state.selected !== null) showTowerPanel();
-  document.getElementById('btn-pause').textContent = state.paused ? t('resume') : t('pause');
+  updateAutoplayLabel();
+  updateWaveButton();
   // update the label next to "Lang:" — show the OTHER language as clickable target
   const valEl = document.getElementById('btn-lang-val');
   if (valEl) valEl.textContent = (LANG === 'tr') ? 'EN' : 'TR';
@@ -4373,6 +4492,7 @@ function resetGame() {
   state.placing = null;
   state.selected = null;
   state.moving = null;
+  pendingTapCell = null;
   state.waveActive = false;
   state.spawnQueue = [];
   state.spawnTimer = 0;
@@ -4383,7 +4503,6 @@ function resetGame() {
   refreshShopSelection();
   hideTowerPanel();
   updateWaveButton();
-  document.getElementById('btn-pause').textContent = t('pause');
 }
 
 /* ---------- MAP SELECT UI ---------- */
@@ -5128,7 +5247,7 @@ document.getElementById('feedback-send').addEventListener('click', () => {
       msg: msg.substring(0, 1000),
       lang: LANG,
       ts: firebase.database.ServerValue.TIMESTAMP,
-      version: '2.1.0',
+      version: '2.2.0',
       ua: navigator.userAgent.substring(0, 200)
     }).then(() => {
       toast(t('feedbackThanks'), '#7a9f3f');
@@ -5157,7 +5276,7 @@ document.getElementById('feedback-send').addEventListener('click', () => {
 
 function serializeGame() {
   return {
-    version: '2.1.0',
+    version: '2.2.0',
     mapId: currentMap.id,
     difficulty: currentDifficulty,
     money: state.money,
@@ -5250,7 +5369,6 @@ function loadSavedGame(mapId) {
     refreshShopSelection();
     hideTowerPanel();
     updateWaveButton();
-    document.getElementById('btn-pause').textContent = t('pause');
     // Show game
     document.getElementById('map-select').classList.add('hidden');
     document.getElementById('main-menu').classList.add('hidden');
@@ -5629,7 +5747,7 @@ async function uploadToCloud() {
     await fbDb.ref('siper/saves/' + code).set({
       ts: firebase.database.ServerValue.TIMESTAMP,
       data: data,
-      version: '2.1.0'
+      version: '2.2.0'
     });
     // Also mirror scores into /siper/scores/<code> for quick lookup
     await fbDb.ref('siper/scores/' + code).set(data.scores);
@@ -5745,6 +5863,8 @@ setGameSpeed(gameSpeed);
   const valEl = document.getElementById('btn-lang-val');
   if (valEl) valEl.textContent = (LANG === 'tr') ? 'EN' : 'TR';
 })();
+// Initialize autoplay label
+updateAutoplayLabel();
 // Start at splash
 showSplash();
 initPresence();
