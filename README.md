@@ -20,6 +20,8 @@ A browser-based tower defense game with a modern military theme, built as a sing
 - **7 tower types** across 3 upgrade levels — Machine Gun, Rocket Launcher, Tank Cannon, Anti-Air SAM, Sniper (instant beam), Flamethrower (cone AoE), Slow Field (frost debuff)
 - **7 enemy types** with distinct strategies — Infantry, Armor, Air, Scout (fast), Shielded (shield HP), Regenerator (heals), Mega-Tank (boss)
 - **Boss wave system** — A Mega-Tank boss spawns every 10th wave (10/20/30/40/50...) with its own epic health bar banner
+- **Tower relocation** — Click any placed tower and use the "Move" button to reposition it once (single-use per tower, free of charge)
+- **Hamburger menu UI** — Clean HUD with compact controls: stats + Start Wave + Speed (1×/2×/3×) + hamburger dropdown for all other actions
 - **3 difficulty levels** — Easy (250₺ / 30 lives / 1.15× HP), Medium (200 / 20 / 1.22×), Hard (130 / 15 / 1.30× + more air/armor)
 - **32-achievement system** — Progression, kill counts, economy milestones, difficulty mastery, boss hunting, special challenges
 - **Game speed control** — Toggle between 1×, 2×, 3× for fast-forwarding through long runs
@@ -71,16 +73,18 @@ A browser-based tower defense game with a modern military theme, built as a sing
 
 ### Controls
 
-- **Click / tap** a tower in the sidebar to select, click on grid to place
-- **Click** a placed tower to open its panel (upgrade / sell / stats)
-- **ESC** to cancel placement or close tower panel
+- **Click / tap** a tower in the sidebar to select — a toast confirms your selection
+- **Click on grid** to place the selected tower on a valid empty cell
+- **Click** a placed tower to open its panel — Upgrade / Move / Sell
+- **Move** button lets you reposition a tower once per tower (free)
+- **ESC** to cancel placement, cancel move, or close tower panel
 - **X button** to close tower panel
 - **Speed button (1×/2×/3×)** in HUD to fast-forward gameplay
-- **Menu button** auto-saves current run and returns to main menu
+- **Hamburger (≡) menu** contains: Pause / Save & Quit / Menu / Restart / Language toggle
 
 ### Tech Stack
 
-- **Vanilla HTML + CSS + JavaScript** — single-file, ~5700 lines total
+- **Vanilla HTML + CSS + JavaScript** — single-file, ~5800 lines total
 - **Canvas 2D** for rendering (grid, towers, enemies, projectiles, ambient effects, boss banner)
 - **Web Audio API** for procedural SFX — no audio files required for game sounds
 - **Firebase Realtime Database** for presence, feedback, cloud saves/scores
@@ -111,7 +115,7 @@ This repo deploys to GitHub Pages from the `main` branch. Any push to `main` tri
 
 ### Version
 
-Current: **v1.9.0**
+Current: **v2.0.0**
 
 See in-game About page for full changelog.
 
@@ -143,6 +147,8 @@ Modern askeri temalı, tarayıcıda çalışan bir kule savunma oyunu. Tek bir H
 - **7 kule tipi** ve 3 seviye yükseltme — Makineli Tüfek, Roketatar, Tank Topu, Hava Savunma (SAM), Keskin Nişancı (anlık ışın), Alev Makinesi (koni AoE), Yavaşlatıcı (frost debuff)
 - **7 düşman tipi** farklı stratejilerle — Piyade, Zırhlı, Hava, Koşucu (hızlı), Kalkanlı (shield HP), Yenileyici (kendini iyileştirir), Mega-Tank (boss)
 - **Boss dalga sistemi** — Her 10. dalgada (10/20/30/40/50...) bir Mega-Tank bossu, kendine özel epic can çubuğu ile
+- **Kule taşıma** — Yerleştirilmiş bir kuleye tıkla ve "Taşı" butonunu kullan (kule başına tek kullanım, ücretsiz)
+- **Hamburger menü arayüzü** — Temiz HUD: istatistikler + Dalgayı Başlat + Hız (1×/2×/3×) + hamburger dropdown (diğer tüm aksiyonlar)
 - **3 zorluk seviyesi** — Kolay (250₺ / 30 can / 1.15× HP), Orta (200 / 20 / 1.22×), Zor (130 / 15 / 1.30× + daha fazla hava/zırhlı)
 - **32 başarım sistemi** — Dalga ilerleme, kill sayıları, ekonomi, zorluk ustalığı, boss avcılığı, özel meydan okumalar
 - **Oyun hızı kontrolü** — 1×, 2×, 3× arası geçiş (uzun oyunları hızlandırmak için)
@@ -194,16 +200,18 @@ Modern askeri temalı, tarayıcıda çalışan bir kule savunma oyunu. Tek bir H
 
 ### Kontroller
 
-- **Kuleleri yerleştir**: Yan paneldeki kuleyi tıkla, sonra grid'de boş hücreye tıkla
-- **Kule paneli**: Yerleştirilmiş kuleye tıkla (yükselt / sat / istatistik)
-- **ESC**: Yerleştirmeyi iptal et veya kule panelini kapat
+- **Kuleyi seç**: Yan paneldeki kuleyi tıkla — seçim toast ile onaylanır
+- **Yerleştir**: Grid'de boş uygun bir hücreye tıkla
+- **Kule paneli**: Yerleştirilmiş kuleye tıkla — Yükselt / Taşı / Sat
+- **Taşı** butonu: Her kuleyi bir kez yeniden konumlandır (ücretsiz)
+- **ESC**: Yerleştirmeyi iptal, taşımayı iptal, veya kule panelini kapat
 - **X butonu**: Kule panelini kapat
 - **Hız butonu (1×/2×/3×)**: HUD'da, oyun hızını değiştir
-- **Menü butonu**: Mevcut oyunu otomatik kaydedip ana menüye döner
+- **Hamburger (≡) menü**: Duraklat / Kaydet & Çık / Menü / Yeniden Başla / Dil değiştir
 
 ### Teknoloji
 
-- **Vanilla HTML + CSS + JavaScript** — Tek dosya, yaklaşık 5700 satır
+- **Vanilla HTML + CSS + JavaScript** — Tek dosya, yaklaşık 5800 satır
 - **Canvas 2D** — Grid, kuleler, düşmanlar, mermiler, atmosfer, boss banner render'ları
 - **Web Audio API** — Prosedürel ses efektleri, mp3 gerekmez
 - **Firebase Realtime Database** — Presence, feedback, bulut kayıt/skor
@@ -234,7 +242,7 @@ Bu repo GitHub Pages'e `main` branch'ten deploy ediyor. `main`'e her push'ta yen
 
 ### Sürüm
 
-Mevcut: **v1.9.0**
+Mevcut: **v2.0.0**
 
 Tam changelog için oyun içindeki "Oyun Hakkında" sayfasına bak.
 
