@@ -1424,14 +1424,14 @@
 <!-- SPLASH SCREEN -->
 <div class="splash" id="splash">
   <div class="splash-logo">SİPER</div>
-  <div class="splash-sub">v2.4.0</div>
+  <div class="splash-sub">v2.5.0</div>
   <div class="splash-tagline" data-i18n="splashTagline">Hattı Tut, Üssü Koru.</div>
   <div class="splash-lang">
     <button class="lang-btn" data-lang="tr">TÜRKÇE</button>
     <button class="lang-btn" data-lang="en">ENGLISH</button>
   </div>
   <button class="splash-start" id="splash-start" data-i18n="startGame">Oyuna Başla!</button>
-  <div class="splash-footer">v2.4.0 · mrtrclb</div>
+  <div class="splash-footer">v2.5.0 · mrtrclb</div>
 </div>
 
 <!-- MAIN MENU -->
@@ -1582,7 +1582,7 @@
   <div class="panel-content">
     <h1>SİPER</h1>
     <p style="text-align:center; color: var(--sand); letter-spacing: 2px; margin-bottom: 20px;">
-      <span data-i18n="version">Sürüm</span> 2.4.0
+      <span data-i18n="version">Sürüm</span> 2.5.0
     </p>
     <p data-i18n="aboutDesc">Siper, 10×8 grid üzerinde modern askeri temalı bir kule savunma oyunudur.</p>
 
@@ -1590,7 +1590,7 @@
       <div class="about-stat"><div class="as-val">30</div><div class="as-lab" data-i18n="asMaps">Harita</div></div>
       <div class="about-stat"><div class="as-val">7</div><div class="as-lab" data-i18n="asTowers">Kule Tipi</div></div>
       <div class="about-stat"><div class="as-val">3</div><div class="as-lab" data-i18n="asDiff">Zorluk</div></div>
-      <div class="about-stat"><div class="as-val">32</div><div class="as-lab" data-i18n="asAchs">Başarım</div></div>
+      <div class="about-stat"><div class="as-val">35</div><div class="as-lab" data-i18n="asAchs">Başarım</div></div>
     </div>
 
     <h2 data-i18n="howToPlay">Nasıl Oynanır</h2>
@@ -1634,6 +1634,7 @@
     </div>
 
     <h2 data-i18n="changelog">Sürüm Notları</h2>
+    <p><strong>v2.5.0</strong> — <span data-i18n="changelog250"></span></p>
     <p><strong>v2.4.0</strong> — <span data-i18n="changelog240"></span></p>
     <p><strong>v2.3.0</strong> — <span data-i18n="changelog230"></span></p>
     <p><strong>v2.2.0</strong> — <span data-i18n="changelog220"></span></p>
@@ -1761,8 +1762,12 @@
         <div><span data-i18n="range">Menzil</span>: <span id="tp-range">0</span></div>
         <div><span data-i18n="rate">Hız</span>: <span id="tp-rate">0</span></div>
       </div>
+      <div class="stats-row">
+        <div>HP: <span id="tp-hp">100</span>/<span id="tp-maxhp">100</span></div>
+      </div>
       <div class="actions">
         <button class="btn primary" id="tp-upgrade" data-i18n="upgrade">Yükselt</button>
+        <button class="btn" id="tp-repair" data-i18n="repair">Onar</button>
         <button class="btn" id="tp-move" data-i18n="move">Taşı</button>
         <button class="btn danger" id="tp-sell" data-i18n="sell">Sat</button>
       </div>
@@ -1810,7 +1815,7 @@ const I18N = {
     pause: "Duraklat", resume: "Devam", restart: "Yeniden",
     paused: "Duraklatıldı", resumed: "Devam ediyor",
     towers: "Kuleler", level: "Seviye", dmg: "Hasar", range: "Menzil", rate: "Hız",
-    upgrade: "Yükselt", sell: "Sat", move: "Taşı",
+    upgrade: "Yükselt", sell: "Sat", move: "Taşı", repair: "Onar",
     gameOver: "Oyun Bitti", gameOverSub: "Üssünüz düştü.",
     wavesReached: "Ulaşılan Dalga", playAgain: "Tekrar Oyna",
     tMG: "Makineli Tüfek", tMGd: "Hızlı ateş, düşük hasar. Piyadelere karşı etkili.",
@@ -1863,7 +1868,7 @@ const I18N = {
     resetDone: "Veriler sıfırlandı",
     on: "Açık", off: "Kapalı",
     // About
-    aboutDesc: "Siper, 10×8 grid üzerinde modern askeri temalı bir kule savunma oyunudur. 7 kule tipi, 7 düşman sınıfı, 6 tanesi 4-yönlü saldırı olan 30 farklı harita ve her 10 dalgada bir boss ile sonsuz dalgalara karşı üssünü savun.",
+    aboutDesc: "Siper, 10×8 grid üzerinde modern askeri temalı bir kule savunma oyunudur. 7 kule tipi, 8 düşman sınıfı, 6 tanesi 4-yönlü saldırı olan 30 farklı harita ve her 10 dalgada bir boss ile sonsuz dalgalara karşı üssünü savun. Kulelerin HP'si var — Ajitatör düşmanı ateş ederek onları yıkabilir.",
     howToPlay: "Nasıl Oynanır",
     howToPlay1: "Sol paneldeki kulelerden birini seç ve grid üzerinde boş bir hücreye tıklayarak yerleştir.",
     howToPlay2: "Dalga başlat butonuna bas, düşmanlar yolda ilerlerken kuleleri otomatik ateş eder.",
@@ -1877,7 +1882,7 @@ const I18N = {
     feat2: "3 zorluk seviyesi",
     feat3: "7 kule tipi, 3 seviye yükseltme",
     feat4: "Sonsuz dalga modu, harita bazlı skor",
-    feat5: "32 başarım sistemi",
+    feat5: "35 başarım sistemi",
     feat6: "1×, 2×, 3× hız kontrolü",
     feat7: "TR/EN dil desteği, PWA offline, bulut senkron",
     asMaps: "Harita", asTowers: "Kule Tipi", asDiff: "Zorluk", asAchs: "Başarım",
@@ -1899,6 +1904,7 @@ const I18N = {
     changelog220: "Mobilde iki aşamalı kule yerleştirme: ilk dokunuş preview gösterir (pulse yeşil çerçeve), ikinci dokunuş (400ms içinde) yerleştirir — artık istemeden yanlış yere yerleşmez. ▶/⏸ butonu artık oyunu duraklatır (dalga donar). Otomatik Oynat toggle'ı hamburger menüye taşındı. Masaüstünde kule kartlarının hover efekti güçlendirildi.",
     changelog230: "Görsel geri bildirim paketi: her vuruşta turuncu hasar sayısı yukarı uçar (50+ hasar = sarı kritik). Düşmanlar vurulunca beyaz flash, kalkan vuruşlarında mavi flash. Kuleler ateş ederken parlıyor ve namlu hafif geri tepiyor. Namlu ucundan muzzle flash. Patlamada ve boss ölümünde screen shake. Boss'un sürekli kırmızı nefes alan glow'u var.",
     changelog240: "Can sistemi: Her 5 dalgada otomatik +2 can, her 10 dalgada +5 can. Ayrıca HUD'daki ♥ simgesine tıklayarak para karşılığı tamir satın alabilirsin (50◈ başlangıç, her alımda +25◈ pahalanır). Üst sınır yok — istediğin kadar biriktir.",
+    changelog250: "Yeni düşman ve kule HP sistemi: Ajitatör wave 10+'da çıkar, yürürken en yakın kulene her 2 saniyede bir kırmızı mermi atar. Her kulenin artık 100 HP'si var — hasarlı kule duman çıkarır, sıfırlanınca patlayıp kaybolur. Kule panelinde 'Onar' butonu (1 para = 2 HP). 3 yeni başarım: Kesinti Yok, Sağlam Savunma, Teknisyen. Toplam 35 başarım.",
     otherGames: "Diğer Oyunlarım",
     credits: "Geliştiren: mrtrclb",
     version: "Sürüm",
@@ -1948,7 +1954,7 @@ const I18N = {
     pause: "Pause", resume: "Resume", restart: "Restart",
     paused: "Paused", resumed: "Resumed",
     towers: "Towers", level: "Level", dmg: "Dmg", range: "Range", rate: "Rate",
-    upgrade: "Upgrade", sell: "Sell", move: "Move",
+    upgrade: "Upgrade", sell: "Sell", move: "Move", repair: "Repair",
     gameOver: "Game Over", gameOverSub: "Your base has fallen.",
     wavesReached: "Wave Reached", playAgain: "Play Again",
     tMG: "Machine Gun", tMGd: "Fast fire, low damage. Good vs infantry.",
@@ -1996,7 +2002,7 @@ const I18N = {
     resetConfirm: "All saved scores and settings will be deleted. Are you sure?",
     resetDone: "Data reset",
     on: "On", off: "Off",
-    aboutDesc: "Siper is a modern military-themed tower defense game on a 10×8 grid. Defend your base against endless waves with 7 tower types, 7 enemy classes, 30 different maps (6 of which are 4-way quad-attack) and a boss every 10 waves.",
+    aboutDesc: "Siper is a modern military-themed tower defense game on a 10×8 grid. Defend your base against endless waves with 7 tower types, 8 enemy classes, 30 different maps (6 of which are 4-way quad-attack) and a boss every 10 waves. Towers now have HP — the Agitator enemy can shoot and destroy them.",
     howToPlay: "How to Play",
     howToPlay1: "Select a tower from the left panel and click an empty cell on the grid to place it.",
     howToPlay2: "Press Start Wave — towers automatically fire at enemies moving along the path.",
@@ -2010,7 +2016,7 @@ const I18N = {
     feat2: "3 difficulty levels",
     feat3: "7 tower types, 3 upgrade levels",
     feat4: "Endless wave mode, per-map scores",
-    feat5: "32-achievement system",
+    feat5: "35-achievement system",
     feat6: "1×, 2×, 3× speed control",
     feat7: "TR/EN language support, PWA offline, cloud sync",
     asMaps: "Maps", asTowers: "Towers", asDiff: "Difficulty", asAchs: "Achievements",
@@ -2032,6 +2038,7 @@ const I18N = {
     changelog220: "Two-phase tower placement on mobile: first tap shows a pulsing green preview, second tap (within 400ms, same cell) confirms placement — no more accidental misplacements. ▶/⏸ button now pauses the entire game (freeze). Autoplay toggle moved to the hamburger menu. Stronger hover effect for tower cards on desktop.",
     changelog230: "Visual feedback pack: every hit shows a rising orange damage number (50+ damage = yellow critical). Enemies flash white when hit, blue when shield absorbs. Towers glow while firing with a small barrel recoil. Muzzle flash at barrel tip. Screen shake on explosions and boss kills. Boss now has a constant breathing red glow.",
     changelog240: "Life system: Every 5 waves auto-grants +2 lives, every 10 waves +5 lives. Click the ♥ icon in the HUD to buy repairs (starts at 50◈, +25◈ per additional purchase). No upper limit — stockpile as much as you want.",
+    changelog250: "New enemy and tower HP system: Agitator appears at wave 10+, fires a red shot at the nearest tower every 2 seconds while walking. Towers now have 100 HP each — damaged towers smoke, destroyed ones explode and vanish. 'Repair' button added to tower panel (1 money = 2 HP). 3 new achievements: Zero Casualties, Firm Defense, Technician. 35 total.",
     otherGames: "My Other Games",
     credits: "Developed by mrtrclb",
     version: "Version",
@@ -2432,7 +2439,7 @@ let MAPS = [
     ]],
     palette: { road1: '#34301e', road2: '#24201a', ground: '#0c0b09', accent: '#e88a32' }
   },
-  // ===== 12 NEW MAPS (v2.4.0) =====
+  // ===== 12 NEW MAPS (v2.5.0) =====
   // ===== 6 QUAD-ATTACK MAPS (4-way convergence on central HQ) =====
   {
     id: 'sierra',
@@ -2719,11 +2726,13 @@ const ENEMY_TEMPLATES = {
   infantry:  { name: 'Piyade',   hp: 30,  speed: 1.2, armor: 0.0,  reward: 6,  flying: false, color: '#a08660', size: 9 },
   armor:     { name: 'Zırhlı',   hp: 110, speed: 0.7, armor: 0.55, reward: 14, flying: false, color: '#4d4530', size: 12 },
   air:       { name: 'Hava',     hp: 55,  speed: 1.6, armor: 0.1,  reward: 12, flying: true,  color: '#6b7a8a', size: 10 },
-  // NEW v2.4.0:
+  // NEW v2.5.0:
   scout:     { name: 'Koşucu',   hp: 22,  speed: 2.6, armor: 0.0,  reward: 5,  flying: false, color: '#d97e2a', size: 7 },
   shielded:  { name: 'Kalkanlı', hp: 50,  speed: 0.9, armor: 0.25, reward: 22, flying: false, color: '#6b5a3a', size: 11, shield: 80 },
   regen:     { name: 'Yenileyici', hp: 80, speed: 0.95, armor: 0.15, reward: 20, flying: false, color: '#7a6f3f', size: 10, regenRate: 3 },
-  boss:      { name: 'Mega-Tank', hp: 2200, speed: 0.35, armor: 0.75, reward: 250, flying: false, color: '#2a2418', size: 20, isBoss: true }
+  boss:      { name: 'Mega-Tank', hp: 2200, speed: 0.35, armor: 0.75, reward: 250, flying: false, color: '#2a2418', size: 20, isBoss: true },
+  // NEW v2.5.0: Agitator - shoots at towers while walking
+  agitator:  { name: 'Ajitatör', hp: 70,  speed: 0.9, armor: 0.30, reward: 20, flying: false, color: '#8a4530', size: 11, shoots: true, fireRange: 3.5, fireRate: 2.0, fireDmg: 25 }
 };
 
 /* ---------- DIFFICULTY ---------- */
@@ -2802,16 +2811,19 @@ function generateWave(n) {
   let scoutChance    = n < 4  ? 0 : Math.min(0.22, (n - 3) * 0.02);
   let shieldedChance = n < 8  ? 0 : Math.min(0.15, (n - 7) * 0.015);
   let regenChance    = n < 12 ? 0 : Math.min(0.12, (n - 11) * 0.012);
+  // NEW v2.5.0: Agitator starts at wave 10, caps at 20% at wave 20+
+  let agitatorChance = n < 10 ? 0 : n < 20 ? (n - 9) * 0.01 : 0.20;
 
   for (let i = 0; i < count; i++) {
     let type = 'infantry';
     const r = Math.random();
     // Roll in priority order: rarest first → common
-    if (r < regenChance) type = 'regen';
-    else if (r < regenChance + shieldedChance) type = 'shielded';
-    else if (r < regenChance + shieldedChance + scoutChance) type = 'scout';
-    else if (r < regenChance + shieldedChance + scoutChance + airChance) type = 'air';
-    else if (r < regenChance + shieldedChance + scoutChance + airChance + armorChance) type = 'armor';
+    if (r < agitatorChance) type = 'agitator';
+    else if (r < agitatorChance + regenChance) type = 'regen';
+    else if (r < agitatorChance + regenChance + shieldedChance) type = 'shielded';
+    else if (r < agitatorChance + regenChance + shieldedChance + scoutChance) type = 'scout';
+    else if (r < agitatorChance + regenChance + shieldedChance + scoutChance + airChance) type = 'air';
+    else if (r < agitatorChance + regenChance + shieldedChance + scoutChance + airChance + armorChance) type = 'armor';
     out.push({ type, delay: 0.5 + Math.random() * 0.4 });
   }
   return { list: out, difficulty, hpMul: Math.pow(diff.hpMul, n - 1), bounty: 20 + n * 3 };
@@ -3192,6 +3204,45 @@ function drawTowers() {
       ctx.restore();
     }
     drawTowerShape(t.key, t.level, x, y, t.angle, t.recoil || 0);
+
+    // Damage visuals: hit flash on tower body
+    if (t.hitFlash && t.hitFlash > 0) {
+      const flashAlpha = Math.min(1, t.hitFlash * 1.5);
+      ctx.fillStyle = `rgba(255, 100, 80, ${flashAlpha * 0.55})`;
+      ctx.beginPath();
+      ctx.arc(x, y, CELL * 0.36, 0, Math.PI*2);
+      ctx.fill();
+    }
+
+    // Smoke/fire particles spawn when tower is damaged (<50% HP)
+    const hpPct = (t.hp || 100) / (t.maxHp || 100);
+    if (hpPct < 0.5 && hpPct > 0 && Math.random() < 0.15) {
+      // Spawn one small smoke puff per frame (random chance)
+      state.fx.push({
+        kind: 'towerBurn',
+        x: x + (Math.random() - 0.5) * CELL * 0.3,
+        y: y - CELL * 0.1,
+        vx: (Math.random() - 0.5) * 10,
+        vy: -15 - Math.random() * 10,
+        t: 0, dur: 0.6 + Math.random() * 0.3
+      });
+    }
+
+    // HP bar (only show if damaged)
+    if ((t.hp || 100) < (t.maxHp || 100)) {
+      const bw = CELL * 0.7, bh = 3;
+      const bx = x - bw/2, by = y + CELL * 0.45;
+      ctx.fillStyle = '#1a1a1a';
+      ctx.fillRect(bx, by, bw, bh);
+      ctx.fillStyle = hpPct > 0.5 ? '#7a9f3f' : hpPct > 0.25 ? '#d97e2a' : '#c8472f';
+      ctx.fillRect(bx, by, bw * hpPct, bh);
+    }
+
+    // Decay tower hit flash
+    if (t.hitFlash && t.hitFlash > 0) {
+      t.hitFlash = Math.max(0, t.hitFlash - 0.05); // per frame decay
+    }
+
     // selected highlight + range
     if (state.selected === i) {
       const def = TOWER_DEFS[t.key];
@@ -3313,6 +3364,31 @@ function drawEnemies() {
       ctx.fillStyle = '#7a9f3f';
       ctx.fillRect(e.x - e.size*0.06, e.y + e.size*0.1, e.size*0.12, e.size*0.5);
       ctx.fillRect(e.x - e.size*0.25, e.y + e.size*0.28, e.size*0.5, e.size*0.12);
+    } else if (e.type === 'agitator') {
+      // Agitator: dark red body, shoulder-mounted gun, red antenna
+      // Body
+      ctx.fillStyle = e.color;
+      ctx.beginPath(); ctx.arc(e.x, e.y - e.size*0.3, e.size*0.45, 0, Math.PI*2); ctx.fill();
+      ctx.fillStyle = '#4a2418';
+      ctx.fillRect(e.x - e.size*0.4, e.y - e.size*0.05, e.size*0.8, e.size*0.9);
+      // Shoulder-mounted rifle (short barrel pointing forward)
+      ctx.fillStyle = '#2a1810';
+      ctx.fillRect(e.x + e.size*0.25, e.y - e.size*0.2, e.size*0.6, e.size*0.15);
+      // Red tip on barrel (distinctive)
+      ctx.fillStyle = '#d9402a';
+      ctx.fillRect(e.x + e.size*0.8, e.y - e.size*0.2, e.size*0.1, e.size*0.15);
+      // Antenna (distinctive vertical marker)
+      ctx.strokeStyle = '#d9402a';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(e.x - e.size*0.2, e.y - e.size*0.5);
+      ctx.lineTo(e.x - e.size*0.2, e.y - e.size);
+      ctx.stroke();
+      // Antenna tip (small red dot)
+      ctx.fillStyle = '#ff5a3a';
+      ctx.beginPath();
+      ctx.arc(e.x - e.size*0.2, e.y - e.size, 1.5, 0, Math.PI*2);
+      ctx.fill();
     } else {
       // infantry — small figure (default)
       ctx.fillStyle = e.color;
@@ -3433,6 +3509,21 @@ function drawProjectiles() {
       ctx.arc(p.x, p.y, 2, 0, Math.PI*2);
       ctx.fill();
       ctx.restore();
+    } else if (p.kind === 'enemyShot') {
+      // Red shot from Agitator — small bright red core with dark outer glow
+      ctx.save();
+      ctx.shadowBlur = 8;
+      ctx.shadowColor = '#ff5a3a';
+      ctx.fillStyle = 'rgba(217, 64, 42, 0.8)';
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 5, 0, Math.PI*2);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      ctx.fillStyle = '#ff8c6c';
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 2.5, 0, Math.PI*2);
+      ctx.fill();
+      ctx.restore();
     }
   }
 }
@@ -3494,6 +3585,23 @@ function drawFX() {
       ctx.arc(0, -CELL*0.35, 2 * a + 1, 0, Math.PI*2);
       ctx.fill();
       ctx.restore();
+    } else if (f.kind === 'towerBurn') {
+      // Smoke particle rising from destroyed tower
+      const prog = f.t / f.dur;
+      const a = 1 - prog;
+      const size = 6 + prog * 10;
+      // Dark smoke
+      ctx.fillStyle = `rgba(40, 30, 25, ${a * 0.6})`;
+      ctx.beginPath();
+      ctx.arc(f.x, f.y, size, 0, Math.PI*2);
+      ctx.fill();
+      // Fire core (only early)
+      if (prog < 0.4) {
+        ctx.fillStyle = `rgba(242, 100, 40, ${a})`;
+        ctx.beginPath();
+        ctx.arc(f.x, f.y, size * 0.5, 0, Math.PI*2);
+        ctx.fill();
+      }
     } else if (f.kind === 'beam') {
       // Sniper tracer: bright line that fades
       const a = 1 - f.t / f.dur;
@@ -3620,6 +3728,13 @@ function spawnEnemy(type, hpMul) {
   }
   if (tpl.isBoss) {
     e.isBoss = true;
+  }
+  if (tpl.shoots) {
+    e.shoots = true;
+    e.fireRange = tpl.fireRange;
+    e.fireRate = tpl.fireRate;
+    e.fireDmg = tpl.fireDmg;
+    e.fireCd = 1.0; // initial delay before first shot
   }
   state.enemies.push(e);
 }
@@ -3768,6 +3883,41 @@ function updateEnemies(dt) {
       e.x = wp.x; e.y = wp.y; e.wpIdx++;
     } else {
       e.x += dx/d * step; e.y += dy/d * step;
+    }
+
+    // NEW v2.5.0: Agitator fires at nearest tower while walking
+    if (e.shoots && !e.dead) {
+      e.fireCd = (e.fireCd || 0) - dt;
+      if (e.fireCd <= 0) {
+        const rangePix = e.fireRange * CELL;
+        let nearest = null, nearestDist = Infinity;
+        for (const tw of state.towers) {
+          if (!tw.hp || tw.hp <= 0) continue;
+          const tx = tw.c * CELL + CELL/2, ty = tw.r * CELL + CELL/2;
+          const d2 = Math.hypot(tx - e.x, ty - e.y);
+          if (d2 < nearestDist && d2 < rangePix) {
+            nearest = tw; nearestDist = d2;
+          }
+        }
+        if (nearest) {
+          const tx = nearest.c * CELL + CELL/2, ty = nearest.r * CELL + CELL/2;
+          // Spawn enemy projectile
+          state.projectiles.push({
+            kind: 'enemyShot',
+            x: e.x, y: e.y,
+            tx: tx, ty: ty,
+            target: nearest,
+            speed: 8 * CELL, // pixels/sec
+            dmg: e.fireDmg,
+            color: '#d9402a'
+          });
+          sfxEnemyShot();
+          e.fireCd = e.fireRate;
+        } else {
+          // No target in range, try again in 0.5s
+          e.fireCd = 0.5;
+        }
+      }
     }
   }
   state.enemies = state.enemies.filter(e => !e.dead);
@@ -3926,6 +4076,44 @@ function updateTowers(dt) {
   }
 }
 
+// Destroy a tower (agitator killed it): burning -> explosion -> removed
+function destroyTower(idx) {
+  const tw = state.towers[idx];
+  if (!tw) return;
+  const { x, y } = cellCenter(tw.c, tw.r);
+  // Big explosion FX
+  state.fx.push({ kind: 'explosion', x, y, r: CELL * 0.8, t: 0, dur: 0.6 });
+  // Burning/smoke particles for a short while (spawn a handful)
+  for (let i = 0; i < 8; i++) {
+    state.fx.push({
+      kind: 'towerBurn',
+      x: x + (Math.random() - 0.5) * CELL * 0.5,
+      y: y + (Math.random() - 0.5) * CELL * 0.3,
+      vx: (Math.random() - 0.5) * 20,
+      vy: -30 - Math.random() * 30,
+      t: 0, dur: 0.8 + Math.random() * 0.4
+    });
+  }
+  // Screen shake and SFX
+  shakeAmount = Math.max(shakeAmount, 6);
+  sfxExplosion();
+  // Floating text
+  state.fx.push({ kind: 'text', x, y, msg: (LANG === 'tr' ? 'KULE YIKILDI' : 'TOWER DESTROYED'), color: 'rgba(200,71,47,1)', t: 0, dur: 1.4 });
+  // Deselect if this was selected
+  if (state.selected === idx) {
+    state.selected = null;
+    hideTowerPanel();
+  }
+  // Shift selected index if needed (towers.splice changes indices)
+  if (state.selected !== null && state.selected > idx) {
+    state.selected--;
+  }
+  // Remove from array
+  state.towers.splice(idx, 1);
+  // Track for noLoss achievement (any tower lost this run disqualifies)
+  state.runTowerLost = true;
+}
+
 function applyDamage(enemy, dmg, piercing) {
   const effArmor = Math.max(0, enemy.armor - piercing);
   let final = dmg * (1 - effArmor);
@@ -3995,6 +4183,13 @@ function applyDamage(enemy, dmg, piercing) {
     } else {
       sfxEnemyDie();
     }
+    // Track agitator kills for agitKill achievement
+    if (enemy.type === 'agitator') {
+      state.runAgitatorKills = (state.runAgitatorKills || 0) + 1;
+      const totalAgit = parseInt(localStorage.getItem('siper_agit_killed') || '0') + 1;
+      localStorage.setItem('siper_agit_killed', String(totalAgit));
+      if (totalAgit >= 10) unlockAch('agitKill');
+    }
     // Track run kills + thresholds
     state.runKills = (state.runKills || 0) + 1;
     if (state.runKills === 50)  unlockAch('kill50');
@@ -4012,6 +4207,38 @@ function applyDamage(enemy, dmg, piercing) {
 
 function updateProjectiles(dt) {
   for (const p of state.projectiles) {
+    // Enemy shots: different lifecycle (target a specific tower, hit on arrival)
+    if (p.kind === 'enemyShot') {
+      if (!p.target || !p.target.hp || p.target.hp <= 0) {
+        p.dead = true;
+        continue;
+      }
+      // Update target position
+      p.tx = p.target.c * CELL + CELL/2;
+      p.ty = p.target.r * CELL + CELL/2;
+      const dx = p.tx - p.x, dy = p.ty - p.y;
+      const d = Math.hypot(dx, dy) || 1;
+      p.x += (dx/d) * p.speed * dt;
+      p.y += (dy/d) * p.speed * dt;
+      if (d < 10) {
+        // Hit tower
+        p.target.hp -= p.dmg;
+        p.target.hitFlash = 0.3;
+        // Small impact explosion
+        state.fx.push({ kind: 'explosion', x: p.tx, y: p.ty, r: 10, t: 0, dur: 0.25 });
+        shakeAmount = Math.max(shakeAmount, 2);
+        if (p.target.hp <= 0) {
+          // Tower destroyed!
+          const destroyedIdx = state.towers.indexOf(p.target);
+          if (destroyedIdx >= 0) {
+            destroyTower(destroyedIdx);
+          }
+        }
+        p.dead = true;
+      }
+      continue;
+    }
+    // Existing tower projectile logic
     p.life -= dt;
     if (p.life <= 0) { p.dead = true; continue; }
     // Homing for rocket/missile
@@ -4066,6 +4293,12 @@ function updateFX(dt) {
   for (const f of state.fx) {
     f.t += dt;
     if (f.kind === 'explosion') f.r += dt * 80;
+    else if (f.kind === 'towerBurn') {
+      f.x += f.vx * dt;
+      f.y += f.vy * dt;
+      f.vy += dt * 8; // slight gravity pulls smoke down over time as it drifts up
+      f.vx *= (1 - dt * 0.8);
+    }
   }
   state.fx = state.fx.filter(f => f.t < f.dur);
 }
@@ -4205,6 +4438,14 @@ function updateSpawns(dt) {
     // If autoplay is enabled, start countdown for next wave
     if (autoplayEnabled) {
       autoplayCountdown = AUTOPLAY_DELAY;
+    }
+    // NEW v2.5.0: noLoss achievement (wave 20 reached without losing a tower)
+    if (state.wave >= 20 && !state.runTowerLost) {
+      unlockAch('noLoss');
+    }
+    // NEW v2.5.0: repairer achievement (5+ repairs in a run)
+    if ((state.runRepairsMade || 0) >= 5) {
+      unlockAch('repairer');
     }
     updateWaveButton();
   }
@@ -4414,7 +4655,8 @@ function handleClick(c, r) {
     }
     state.money -= def.levels[0].cost;
     state.towers.push({
-      key: state.placing, level: 0, c, r, angle: 0, cd: 0
+      key: state.placing, level: 0, c, r, angle: 0, cd: 0,
+      hp: 100, maxHp: 100, hitFlash: 0
     });
     state.score += 2;
     toast(t('placed') + ': ' + t(def.nameKey), '#7a9f3f');
@@ -4533,6 +4775,28 @@ function showTowerPanel() {
     }
   }
 
+  // HP display
+  const tpHp = document.getElementById('tp-hp');
+  const tpMaxHp = document.getElementById('tp-maxhp');
+  if (tpHp) tpHp.textContent = Math.ceil(tw.hp || 100);
+  if (tpMaxHp) tpMaxHp.textContent = tw.maxHp || 100;
+
+  // Repair button: cost scales by damage; shown only when tower is damaged
+  const repairBtn = document.getElementById('tp-repair');
+  if (repairBtn) {
+    const hpMissing = (tw.maxHp || 100) - (tw.hp || 100);
+    if (hpMissing <= 0) {
+      repairBtn.disabled = true;
+      repairBtn.textContent = '✓ ' + t('repair');
+    } else {
+      // Cost: 1 money per 2 HP missing, rounded up. Min 5.
+      const cost = Math.max(5, Math.ceil(hpMissing / 2));
+      repairBtn.disabled = state.money < cost;
+      repairBtn.textContent = `${t('repair')} ◈${cost}`;
+      repairBtn.dataset.cost = cost;
+    }
+  }
+
   panel.classList.add('active');
 }
 function hideTowerPanel() {
@@ -4595,6 +4859,19 @@ document.getElementById('tp-sell').addEventListener('click', () => {
   state.selected = null;
   hideTowerPanel();
   toast(t('sold') + ' +' + refund, '#7a9f3f');
+});
+document.getElementById('tp-repair').addEventListener('click', () => {
+  if (state.selected === null) return;
+  const tw = state.towers[state.selected];
+  if (!tw || tw.hp >= tw.maxHp) return;
+  const cost = parseInt(document.getElementById('tp-repair').dataset.cost);
+  if (state.money < cost) { toast(t('notEnoughMoney'), '#c8472f'); return; }
+  state.money -= cost;
+  tw.hp = tw.maxHp;
+  // Track for achievement
+  state.runRepairsMade = (state.runRepairsMade || 0) + 1;
+  toast((LANG === 'tr' ? 'Kule Onarıldı' : 'Tower Repaired'), '#7a9f3f');
+  showTowerPanel(); // refresh panel
 });
 
 /* ---------- CONTROLS ---------- */
@@ -5299,6 +5576,24 @@ function sfxEnemyHit() {
   osc.start(t0); osc.stop(t0 + 0.07);
 }
 
+function sfxEnemyShot() {
+  if (!sfxEnabled) return;
+  const ctx = ensureAudioCtx(); if (!ctx) return;
+  const now = performance.now();
+  if ((now - (sfxLastPlay.enemyShot || 0)) < 80) return;
+  sfxLastPlay.enemyShot = now;
+  const t0 = ctx.currentTime;
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.type = 'sawtooth';
+  osc.frequency.setValueAtTime(180, t0);
+  osc.frequency.exponentialRampToValueAtTime(80, t0 + 0.08);
+  gain.gain.setValueAtTime(0.05, t0);
+  gain.gain.exponentialRampToValueAtTime(0.001, t0 + 0.1);
+  osc.connect(gain); gain.connect(ctx.destination);
+  osc.start(t0); osc.stop(t0 + 0.11);
+}
+
 function sfxEnemyDie() {
   if (!sfxEnabled) return;
   const ctx = ensureAudioCtx(); if (!ctx) return;
@@ -5483,7 +5778,7 @@ document.getElementById('feedback-send').addEventListener('click', () => {
       msg: msg.substring(0, 1000),
       lang: LANG,
       ts: firebase.database.ServerValue.TIMESTAMP,
-      version: '2.4.0',
+      version: '2.5.0',
       ua: navigator.userAgent.substring(0, 200)
     }).then(() => {
       toast(t('feedbackThanks'), '#7a9f3f');
@@ -5512,7 +5807,7 @@ document.getElementById('feedback-send').addEventListener('click', () => {
 
 function serializeGame() {
   return {
-    version: '2.4.0',
+    version: '2.5.0',
     mapId: currentMap.id,
     difficulty: currentDifficulty,
     money: state.money,
@@ -5521,7 +5816,8 @@ function serializeGame() {
     score: state.score,
     runRepairs: state.runRepairs || 0,
     towers: state.towers.map(tw => ({
-      key: tw.key, level: tw.level, c: tw.c, r: tw.r, angle: tw.angle || 0
+      key: tw.key, level: tw.level, c: tw.c, r: tw.r, angle: tw.angle || 0,
+      hp: tw.hp || 100, maxHp: tw.maxHp || 100
     })),
     ts: Date.now()
   };
@@ -5593,7 +5889,7 @@ function loadSavedGame(mapId) {
     state.wave = snap.wave;
     state.score = snap.score;
     state.runRepairs = snap.runRepairs || 0;
-    state.towers = snap.towers.map(tw => ({ ...tw, cd: 0 }));
+    state.towers = snap.towers.map(tw => ({ ...tw, cd: 0, hp: tw.hp || 100, maxHp: tw.maxHp || 100, hitFlash: 0 }));
     state.enemies = [];
     state.projectiles = [];
     state.fx = [];
@@ -5774,6 +6070,9 @@ const ACHIEVEMENTS = [
   { id: 'quad5',   name: { tr: 'Dört Yön', en: 'Four Fronts' }, desc: { tr: '4 yönlü haritada 15 dalga geç', en: 'Clear 15 waves on a 4-way map' } },
   { id: 'bossFirst', name: { tr: 'Boss Avcısı', en: 'Boss Hunter' }, desc: { tr: 'İlk Mega-Tank\'ı yok et', en: 'Destroy your first Mega-Tank' } },
   { id: 'bossMaster', name: { tr: 'Boss Ustası', en: 'Boss Master' }, desc: { tr: '5 Mega-Tank yok et (toplam)', en: 'Destroy 5 Mega-Tanks (total)' } },
+  { id: 'noLoss',    name: { tr: 'Kesinti Yok', en: 'Zero Casualties' }, desc: { tr: 'Hiç kule kaybetmeden wave 20\'ye ulaş', en: 'Reach wave 20 without losing a tower' } },
+  { id: 'agitKill',  name: { tr: 'Sağlam Savunma', en: 'Firm Defense' }, desc: { tr: '10 Ajitatör öldür', en: 'Kill 10 Agitators' } },
+  { id: 'repairer',  name: { tr: 'Teknisyen', en: 'Technician' }, desc: { tr: 'Tek oyunda 5+ kule onar', en: 'Repair 5+ towers in one run' } },
   { id: 'perfect', name: { tr: 'Mükemmeliyet', en: 'Perfection' }, desc: { tr: 'Tüm başarımları kazan', en: 'Unlock all achievements' } }
 ];
 
@@ -5808,6 +6107,9 @@ function initAchRunStats() {
   state.runNoHitWaves = 0;
   state.runNoSellWaves = 0;
   state.runRepairs = 0;
+  state.runRepairsMade = 0;
+  state.runAgitatorKills = 0;
+  state.runTowerLost = false;
 }
 
 // Check map-play count achievements (call when starting a new game)
@@ -5986,7 +6288,7 @@ async function uploadToCloud() {
     await fbDb.ref('siper/saves/' + code).set({
       ts: firebase.database.ServerValue.TIMESTAMP,
       data: data,
-      version: '2.4.0'
+      version: '2.5.0'
     });
     // Also mirror scores into /siper/scores/<code> for quick lookup
     await fbDb.ref('siper/scores/' + code).set(data.scores);
