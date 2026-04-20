@@ -473,6 +473,7 @@
     letter-spacing: 0.5px;
   }
   .map-card .map-tag.multi { color: var(--orange-2); border-color: var(--orange); }
+  .map-card .map-tag.quad { color: var(--danger); border-color: var(--danger); background: rgba(200,71,47,0.12); }
   .map-card .map-best {
     font-size: 11px;
     color: var(--khaki-2);
@@ -1202,14 +1203,14 @@
 <!-- SPLASH SCREEN -->
 <div class="splash" id="splash">
   <div class="splash-logo">SİPER</div>
-  <div class="splash-sub">v1.6.0</div>
+  <div class="splash-sub">v1.7.0</div>
   <div class="splash-tagline" data-i18n="splashTagline">Hattı Tut, Üssü Koru.</div>
   <div class="splash-lang">
     <button class="lang-btn" data-lang="tr">TÜRKÇE</button>
     <button class="lang-btn" data-lang="en">ENGLISH</button>
   </div>
   <button class="splash-start" id="splash-start" data-i18n="startGame">Oyuna Başla!</button>
-  <div class="splash-footer">v1.6.0 · mrtrclb</div>
+  <div class="splash-footer">v1.7.0 · mrtrclb</div>
 </div>
 
 <!-- MAIN MENU -->
@@ -1337,7 +1338,7 @@
   <div class="panel-content">
     <h1>SİPER</h1>
     <p style="text-align:center; color: var(--sand); letter-spacing: 2px; margin-bottom: 20px;">
-      <span data-i18n="version">Sürüm</span> 1.6.0
+      <span data-i18n="version">Sürüm</span> 1.7.0
     </p>
     <p data-i18n="aboutDesc">Siper, 10×8 grid üzerinde modern askeri temalı bir kule savunma oyunudur.</p>
 
@@ -1367,6 +1368,7 @@
     </div>
 
     <h2 data-i18n="changelog">Sürüm Notları</h2>
+    <p><strong>v1.7.0</strong> — <span data-i18n="changelog170"></span></p>
     <p><strong>v1.6.0</strong> — <span data-i18n="changelog160"></span></p>
     <p><strong>v1.5.2</strong> — <span data-i18n="changelog152"></span></p>
     <p><strong>v1.5.1</strong> — <span data-i18n="changelog151"></span></p>
@@ -1536,8 +1538,8 @@ const I18N = {
     maxLevel: "Maksimum seviye",
     sold: "Satıldı", placed: "Yerleştirildi",
     best: "En İyi",
-    changeMap: "Harita", selectMap: "Harita Seç",
-    mapSingle: "Tek Yol", mapMulti: "Çoklu Yol",
+    changeMap: "Menü", selectMap: "Harita Seç",
+    mapSingle: "Tek Yol", mapMulti: "Çoklu Yol", mapQuad: "4 Yön",
     backToMaps: "Haritalara Dön",
     // Splash
     splashTagline: "Hattı Tut, Üssü Koru.",
@@ -1585,6 +1587,7 @@ const I18N = {
     changelog151: "10 yeni harita (toplam 18). Kaydet & Çık + Bulut senkron (SI-XXXXXX kod). Feedback günlük 3 limit.",
     changelog152: "Web Audio ses efektleri (atış, patlama, dalga, game over). Dosya temizleme.",
     changelog160: "3 yeni kule (Keskin Nişancı, Alev Makinesi, Yavaşlatıcı). Müzik ve efekt sesleri ayrı toggle. Mobil düzeltmeler. Kule paneli kapama (X + ESC). Canlı arkaplan efektleri. Presence sayacı düzeltmesi.",
+    changelog170: "12 yeni harita (toplam 30). 6 harita 4 yönlü saldırılı yeni tür. Menü butonu artık otomatik kaydediyor. Çoklu yollu haritalarda spawn dağılımı dengeli.",
     otherGames: "Diğer Oyunlarım",
     credits: "Geliştiren: mrtrclb",
     version: "Sürüm",
@@ -1648,8 +1651,8 @@ const I18N = {
     maxLevel: "Max level",
     sold: "Sold", placed: "Placed",
     best: "Best",
-    changeMap: "Map", selectMap: "Select Map",
-    mapSingle: "Single Path", mapMulti: "Multi Path",
+    changeMap: "Menu", selectMap: "Select Map",
+    mapSingle: "Single Path", mapMulti: "Multi Path", mapQuad: "4-Way",
     backToMaps: "Back to Maps",
     splashTagline: "Hold the Line. Protect the Base.",
     startGame: "Start Game!",
@@ -1692,6 +1695,7 @@ const I18N = {
     changelog151: "10 new maps (18 total). Save & Quit + Cloud sync (SI-XXXXXX code). Feedback 3/day limit.",
     changelog152: "Web Audio SFX (shots, explosions, waves, game over). Polish.",
     changelog160: "3 new towers (Sniper, Flamethrower, Slow Field). Separate music + SFX toggles. Mobile fixes. Tower panel close (X + ESC). Live background effects. Presence counter fix.",
+    changelog170: "12 new maps (30 total). 6 new quad-attack (4-way assault) maps. Menu button now auto-saves. Balanced spawn distribution for multi-path maps.",
     otherGames: "My Other Games",
     credits: "Developed by mrtrclb",
     version: "Version",
@@ -2091,6 +2095,191 @@ let MAPS = [
       [3,4],[4,4]
     ]],
     palette: { road1: '#34301e', road2: '#24201a', ground: '#0c0b09', accent: '#e88a32' }
+  },
+  // ===== 12 NEW MAPS (v1.7.0) =====
+  // ===== 6 QUAD-ATTACK MAPS (4-way convergence on central HQ) =====
+  {
+    id: 'sierra',
+    name: { tr: 'Sierra Haç', en: 'Sierra Cross' },
+    desc: { tr: '4 yönden saldırı, merkezi HQ. Chaos.', en: '4-way assault on central HQ. Chaos.' },
+    type: 'multi',
+    paths: [
+      // From left (0,3) → HQ (4,3)
+      [[0,3],[1,3],[2,3],[3,3],[4,3]],
+      // From right (9,3) → HQ
+      [[9,3],[8,3],[7,3],[6,3],[5,3],[4,3]],
+      // From top (4,0) → HQ
+      [[4,0],[4,1],[4,2],[4,3]],
+      // From bottom (4,7) → HQ
+      [[4,7],[4,6],[4,5],[4,4],[4,3]]
+    ],
+    palette: { road1: '#3a2f1c', road2: '#2a2414', ground: '#0d0b08', accent: '#d97e2a' }
+  },
+  {
+    id: 'tango',
+    name: { tr: 'Tango Kıskaç', en: 'Tango Pincer' },
+    desc: { tr: '4 köşeden diyagonal saldırı. Merkezi savun.', en: '4-corner diagonal assault. Defend the center.' },
+    type: 'multi',
+    paths: [
+      // TL corner → center (5,3)
+      [[0,0],[1,0],[1,1],[2,1],[3,1],[3,2],[4,2],[5,2],[5,3]],
+      // TR corner → center
+      [[9,0],[8,0],[8,1],[7,1],[6,1],[6,2],[5,2],[5,3]],
+      // BL corner → center
+      [[0,7],[1,7],[1,6],[2,6],[3,6],[3,5],[4,5],[5,5],[5,4],[5,3]],
+      // BR corner → center
+      [[9,7],[8,7],[8,6],[7,6],[6,6],[6,5],[5,5],[5,4],[5,3]]
+    ],
+    palette: { road1: '#3d2f18', road2: '#2d2212', ground: '#0c0a07', accent: '#e88a32' }
+  },
+  {
+    id: 'uniform',
+    name: { tr: 'Uniform Yıldız', en: 'Uniform Star' },
+    desc: { tr: '4 yöne geniş koridorlar. HQ açıkta.', en: '4 wide corridors. HQ exposed.' },
+    type: 'multi',
+    paths: [
+      // Top strip
+      [[4,0],[5,0],[5,1],[5,2],[5,3],[5,4]],
+      // Bottom strip
+      [[4,7],[5,7],[5,6],[5,5],[5,4]],
+      // Left strip
+      [[0,3],[0,4],[1,4],[2,4],[3,4],[4,4],[5,4]],
+      // Right strip
+      [[9,3],[9,4],[8,4],[7,4],[6,4],[5,4]]
+    ],
+    palette: { road1: '#35301c', road2: '#252014', ground: '#0a0a08', accent: '#d9842a' }
+  },
+  {
+    id: 'victor',
+    name: { tr: 'Victor Dörtgen', en: 'Victor Quadrant' },
+    desc: { tr: '4 eş zamanlı dalga. Kulelerini eşit dağıt.', en: '4 simultaneous waves. Distribute towers evenly.' },
+    type: 'multi',
+    paths: [
+      // From TL via long path → HQ (4,4)
+      [[0,1],[1,1],[2,1],[2,2],[2,3],[3,3],[4,3],[4,4]],
+      // From TR
+      [[9,1],[8,1],[7,1],[7,2],[7,3],[6,3],[5,3],[4,3],[4,4]],
+      // From BL
+      [[0,6],[1,6],[2,6],[2,5],[2,4],[3,4],[4,4]],
+      // From BR
+      [[9,6],[8,6],[7,6],[7,5],[6,5],[5,5],[4,5],[4,4]]
+    ],
+    palette: { road1: '#38301c', road2: '#281f14', ground: '#0b0907', accent: '#cc742a' }
+  },
+  {
+    id: 'whiskey',
+    name: { tr: 'Whiskey Rüzgargülü', en: 'Whiskey Windrose' },
+    desc: { tr: '4 zigzag yol, HQ merkezde. Zor.', en: '4 zigzag paths, central HQ. Hard.' },
+    type: 'multi',
+    paths: [
+      // Top zigzag
+      [[3,0],[3,1],[4,1],[4,2],[5,2],[5,3],[4,3]],
+      // Bottom zigzag
+      [[6,7],[6,6],[5,6],[5,5],[4,5],[4,4],[4,3]],
+      // Left zigzag
+      [[0,2],[1,2],[1,3],[2,3],[2,4],[3,4],[3,3],[4,3]],
+      // Right zigzag
+      [[9,5],[8,5],[8,4],[7,4],[7,3],[6,3],[5,3],[4,3]]
+    ],
+    palette: { road1: '#3d2f18', road2: '#2d2110', ground: '#0a0906', accent: '#e88032' }
+  },
+  {
+    id: 'xray',
+    name: { tr: 'X-ray Kavşağı', en: 'X-ray Crossroad' },
+    desc: { tr: '4 uzun düz hat, HQ tam merkezde.', en: '4 long straights, HQ dead center.' },
+    type: 'multi',
+    paths: [
+      // From far left
+      [[0,4],[1,4],[2,4],[3,4],[4,4]],
+      // From far right
+      [[9,4],[8,4],[7,4],[6,4],[5,4],[4,4]],
+      // From top
+      [[5,0],[5,1],[5,2],[5,3],[5,4],[4,4]],
+      // From bottom
+      [[5,7],[5,6],[5,5],[5,4],[4,4]]
+    ],
+    palette: { road1: '#342e1a', road2: '#241f12', ground: '#0a0907', accent: '#d0722a' }
+  },
+  // ===== 6 MIXED VARIED MAPS =====
+  {
+    id: 'yankee',
+    name: { tr: 'Yankee Dalgası', en: 'Yankee Wave' },
+    desc: { tr: 'Uzun dalgalı tek yol. Sabır ve menzil.', en: 'Long wavy single path. Patience and range.' },
+    type: 'single',
+    paths: [[
+      [0,0],[0,1],[1,1],[1,2],[2,2],[2,3],[3,3],[3,4],
+      [4,4],[4,5],[5,5],[5,6],[6,6],[6,5],[7,5],[7,4],
+      [8,4],[8,3],[9,3],[9,4],[9,5],[9,6],[9,7]
+    ]],
+    palette: { road1: '#36321e', road2: '#261f14', ground: '#0c0b08', accent: '#d9842a' }
+  },
+  {
+    id: 'zulu',
+    name: { tr: 'Zulu Üç Kapı', en: 'Zulu Three Gates' },
+    desc: { tr: '3 farklı giriş, tek çıkış (HQ sağda).', en: '3 entries, single exit (HQ right).' },
+    type: 'multi',
+    paths: [
+      [[0,1],[1,1],[2,1],[3,1],[4,1],[5,1],[6,1],[7,1],[7,2],[7,3],[8,3],[9,3]],
+      [[0,4],[1,4],[2,4],[3,4],[4,4],[5,4],[6,4],[7,4],[7,3],[8,3],[9,3]],
+      [[0,7],[1,7],[2,7],[3,7],[4,7],[5,7],[6,7],[7,7],[7,6],[7,5],[7,4],[7,3],[8,3],[9,3]]
+    ],
+    palette: { road1: '#3a3020', road2: '#2a221a', ground: '#0c0a08', accent: '#d97e2a' }
+  },
+  {
+    id: 'alpha2',
+    name: { tr: 'Alfa-II Ters Y', en: 'Alpha-II Inverted Y' },
+    desc: { tr: '2 üstten gelir, ortada birleşir, alta iner.', en: '2 from top merge center, drop to base.' },
+    type: 'multi',
+    paths: [
+      [[2,0],[2,1],[2,2],[3,2],[4,2],[4,3],[4,4],[4,5],[4,6],[4,7],[5,7]],
+      [[7,0],[7,1],[7,2],[6,2],[5,2],[4,2],[4,3],[4,4],[4,5],[4,6],[4,7],[5,7]]
+    ],
+    palette: { road1: '#352e1c', road2: '#251f14', ground: '#0b0907', accent: '#c87028' }
+  },
+  {
+    id: 'bravo2',
+    name: { tr: 'Bravo-II Labirent', en: 'Bravo-II Labyrinth' },
+    desc: { tr: 'Uzun kıvrımlı yol, çok dönüş var.', en: 'Long winding path with many turns.' },
+    type: 'single',
+    paths: [[
+      [0,0],[1,0],[2,0],[2,1],[3,1],[3,2],[2,2],[1,2],[0,2],
+      [0,3],[0,4],[1,4],[2,4],[3,4],[3,5],[3,6],[2,6],[1,6],
+      [1,7],[2,7],[3,7],[4,7],[5,7],[6,7],[6,6],[6,5],[6,4],
+      [5,4],[5,3],[6,3],[7,3],[7,2],[8,2],[9,2],[9,3],[9,4],
+      [9,5],[9,6],[9,7]
+    ]],
+    palette: { road1: '#332c1a', road2: '#231d12', ground: '#090806', accent: '#cc742a' }
+  },
+  {
+    id: 'charlie2',
+    name: { tr: 'Charlie-II Üçgen', en: 'Charlie-II Triangle' },
+    desc: { tr: '3 köşe girişi, merkezi ortada HQ.', en: '3 corner entries, central HQ.' },
+    type: 'multi',
+    paths: [
+      // TL corner
+      [[0,0],[1,0],[2,0],[3,0],[3,1],[3,2],[4,2],[4,3]],
+      // TR corner
+      [[9,0],[8,0],[7,0],[6,0],[6,1],[6,2],[5,2],[5,3],[4,3]],
+      // Bottom center
+      [[5,7],[5,6],[5,5],[5,4],[4,4],[4,3]]
+    ],
+    palette: { road1: '#3a2d18', road2: '#2a2010', ground: '#0a0806', accent: '#e08030' }
+  },
+  {
+    id: 'delta2',
+    name: { tr: 'Delta-II Omega', en: 'Delta-II Omega' },
+    desc: { tr: 'Ω şeklinde uzun yol. Menzilli kulelere uygun.', en: 'Omega-shaped long path. Good for ranged towers.' },
+    type: 'single',
+    paths: [[
+      [0,4],[0,3],[0,2],[0,1],
+      [1,1],[2,1],[3,1],
+      [3,2],[3,3],[3,4],[3,5],[3,6],
+      [4,6],[5,6],[6,6],
+      [6,5],[6,4],[6,3],[6,2],[6,1],
+      [7,1],[8,1],[9,1],
+      [9,2],[9,3],[9,4],[9,5],[9,6],[9,7]
+    ]],
+    palette: { road1: '#363018', road2: '#26210e', ground: '#0a0906', accent: '#d08030' }
   }
 ];
 
@@ -2757,8 +2946,21 @@ function render() {
 /* ---------- LOGIC ---------- */
 function spawnEnemy(type, hpMul) {
   const tpl = ENEMY_TEMPLATES[type];
-  // pick a path at random (for multi-path maps)
-  const pathIdx = Math.floor(Math.random() * state.pathWaypoints.length);
+  // For multi-path maps, distribute spawns round-robin with slight jitter
+  // so quad-attack maps feel truly simultaneous (not random-clumped).
+  const nPaths = state.pathWaypoints.length;
+  let pathIdx;
+  if (nPaths === 1) {
+    pathIdx = 0;
+  } else {
+    state._spawnPathCounter = (state._spawnPathCounter || 0) + 1;
+    // 70% round-robin, 30% random for unpredictability
+    if (Math.random() < 0.3) {
+      pathIdx = Math.floor(Math.random() * nPaths);
+    } else {
+      pathIdx = state._spawnPathCounter % nPaths;
+    }
+  }
   const wps = state.pathWaypoints[pathIdx];
   const e = {
     type, name: tpl.name,
@@ -3480,8 +3682,11 @@ function buildMapSelect() {
       const s = parseInt(localStorage.getItem('siper_best_' + mapDef.id + '_' + d) || '0');
       if (s > best) { best = s; bestDiff = d; }
     }
-    const typeClass = mapDef.type === 'multi' ? 'multi' : '';
-    const typeLabel = mapDef.type === 'multi' ? t('mapMulti') : t('mapSingle');
+    const isQuad = mapDef.type === 'multi' && mapDef.paths.length === 4;
+    let typeClass = '', typeLabel = '';
+    if (isQuad) { typeClass = 'quad'; typeLabel = t('mapQuad'); }
+    else if (mapDef.type === 'multi') { typeClass = 'multi'; typeLabel = t('mapMulti'); }
+    else { typeClass = ''; typeLabel = t('mapSingle'); }
     const bestLabel = best > 0
       ? `<span class="best-val">${best}</span> <span style="font-size:9px; color:var(--dim);">(${t(bestDiff)})</span>`
       : `<span class="best-val">—</span>`;
@@ -3545,8 +3750,25 @@ function showMapSelect() {
   document.getElementById('map-select').classList.remove('hidden');
 }
 document.getElementById('btn-map').addEventListener('click', () => {
-  // From in-game: go back to map select
-  showMapSelect();
+  // From in-game: auto-save current run, then return to main menu.
+  // (If game is over, just navigate to map select directly.)
+  const inGame = document.getElementById('app').style.display !== 'none' && !state.gameOver;
+  if (inGame) {
+    // Silent save (only if there's something to save — towers placed or wave advanced)
+    if (state.towers.length > 0 || state.wave > 0) {
+      try {
+        const snap = serializeGame();
+        localStorage.setItem('siper_save_' + currentMap.id, JSON.stringify(snap));
+        toast(t('gameSaved'), '#7a9f3f');
+        refreshContinueButton();
+      } catch (e) {
+        console.warn('Auto-save on exit failed:', e);
+      }
+    }
+    showMainMenu();
+  } else {
+    showMapSelect();
+  }
 });
 
 // Diff modal wiring
@@ -4129,7 +4351,7 @@ document.getElementById('feedback-send').addEventListener('click', () => {
       msg: msg.substring(0, 1000),
       lang: LANG,
       ts: firebase.database.ServerValue.TIMESTAMP,
-      version: '1.6.0',
+      version: '1.7.0',
       ua: navigator.userAgent.substring(0, 200)
     }).then(() => {
       toast(t('feedbackThanks'), '#7a9f3f');
@@ -4158,7 +4380,7 @@ document.getElementById('feedback-send').addEventListener('click', () => {
 
 function serializeGame() {
   return {
-    version: '1.6.0',
+    version: '1.7.0',
     mapId: currentMap.id,
     difficulty: currentDifficulty,
     money: state.money,
@@ -4460,7 +4682,7 @@ async function uploadToCloud() {
     await fbDb.ref('siper/saves/' + code).set({
       ts: firebase.database.ServerValue.TIMESTAMP,
       data: data,
-      version: '1.6.0'
+      version: '1.7.0'
     });
     // Also mirror scores into /siper/scores/<code> for quick lookup
     await fbDb.ref('siper/scores/' + code).set(data.scores);
