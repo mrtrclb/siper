@@ -1402,14 +1402,14 @@
 <!-- SPLASH SCREEN -->
 <div class="splash" id="splash">
   <div class="splash-logo">SİPER</div>
-  <div class="splash-sub">v2.2.0</div>
+  <div class="splash-sub">v2.3.0</div>
   <div class="splash-tagline" data-i18n="splashTagline">Hattı Tut, Üssü Koru.</div>
   <div class="splash-lang">
     <button class="lang-btn" data-lang="tr">TÜRKÇE</button>
     <button class="lang-btn" data-lang="en">ENGLISH</button>
   </div>
   <button class="splash-start" id="splash-start" data-i18n="startGame">Oyuna Başla!</button>
-  <div class="splash-footer">v2.2.0 · mrtrclb</div>
+  <div class="splash-footer">v2.3.0 · mrtrclb</div>
 </div>
 
 <!-- MAIN MENU -->
@@ -1560,7 +1560,7 @@
   <div class="panel-content">
     <h1>SİPER</h1>
     <p style="text-align:center; color: var(--sand); letter-spacing: 2px; margin-bottom: 20px;">
-      <span data-i18n="version">Sürüm</span> 2.2.0
+      <span data-i18n="version">Sürüm</span> 2.3.0
     </p>
     <p data-i18n="aboutDesc">Siper, 10×8 grid üzerinde modern askeri temalı bir kule savunma oyunudur.</p>
 
@@ -1611,6 +1611,7 @@
     </div>
 
     <h2 data-i18n="changelog">Sürüm Notları</h2>
+    <p><strong>v2.3.0</strong> — <span data-i18n="changelog230"></span></p>
     <p><strong>v2.2.0</strong> — <span data-i18n="changelog220"></span></p>
     <p><strong>v2.1.0</strong> — <span data-i18n="changelog210"></span></p>
     <p><strong>v2.0.1</strong> — <span data-i18n="changelog201"></span></p>
@@ -1870,6 +1871,7 @@ const I18N = {
     changelog201: "Hakkında sayfası ve meta etiketler güncel değerlerle (30 harita, 7 kule, 7 düşman, 32 başarım) güncellendi. Sürüm notları için 'Daha Fazla Göster' butonu.",
     changelog210: "Otomatik Oynat: ▶ butonuna basınca ilk dalga başlar, sonraki dalgalar arasında 4 saniye bekleme ile otomatik akar. ⏸ ile durdurabilirsin. HUD butonları ve istatistikler büyütüldü. Oyun arka plana alınınca veya kapatılınca otomatik kaydediyor — 'Devam Et' artık swipe ile kapatılan oyunu da gösteriyor.",
     changelog220: "Mobilde iki aşamalı kule yerleştirme: ilk dokunuş preview gösterir (pulse yeşil çerçeve), ikinci dokunuş (400ms içinde) yerleştirir — artık istemeden yanlış yere yerleşmez. ▶/⏸ butonu artık oyunu duraklatır (dalga donar). Otomatik Oynat toggle'ı hamburger menüye taşındı. Masaüstünde kule kartlarının hover efekti güçlendirildi.",
+    changelog230: "Görsel geri bildirim paketi: her vuruşta turuncu hasar sayısı yukarı uçar (50+ hasar = sarı kritik). Düşmanlar vurulunca beyaz flash, kalkan vuruşlarında mavi flash. Kuleler ateş ederken parlıyor ve namlu hafif geri tepiyor. Namlu ucundan muzzle flash. Patlamada ve boss ölümünde screen shake. Boss'un sürekli kırmızı nefes alan glow'u var.",
     otherGames: "Diğer Oyunlarım",
     credits: "Geliştiren: mrtrclb",
     version: "Sürüm",
@@ -2000,6 +2002,7 @@ const I18N = {
     changelog201: "About page and meta tags updated with current values (30 maps, 7 towers, 7 enemies, 32 achievements). 'Show More' button for changelog.",
     changelog210: "Autoplay: tap ▶ to start the first wave, subsequent waves flow automatically with a 4-second prep break. Tap ⏸ to pause autoplay. HUD buttons and stats are larger. Game auto-saves when tab is hidden or swiped away — 'Continue' now preserves your run even after app switch.",
     changelog220: "Two-phase tower placement on mobile: first tap shows a pulsing green preview, second tap (within 400ms, same cell) confirms placement — no more accidental misplacements. ▶/⏸ button now pauses the entire game (freeze). Autoplay toggle moved to the hamburger menu. Stronger hover effect for tower cards on desktop.",
+    changelog230: "Visual feedback pack: every hit shows a rising orange damage number (50+ damage = yellow critical). Enemies flash white when hit, blue when shield absorbs. Towers glow while firing with a small barrel recoil. Muzzle flash at barrel tip. Screen shake on explosions and boss kills. Boss now has a constant breathing red glow.",
     otherGames: "My Other Games",
     credits: "Developed by mrtrclb",
     version: "Version",
@@ -2400,7 +2403,7 @@ let MAPS = [
     ]],
     palette: { road1: '#34301e', road2: '#24201a', ground: '#0c0b09', accent: '#e88a32' }
   },
-  // ===== 12 NEW MAPS (v2.2.0) =====
+  // ===== 12 NEW MAPS (v2.3.0) =====
   // ===== 6 QUAD-ATTACK MAPS (4-way convergence on central HQ) =====
   {
     id: 'sierra',
@@ -2687,7 +2690,7 @@ const ENEMY_TEMPLATES = {
   infantry:  { name: 'Piyade',   hp: 30,  speed: 1.2, armor: 0.0,  reward: 6,  flying: false, color: '#a08660', size: 9 },
   armor:     { name: 'Zırhlı',   hp: 110, speed: 0.7, armor: 0.55, reward: 14, flying: false, color: '#4d4530', size: 12 },
   air:       { name: 'Hava',     hp: 55,  speed: 1.6, armor: 0.1,  reward: 12, flying: true,  color: '#6b7a8a', size: 10 },
-  // NEW v2.2.0:
+  // NEW v2.3.0:
   scout:     { name: 'Koşucu',   hp: 22,  speed: 2.6, armor: 0.0,  reward: 5,  flying: false, color: '#d97e2a', size: 7 },
   shielded:  { name: 'Kalkanlı', hp: 50,  speed: 0.9, armor: 0.25, reward: 22, flying: false, color: '#6b5a3a', size: 11, shield: 80 },
   regen:     { name: 'Yenileyici', hp: 80, speed: 0.95, armor: 0.15, reward: 20, flying: false, color: '#7a6f3f', size: 10, regenRate: 3 },
@@ -2991,7 +2994,7 @@ function drawPlacementPreview() {
   ctx.globalAlpha = 1;
 }
 
-function drawTowerShape(key, level, x, y, angle) {
+function drawTowerShape(key, level, x, y, angle, recoil) {
   const def = TOWER_DEFS[key];
   const lv = def.levels[level];
   const s = CELL * 0.38;
@@ -3010,6 +3013,13 @@ function drawTowerShape(key, level, x, y, angle) {
   ctx.save();
   ctx.translate(x, y);
   ctx.rotate(angle);
+  // Apply recoil — pushes barrel "back" (toward center, away from aim direction)
+  // Since barrels face "forward" (positive X) in local frame after rotation,
+  // recoil translates in -X direction
+  const r = recoil || 0;
+  if (r > 0) {
+    ctx.translate(-r * 3, 0);
+  }
 
   if (key === 'mg') {
     // Tripod + barrel
@@ -3139,7 +3149,20 @@ function drawTowers() {
   for (let i = 0; i < state.towers.length; i++) {
     const t = state.towers[i];
     const { x, y } = cellCenter(t.c, t.r);
-    drawTowerShape(t.key, t.level, x, y, t.angle);
+    // Fire glow pulse when recently fired
+    const fireGlow = t.fireGlow || 0;
+    if (fireGlow > 0) {
+      ctx.save();
+      ctx.shadowBlur = 20 * fireGlow;
+      ctx.shadowColor = 'rgba(255, 180, 80, 0.95)';
+      // Small invisible disc that carries the glow
+      ctx.fillStyle = `rgba(255, 180, 80, ${0.18 * fireGlow})`;
+      ctx.beginPath();
+      ctx.arc(x, y, CELL * 0.42, 0, Math.PI*2);
+      ctx.fill();
+      ctx.restore();
+    }
+    drawTowerShape(t.key, t.level, x, y, t.angle, t.recoil || 0);
     // selected highlight + range
     if (state.selected === i) {
       const def = TOWER_DEFS[t.key];
@@ -3152,7 +3175,6 @@ function drawTowers() {
       ctx.stroke();
       ctx.setLineDash([]);
       // selection box
-      ctx.strokeStyle = 'var(--orange)';
       ctx.strokeStyle = '#f2953a';
       ctx.lineWidth = 2;
       ctx.strokeRect(t.c*CELL + 2, t.r*CELL + 2, CELL-4, CELL-4);
@@ -3161,8 +3183,21 @@ function drawTowers() {
 }
 
 function drawEnemies() {
+  const t = performance.now() * 0.001;
   for (const e of state.enemies) {
     const isSlowed = e.slowUntil && e.slowUntil > performance.now();
+    // Boss gets a constant breathing glow — reddish pulse
+    if (e.isBoss && !e.dead) {
+      const pulse = 0.6 + 0.4 * Math.sin(t * 2);
+      ctx.save();
+      ctx.shadowBlur = 20 + pulse * 12;
+      ctx.shadowColor = 'rgba(220, 80, 50, 0.9)';
+      ctx.fillStyle = `rgba(220, 80, 50, ${0.15 + pulse * 0.1})`;
+      ctx.beginPath();
+      ctx.arc(e.x, e.y, e.size * 1.6, 0, Math.PI*2);
+      ctx.fill();
+      ctx.restore();
+    }
     // shadow
     if (e.flying) {
       ctx.fillStyle = 'rgba(0,0,0,0.35)';
@@ -3288,6 +3323,19 @@ function drawEnemies() {
       ctx.arc(e.x, e.y, e.size + 3, 0, Math.PI*2);
       ctx.stroke();
     }
+    // Hit flash overlay — brief bright flash when damaged
+    if (e.hitFlash && e.hitFlash > 0) {
+      const flashAlpha = Math.min(1, e.hitFlash * 1.2);
+      const col = e.hitFlashColor === 'shield'
+        ? `rgba(140,210,255,${flashAlpha * 0.75})`
+        : `rgba(255,255,255,${flashAlpha * 0.65})`;
+      ctx.fillStyle = col;
+      // Cover the body area — simple circle is enough
+      ctx.beginPath();
+      const flashSize = e.isBoss ? e.size * 1.3 : e.size * 1.1;
+      ctx.arc(e.x, e.y, flashSize, 0, Math.PI*2);
+      ctx.fill();
+    }
     // HP bar — bigger and different for boss
     if (!e.isBoss) {
       const pct = Math.max(0, e.hp / e.maxHp);
@@ -3379,6 +3427,44 @@ function drawFX() {
       ctx.font = 'bold 12px Courier New';
       ctx.textAlign = 'center';
       ctx.fillText(f.msg, f.x, f.y - f.t * 30);
+    } else if (f.kind === 'dmgNum') {
+      // Damage number: rises, fades, slight drift
+      const prog = f.t / f.dur;
+      const a = 1 - prog;
+      const rise = f.t * 28;
+      const drift = Math.sin(f.t * 8) * 2;
+      const size = (f.size || 13) * (1 + prog * 0.1); // tiny scale up at end
+      ctx.save();
+      ctx.font = `bold ${Math.round(size)}px Courier New`;
+      ctx.textAlign = 'center';
+      // dark outline for readability
+      ctx.strokeStyle = `rgba(0,0,0,${a * 0.8})`;
+      ctx.lineWidth = 3;
+      ctx.strokeText(f.msg, f.x + drift, f.y - rise);
+      // fill
+      ctx.fillStyle = f.color ? f.color.replace(',1)', `,${a})`) : `rgba(242,165,80,${a})`;
+      ctx.fillText(f.msg, f.x + drift, f.y - rise);
+      ctx.restore();
+    } else if (f.kind === 'muzzleFlash') {
+      // Bright muzzle flare at barrel tip
+      const a = 1 - f.t / f.dur;
+      ctx.save();
+      ctx.translate(f.x, f.y);
+      ctx.rotate(f.angle);
+      // outer glow
+      ctx.shadowBlur = 14 * a;
+      ctx.shadowColor = '#ffcc66';
+      ctx.fillStyle = `rgba(255,220,140,${a})`;
+      ctx.beginPath();
+      ctx.arc(0, -CELL*0.35, 5 * a + 3, 0, Math.PI*2);
+      ctx.fill();
+      // core
+      ctx.shadowBlur = 0;
+      ctx.fillStyle = `rgba(255,255,200,${a})`;
+      ctx.beginPath();
+      ctx.arc(0, -CELL*0.35, 2 * a + 1, 0, Math.PI*2);
+      ctx.fill();
+      ctx.restore();
     } else if (f.kind === 'beam') {
       // Sniper tracer: bright line that fades
       const a = 1 - f.t / f.dur;
@@ -3414,8 +3500,15 @@ function drawFX() {
   }
 }
 
+// Screen shake — amount decays per frame, applied as translate in render
+let shakeAmount = 0;
+let shakeX = 0, shakeY = 0;
+
 function render() {
   ctx.clearRect(0, 0, CANVAS_W, CANVAS_H);
+  // Apply screen shake via offset (outer elements like boss banner compensate)
+  ctx.save();
+  ctx.translate(shakeX, shakeY);
   drawBackground();
   drawAmbient();
   drawPlacementPreview();
@@ -3423,6 +3516,8 @@ function render() {
   drawProjectiles();
   drawEnemies();
   drawFX();
+  ctx.restore();
+  // Boss banner always drawn without shake (UI element)
   drawBossBanner();
 }
 
@@ -3605,6 +3700,10 @@ function updateAutoplay(dt) {
 function updateEnemies(dt) {
   for (const e of state.enemies) {
     if (e.dead) continue;
+    // Decay hit flash
+    if (e.hitFlash && e.hitFlash > 0) {
+      e.hitFlash = Math.max(0, e.hitFlash - dt * 6);
+    }
     // Regen (only if not at full HP)
     if (e.regenRate && e.hp < e.maxHp) {
       e.hp = Math.min(e.maxHp, e.hp + e.regenRate * dt);
@@ -3669,6 +3768,20 @@ function fireAt(tower, target) {
   const tx = tower.c * CELL + CELL/2, ty = tower.r * CELL + CELL/2;
   const dx = target.x - tx, dy = target.y - ty;
   tower.angle = Math.atan2(dy, dx);
+
+  // Visual feedback on fire: muzzle flash, glow pulse, barrel recoil
+  // The barrel points "up" in local space (angle - PI/2), so muzzle flash x/y already at tower origin
+  tower.fireGlow = 1.0;
+  tower.recoil = 0.35;
+  // Flame doesn't use a single muzzle flash — it has its own particle stream
+  if (tower.key !== 'flame') {
+    state.fx.push({
+      kind: 'muzzleFlash',
+      x: tx, y: ty,
+      angle: tower.angle + Math.PI/2, // barrel points up in local coords
+      t: 0, dur: 0.1
+    });
+  }
 
   // Sniper: instant hit beam — no projectile travel time
   if (tower.key === 'sniper') {
@@ -3764,6 +3877,9 @@ function updateTowers(dt) {
     const def = TOWER_DEFS[tower.key];
     const lv = def.levels[tower.level];
     tower.cd = (tower.cd || 0) - dt;
+    // Decay visual effects
+    if (tower.fireGlow > 0) tower.fireGlow = Math.max(0, tower.fireGlow - dt * 6);
+    if (tower.recoil > 0) tower.recoil = Math.max(0, tower.recoil - dt * 4);
     const target = pickTarget(tower);
     if (target) {
       // face target smoothly
@@ -3793,6 +3909,19 @@ function applyDamage(enemy, dmg, piercing) {
     // Any leftover raw dmg goes to hp (post-armor)
     const overflow = Math.max(0, dmg - shieldHit);
     final = overflow * (1 - effArmor);
+    // Visual: blue shield hit flash
+    enemy.hitFlash = 0.25; // short flash
+    enemy.hitFlashColor = 'shield'; // blue tint
+    // Shield damage number (blue, smaller)
+    state.fx.push({
+      kind: 'dmgNum',
+      x: enemy.x + (Math.random() - 0.5) * 12,
+      y: enemy.y - 12,
+      msg: Math.round(shieldHit),
+      color: 'rgba(120,200,240,1)',
+      size: 12,
+      t: 0, dur: 0.8
+    });
     if (enemy.shield > 0) {
       // Pure shield hit, no hp damage
       sfxEnemyHit();
@@ -3800,6 +3929,22 @@ function applyDamage(enemy, dmg, piercing) {
     }
   }
   enemy.hp -= final;
+  // Visual feedback: hit flash + damage number
+  enemy.hitFlash = 0.25;
+  enemy.hitFlashColor = 'white';
+  // Damage number — size based on damage, color based on enemy type
+  if (final > 0.5) {
+    const isCrit = final >= 50;
+    state.fx.push({
+      kind: 'dmgNum',
+      x: enemy.x + (Math.random() - 0.5) * 14,
+      y: enemy.y - 10,
+      msg: Math.round(final),
+      color: isCrit ? 'rgba(255,230,120,1)' : 'rgba(242,165,80,1)',
+      size: isCrit ? 16 : 13,
+      t: 0, dur: isCrit ? 1.0 : 0.8
+    });
+  }
   if (enemy.hp <= 0 && !enemy.dead) {
     enemy.dead = true;
     state.money += enemy.reward;
@@ -3808,8 +3953,9 @@ function applyDamage(enemy, dmg, piercing) {
     const fxMsg = enemy.isBoss ? ('★ +' + enemy.reward) : ('+' + enemy.reward);
     state.fx.push({ kind: 'text', x: enemy.x, y: enemy.y, msg: fxMsg, color: fxColor, t: 0, dur: 1.2 });
     if (enemy.isBoss) {
-      // Big explosion visual + toast
+      // Big explosion visual + toast + strong screen shake
       state.fx.push({ kind: 'explosion', x: enemy.x, y: enemy.y, r: 20, t: 0, dur: 0.8 });
+      shakeAmount = 10;
       sfxExplosion();
       toast(LANG === 'tr' ? '★ BOSS DÜŞTÜ!' : '★ BOSS DOWN!', '#f2c93a');
       // Boss kill achievements
@@ -3861,6 +4007,7 @@ function updateProjectiles(dt) {
           // Explosion only on ground impact (rockets don't airburst)
           state.fx.push({ kind: 'explosion', x: p.x, y: p.y, r: p.splash, t: 0, dur: 0.35 });
           sfxExplosion();
+          shakeAmount = Math.max(shakeAmount, 4);
           for (const e2 of state.enemies) {
             if (e2.dead || e2.flying) continue;
             if (dist(p.x, p.y, e2.x, e2.y) < p.splash) {
@@ -4046,6 +4193,15 @@ function loop(now) {
     updateFX(dt);
     // Autoplay countdown uses real time (not game speed) for consistency
     updateAutoplay(rawDt);
+  }
+  // Shake always decays (visible even when paused)
+  if (shakeAmount > 0) {
+    shakeAmount = Math.max(0, shakeAmount - rawDt * 35);
+    shakeX = (Math.random() - 0.5) * shakeAmount;
+    shakeY = (Math.random() - 0.5) * shakeAmount;
+  } else {
+    shakeX = 0;
+    shakeY = 0;
   }
   // Ambient always runs at normal speed (visual continuity)
   updateAmbient(rawDt);
@@ -5247,7 +5403,7 @@ document.getElementById('feedback-send').addEventListener('click', () => {
       msg: msg.substring(0, 1000),
       lang: LANG,
       ts: firebase.database.ServerValue.TIMESTAMP,
-      version: '2.2.0',
+      version: '2.3.0',
       ua: navigator.userAgent.substring(0, 200)
     }).then(() => {
       toast(t('feedbackThanks'), '#7a9f3f');
@@ -5276,7 +5432,7 @@ document.getElementById('feedback-send').addEventListener('click', () => {
 
 function serializeGame() {
   return {
-    version: '2.2.0',
+    version: '2.3.0',
     mapId: currentMap.id,
     difficulty: currentDifficulty,
     money: state.money,
@@ -5747,7 +5903,7 @@ async function uploadToCloud() {
     await fbDb.ref('siper/saves/' + code).set({
       ts: firebase.database.ServerValue.TIMESTAMP,
       data: data,
-      version: '2.2.0'
+      version: '2.3.0'
     });
     // Also mirror scores into /siper/scores/<code> for quick lookup
     await fbDb.ref('siper/scores/' + code).set(data.scores);
