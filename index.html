@@ -145,6 +145,69 @@
   .stat.wave { color: var(--sand); }
   .stat.score { color: var(--khaki-2); }
   .spacer { flex: 1; }
+
+  /* Hamburger dropdown menu */
+  .hamburger-wrap {
+    position: relative;
+    display: inline-block;
+  }
+  .hamburger-btn {
+    font-size: 18px;
+    line-height: 1;
+    padding: 6px 14px;
+    font-weight: bold;
+  }
+  .hamburger-dropdown {
+    position: absolute;
+    top: calc(100% + 4px);
+    right: 0;
+    background: linear-gradient(180deg, var(--panel) 0%, var(--bg-2) 100%);
+    border: 1px solid var(--orange);
+    border-radius: 3px;
+    padding: 6px;
+    min-width: 180px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.7);
+    z-index: 100;
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .hamburger-dropdown.active {
+    display: flex;
+    animation: dropFade 0.12s ease-out;
+  }
+  @keyframes dropFade {
+    from { opacity: 0; transform: translateY(-4px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .dropdown-item {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 10px 14px;
+    font-family: inherit;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    text-align: left;
+    transition: all 0.15s;
+  }
+  .dropdown-item:hover {
+    border-color: var(--orange);
+    color: var(--orange-2);
+    background: rgba(217,126,42,0.08);
+  }
+  .dropdown-item.save-quit { color: var(--green); border-color: rgba(122,159,63,0.3); }
+  .dropdown-item.save-quit:hover { background: rgba(122,159,63,0.1); border-color: var(--green); color: var(--green); }
+  .dropdown-item.danger { color: var(--danger); border-color: rgba(200,71,47,0.3); }
+  .dropdown-item.danger:hover { background: rgba(200,71,47,0.1); border-color: var(--danger); color: var(--danger); }
+  .dropdown-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 4px 0;
+  }
   .btn {
     background: linear-gradient(180deg, var(--khaki) 0%, #4d4530 100%);
     color: var(--text);
@@ -1270,11 +1333,15 @@
     #tower-shop::-webkit-scrollbar-thumb { background: var(--khaki); border-radius: 2px; }
     .main { flex-direction: column; }
     .tower-card {
-      min-width: 130px;
-      max-width: 140px;
+      min-width: 150px;
+      max-width: 170px;
       flex-shrink: 0;
       scroll-snap-align: start;
+      padding: 10px;
     }
+    .tower-card .name { font-size: 13px; }
+    .tower-card .cost { font-size: 12px; }
+    .tower-card .desc { font-size: 11px; line-height: 1.3; }
     .sidebar-title { display: none; }
     .hud {
       padding: 6px 6px;
@@ -1292,12 +1359,12 @@
     .stat { font-size: 11px; padding: 3px 7px; }
     .btn { font-size: 10px; padding: 6px 8px; min-height: 34px; }
     .spacer { display: none; }
-    .sidebar { height: 120px; }
+    .sidebar { height: 135px; }
     .tower-card {
-      min-width: 120px;
-      padding: 8px;
+      min-width: 140px;
+      padding: 9px;
     }
-    .tower-card .name { font-size: 11px; }
+    .tower-card .name { font-size: 12px; }
     .tower-card .cost { font-size: 11px; }
     .tower-card .desc { font-size: 10px; line-height: 1.25; }
   }
@@ -1320,14 +1387,14 @@
 <!-- SPLASH SCREEN -->
 <div class="splash" id="splash">
   <div class="splash-logo">SİPER</div>
-  <div class="splash-sub">v1.9.0</div>
+  <div class="splash-sub">v2.0.0</div>
   <div class="splash-tagline" data-i18n="splashTagline">Hattı Tut, Üssü Koru.</div>
   <div class="splash-lang">
     <button class="lang-btn" data-lang="tr">TÜRKÇE</button>
     <button class="lang-btn" data-lang="en">ENGLISH</button>
   </div>
   <button class="splash-start" id="splash-start" data-i18n="startGame">Oyuna Başla!</button>
-  <div class="splash-footer">v1.9.0 · mrtrclb</div>
+  <div class="splash-footer">v2.0.0 · mrtrclb</div>
 </div>
 
 <!-- MAIN MENU -->
@@ -1478,7 +1545,7 @@
   <div class="panel-content">
     <h1>SİPER</h1>
     <p style="text-align:center; color: var(--sand); letter-spacing: 2px; margin-bottom: 20px;">
-      <span data-i18n="version">Sürüm</span> 1.9.0
+      <span data-i18n="version">Sürüm</span> 2.0.0
     </p>
     <p data-i18n="aboutDesc">Siper, 10×8 grid üzerinde modern askeri temalı bir kule savunma oyunudur.</p>
 
@@ -1529,6 +1596,7 @@
     </div>
 
     <h2 data-i18n="changelog">Sürüm Notları</h2>
+    <p><strong>v2.0.0</strong> — <span data-i18n="changelog200"></span></p>
     <p><strong>v1.9.0</strong> — <span data-i18n="changelog190"></span></p>
     <p><strong>v1.8.0</strong> — <span data-i18n="changelog180"></span></p>
     <p><strong>v1.7.0</strong> — <span data-i18n="changelog170"></span></p>
@@ -1612,11 +1680,17 @@
     <div class="spacer"></div>
     <button class="btn primary" id="btn-wave" data-i18n="startWave">Dalgayı Başlat</button>
     <button class="btn" id="btn-speed" title="Hız">1×</button>
-    <button class="btn" id="btn-pause" data-i18n="pause">Duraklat</button>
-    <button class="btn save-quit" id="btn-save-quit" data-i18n="saveAndQuit">Kaydet & Çık</button>
-    <button class="btn" id="btn-map" data-i18n="changeMap">Harita</button>
-    <button class="btn danger" id="btn-restart" data-i18n="restart">Yeniden</button>
-    <button class="lang-toggle" id="btn-lang">EN</button>
+    <div class="hamburger-wrap">
+      <button class="btn hamburger-btn" id="btn-hamburger" aria-label="menu">≡</button>
+      <div class="hamburger-dropdown" id="hamburger-dropdown">
+        <button class="dropdown-item" id="btn-pause" data-i18n="pause">Duraklat</button>
+        <button class="dropdown-item save-quit" id="btn-save-quit" data-i18n="saveAndQuit">Kaydet & Çık</button>
+        <button class="dropdown-item" id="btn-map" data-i18n="changeMap">Menü</button>
+        <button class="dropdown-item danger" id="btn-restart" data-i18n="restart">Yeniden Başla</button>
+        <div class="dropdown-divider"></div>
+        <button class="dropdown-item" id="btn-lang"><span data-i18n="langLabel">Dil</span>: <span id="btn-lang-val">EN</span></button>
+      </div>
+    </div>
   </div>
 
   <!-- MAIN -->
@@ -1642,6 +1716,7 @@
       </div>
       <div class="actions">
         <button class="btn primary" id="tp-upgrade" data-i18n="upgrade">Yükselt</button>
+        <button class="btn" id="tp-move" data-i18n="move">Taşı</button>
         <button class="btn danger" id="tp-sell" data-i18n="sell">Sat</button>
       </div>
     </div>
@@ -1687,7 +1762,7 @@ const I18N = {
     wave: "Dalga", startWave: "Dalgayı Başlat", nextWave: "Sonraki Dalga",
     pause: "Duraklat", resume: "Devam", restart: "Yeniden",
     towers: "Kuleler", level: "Seviye", dmg: "Hasar", range: "Menzil", rate: "Hız",
-    upgrade: "Yükselt", sell: "Sat",
+    upgrade: "Yükselt", sell: "Sat", move: "Taşı",
     gameOver: "Oyun Bitti", gameOverSub: "Üssünüz düştü.",
     wavesReached: "Ulaşılan Dalga", playAgain: "Tekrar Oyna",
     tMG: "Makineli Tüfek", tMGd: "Hızlı ateş, düşük hasar. Piyadelere karşı etkili.",
@@ -1733,6 +1808,7 @@ const I18N = {
     music: "Müzik",
     sfx: "Efekt Sesleri",
     language: "Dil",
+    langLabel: "Dil",
     resetData: "Tüm Verileri Sıfırla",
     resetConfirm: "Tüm kayıtlı skorlar ve ayarlar silinecek. Emin misin?",
     resetDone: "Veriler sıfırlandı",
@@ -1765,6 +1841,7 @@ const I18N = {
     changelog170: "12 yeni harita (toplam 30). 6 harita 4 yönlü saldırılı yeni tür. Menü butonu artık otomatik kaydediyor. Çoklu yollu haritalarda spawn dağılımı dengeli.",
     changelog180: "Başarım sistemi eklendi. Oyun hızı kontrolü (1×/2×/3×). Mobilde alt panel yatay kaydırılabilir. Butonlar büyütüldü. Oyun Hakkında sayfası yenilendi.",
     changelog190: "4 yeni düşman: Koşucu (hızlı), Kalkanlı (shield), Yenileyici (regen), Mega-Tank (boss). Her 10. dalgada boss. 2 yeni başarım. Toplam 32 başarım.",
+    changelog200: "Büyük UI yenileme: hamburger dropdown menü. Kule taşıma özelliği (her kule 1 kez). Mobil kartlar büyütüldü. Kule seçiminde toast geri bildirimi. Bulut paneli geri dönüş hatası düzeltildi.",
     otherGames: "Diğer Oyunlarım",
     credits: "Geliştiren: mrtrclb",
     version: "Sürüm",
@@ -1813,7 +1890,7 @@ const I18N = {
     wave: "Wave", startWave: "Start Wave", nextWave: "Next Wave",
     pause: "Pause", resume: "Resume", restart: "Restart",
     towers: "Towers", level: "Level", dmg: "Dmg", range: "Range", rate: "Rate",
-    upgrade: "Upgrade", sell: "Sell",
+    upgrade: "Upgrade", sell: "Sell", move: "Move",
     gameOver: "Game Over", gameOverSub: "Your base has fallen.",
     wavesReached: "Wave Reached", playAgain: "Play Again",
     tMG: "Machine Gun", tMGd: "Fast fire, low damage. Good vs infantry.",
@@ -1855,6 +1932,7 @@ const I18N = {
     music: "Music",
     sfx: "Sound FX",
     language: "Language",
+    langLabel: "Language",
     resetData: "Reset All Data",
     resetConfirm: "All saved scores and settings will be deleted. Are you sure?",
     resetDone: "Data reset",
@@ -1886,6 +1964,7 @@ const I18N = {
     changelog170: "12 new maps (30 total). 6 new quad-attack (4-way assault) maps. Menu button now auto-saves. Balanced spawn distribution for multi-path maps.",
     changelog180: "Achievements system added. Game speed control (1×/2×/3×). Horizontal scrollable tower shop on mobile. Larger buttons. Refreshed About page.",
     changelog190: "4 new enemies: Scout (fast), Shielded (shield HP), Regenerator (heals), Mega-Tank (boss). Boss spawns every 10th wave. 2 new achievements. 32 total.",
+    changelog200: "Major UI overhaul: hamburger dropdown menu. Tower relocation feature (once per tower). Larger mobile cards. Toast feedback when selecting a tower. Fixed cloud panel return bug.",
     otherGames: "My Other Games",
     credits: "Developed by mrtrclb",
     version: "Version",
@@ -2286,7 +2365,7 @@ let MAPS = [
     ]],
     palette: { road1: '#34301e', road2: '#24201a', ground: '#0c0b09', accent: '#e88a32' }
   },
-  // ===== 12 NEW MAPS (v1.9.0) =====
+  // ===== 12 NEW MAPS (v2.0.0) =====
   // ===== 6 QUAD-ATTACK MAPS (4-way convergence on central HQ) =====
   {
     id: 'sierra',
@@ -2573,7 +2652,7 @@ const ENEMY_TEMPLATES = {
   infantry:  { name: 'Piyade',   hp: 30,  speed: 1.2, armor: 0.0,  reward: 6,  flying: false, color: '#a08660', size: 9 },
   armor:     { name: 'Zırhlı',   hp: 110, speed: 0.7, armor: 0.55, reward: 14, flying: false, color: '#4d4530', size: 12 },
   air:       { name: 'Hava',     hp: 55,  speed: 1.6, armor: 0.1,  reward: 12, flying: true,  color: '#6b7a8a', size: 10 },
-  // NEW v1.9.0:
+  // NEW v2.0.0:
   scout:     { name: 'Koşucu',   hp: 22,  speed: 2.6, armor: 0.0,  reward: 5,  flying: false, color: '#d97e2a', size: 7 },
   shielded:  { name: 'Kalkanlı', hp: 50,  speed: 0.9, armor: 0.25, reward: 22, flying: false, color: '#6b5a3a', size: 11, shield: 80 },
   regen:     { name: 'Yenileyici', hp: 80, speed: 0.95, armor: 0.15, reward: 20, flying: false, color: '#7a6f3f', size: 10, regenRate: 3 },
@@ -2601,6 +2680,7 @@ const state = {
   fx: [], // floating text / explosions
   placing: null, // tower key being placed
   selected: null, // index of selected tower
+  moving: null, // index of tower being relocated
   waveActive: false,
   spawnQueue: [],
   spawnTimer: 0,
@@ -2805,6 +2885,33 @@ function drawBackground() {
 }
 
 function drawPlacementPreview() {
+  // Move mode takes precedence over placing
+  if (state.moving !== null && state.moving !== undefined) {
+    const { c, r } = state.mouseCell;
+    if (c < 0) return;
+    const tw = state.towers[state.moving];
+    if (!tw) return;
+    const def = TOWER_DEFS[tw.key];
+    const lv = def.levels[tw.level];
+    const x = c*CELL + CELL/2, y = r*CELL + CELL/2;
+    const valid = !isPathCell(c, r) && !towerAt(c, r);
+    // cell tint — blue for move, red if invalid
+    ctx.fillStyle = valid ? 'rgba(106,184,217,0.28)' : 'rgba(200,71,47,0.25)';
+    ctx.fillRect(c*CELL, r*CELL, CELL, CELL);
+    // range circle
+    ctx.strokeStyle = valid ? 'rgba(106,184,217,0.6)' : 'rgba(200,71,47,0.5)';
+    ctx.lineWidth = 1.5;
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath();
+    ctx.arc(x, y, lv.range * CELL, 0, Math.PI*2);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    // ghost tower
+    ctx.globalAlpha = 0.55;
+    drawTowerShape(tw.key, tw.level, x, y, tw.angle || 0);
+    ctx.globalAlpha = 1;
+    return;
+  }
   if (!state.placing) return;
   const { c, r } = state.mouseCell;
   if (c < 0) return;
@@ -3871,6 +3978,21 @@ canvas.addEventListener('touchstart', (e) => {
 }, { passive: false });
 
 function handleClick(c, r) {
+  // Moving (relocate an existing tower)
+  if (state.moving !== undefined && state.moving !== null) {
+    if (isPathCell(c, r) || towerAt(c, r)) {
+      toast(t('cantPlaceHere'), '#c8472f');
+      return;
+    }
+    const tw = state.towers[state.moving];
+    if (tw) {
+      tw.c = c; tw.r = r;
+      tw.moved = true; // can't move again
+      toast(LANG === 'tr' ? 'Taşındı' : 'Moved', '#7a9f3f');
+    }
+    state.moving = null;
+    return;
+  }
   // Placing
   if (state.placing) {
     const def = TOWER_DEFS[state.placing];
@@ -3926,10 +4048,17 @@ function buildShop() {
     el.addEventListener('click', () => {
       if (state.placing === key) {
         state.placing = null;
+        toast(LANG === 'tr' ? 'Seçim iptal' : 'Selection cancelled', '#8a7d52');
       } else {
+        const cost = def.levels[0].cost;
+        if (state.money < cost) {
+          toast(t('notEnoughMoney'), '#c8472f');
+          return;
+        }
         state.placing = key;
         state.selected = null;
         hideTowerPanel();
+        toast((LANG === 'tr' ? 'Yerleştirmek için gride dokun: ' : 'Tap grid to place: ') + t(def.nameKey), '#d97e2a');
       }
       refreshShopSelection();
     });
@@ -3982,6 +4111,17 @@ function showTowerPanel() {
   const refund = Math.floor(spent * 0.7);
   sellBtn.textContent = `${t('sell')} ◈${refund}`;
   sellBtn.dataset.refund = refund;
+  // Move button — single-use per tower
+  const moveBtn = document.getElementById('tp-move');
+  if (moveBtn) {
+    if (tw.moved) {
+      moveBtn.disabled = true;
+      moveBtn.textContent = '✓ ' + t('move');
+    } else {
+      moveBtn.disabled = false;
+      moveBtn.textContent = t('move');
+    }
+  }
 
   panel.classList.add('active');
 }
@@ -3992,10 +4132,13 @@ document.getElementById('tp-close').addEventListener('click', () => {
   state.selected = null;
   hideTowerPanel();
 });
-// ESC key closes tower panel / cancels placing
+// ESC key closes tower panel / cancels placing / cancels move
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
-    if (state.placing) {
+    if (state.moving !== null && state.moving !== undefined) {
+      state.moving = null;
+      toast(LANG === 'tr' ? 'Taşıma iptal' : 'Move cancelled', '#8a7d52');
+    } else if (state.placing) {
       state.placing = null;
       if (typeof refreshShopSelection === 'function') refreshShopSelection();
     } else if (state.selected !== null) {
@@ -4016,6 +4159,21 @@ document.getElementById('tp-upgrade').addEventListener('click', () => {
   state.score += 5;
   if (tw.level >= def.levels.length - 1) unlockAch('maxUp');
   showTowerPanel();
+});
+document.getElementById('tp-move').addEventListener('click', () => {
+  if (state.selected === null) return;
+  const tw = state.towers[state.selected];
+  if (tw.moved) {
+    toast(LANG === 'tr' ? 'Bu kule zaten taşındı' : 'This tower was already moved', '#c8472f');
+    return;
+  }
+  // Enter "move mode": selected tower is pending relocation
+  state.moving = state.selected;
+  state.placing = null;
+  state.selected = null;
+  hideTowerPanel();
+  refreshShopSelection();
+  toast(LANG === 'tr' ? 'Yeni konuma dokun (tek kullanımlık)' : 'Tap new location (one-time)', '#d97e2a');
 });
 document.getElementById('tp-sell').addEventListener('click', () => {
   if (state.selected === null) return;
@@ -4050,12 +4208,51 @@ document.getElementById('m-maps').addEventListener('click', () => {
   document.getElementById('modal').classList.remove('active');
   showMapSelect();
 });
-document.getElementById('btn-lang').addEventListener('click', () => {
+document.getElementById('btn-lang').addEventListener('click', (e) => {
+  e.stopPropagation(); // don't close dropdown yet (we'll close after toggle)
   LANG = (LANG === 'tr') ? 'en' : 'tr';
   localStorage.setItem('siper_lang', LANG);
   applyI18n();
   if (state.selected !== null) showTowerPanel();
   document.getElementById('btn-pause').textContent = state.paused ? t('resume') : t('pause');
+  // update the label next to "Lang:" — show the OTHER language as clickable target
+  const valEl = document.getElementById('btn-lang-val');
+  if (valEl) valEl.textContent = (LANG === 'tr') ? 'EN' : 'TR';
+  // Close dropdown after language switch
+  document.getElementById('hamburger-dropdown').classList.remove('active');
+});
+
+// Hamburger dropdown toggle
+document.getElementById('btn-hamburger').addEventListener('click', (e) => {
+  e.stopPropagation();
+  document.getElementById('hamburger-dropdown').classList.toggle('active');
+});
+// Close dropdown when clicking a dropdown item (except btn-lang which closes manually)
+document.querySelectorAll('#hamburger-dropdown .dropdown-item').forEach(item => {
+  if (item.id === 'btn-lang') return;
+  item.addEventListener('click', () => {
+    // Close after a tiny delay so the click handler can run
+    setTimeout(() => {
+      document.getElementById('hamburger-dropdown').classList.remove('active');
+    }, 0);
+  });
+});
+// Close dropdown when clicking outside
+document.addEventListener('click', (e) => {
+  const drop = document.getElementById('hamburger-dropdown');
+  const btn = document.getElementById('btn-hamburger');
+  if (drop && drop.classList.contains('active')) {
+    if (!drop.contains(e.target) && e.target !== btn) {
+      drop.classList.remove('active');
+    }
+  }
+});
+// ESC closes dropdown
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    const drop = document.getElementById('hamburger-dropdown');
+    if (drop) drop.classList.remove('active');
+  }
 });
 
 function doGameOver() {
@@ -4084,6 +4281,7 @@ function resetGame() {
   state.fx = [];
   state.placing = null;
   state.selected = null;
+  state.moving = null;
   state.waveActive = false;
   state.spawnQueue = [];
   state.spawnTimer = 0;
@@ -4288,6 +4486,10 @@ function hideAllScreens() {
   document.getElementById('about-panel').classList.remove('active');
   const achPanel = document.getElementById('achievements-panel');
   if (achPanel) achPanel.classList.remove('active');
+  const cloudPanel = document.getElementById('cloud-panel');
+  if (cloudPanel) cloudPanel.classList.remove('active');
+  const continuePanel = document.getElementById('continue-panel');
+  if (continuePanel) continuePanel.classList.remove('active');
   document.getElementById('app').style.display = 'none';
   document.getElementById('online-indicator').style.display = 'none';
 }
@@ -4834,7 +5036,7 @@ document.getElementById('feedback-send').addEventListener('click', () => {
       msg: msg.substring(0, 1000),
       lang: LANG,
       ts: firebase.database.ServerValue.TIMESTAMP,
-      version: '1.9.0',
+      version: '2.0.0',
       ua: navigator.userAgent.substring(0, 200)
     }).then(() => {
       toast(t('feedbackThanks'), '#7a9f3f');
@@ -4863,7 +5065,7 @@ document.getElementById('feedback-send').addEventListener('click', () => {
 
 function serializeGame() {
   return {
-    version: '1.9.0',
+    version: '2.0.0',
     mapId: currentMap.id,
     difficulty: currentDifficulty,
     money: state.money,
@@ -5298,7 +5500,7 @@ async function uploadToCloud() {
     await fbDb.ref('siper/saves/' + code).set({
       ts: firebase.database.ServerValue.TIMESTAMP,
       data: data,
-      version: '1.9.0'
+      version: '2.0.0'
     });
     // Also mirror scores into /siper/scores/<code> for quick lookup
     await fbDb.ref('siper/scores/' + code).set(data.scores);
@@ -5397,6 +5599,11 @@ document.getElementById('btn-download').addEventListener('click', downloadFromCl
 applyI18n();
 resizeCanvas();
 setGameSpeed(gameSpeed);
+// Set initial lang-val (show the OTHER language as clickable target)
+(function() {
+  const valEl = document.getElementById('btn-lang-val');
+  if (valEl) valEl.textContent = (LANG === 'tr') ? 'EN' : 'TR';
+})();
 // Start at splash
 showSplash();
 initPresence();
