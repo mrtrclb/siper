@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>Siper — Kule Savunma Oyunu | Tower Defense</title>
-<meta name="description" content="Siper, modern askeri temalı ücretsiz bir tarayıcı tabanlı kule savunma oyunudur. 18 farklı harita, 3 zorluk seviyesi, sonsuz dalga modu, bulut kayıt. Hattı tut, üssü koru!">
+<meta name="description" content="Siper, modern askeri temalı ücretsiz bir tarayıcı tabanlı kule savunma oyunudur. 30 farklı harita, 7 kule tipi, 7 düşman, boss dalgaları, 32 başarım, 3 zorluk, sonsuz dalga modu ve bulut kayıt. Hattı tut, üssü koru!">
 <meta name="keywords" content="siper, tower defense, kule savunma, kule oyunu, tarayıcı oyunu, türkçe oyun, strateji oyunu, pwa oyun, ücretsiz oyun, mrtrclb, offline oyun">
 <meta name="author" content="mrtrclb">
 <meta name="theme-color" content="#d97e2a">
@@ -16,7 +16,7 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://mrtrclb.github.io/siper/">
 <meta property="og:title" content="Siper — Kule Savunma Oyunu">
-<meta property="og:description" content="18 harita, 3 zorluk, sonsuz dalga. Modern askeri kule savunma oyunu. Hattı tut, üssü koru!">
+<meta property="og:description" content="30 harita, 7 kule, 7 düşman, boss dalgaları, 32 başarım. Modern askeri kule savunma oyunu. Hattı tut, üssü koru!">
 <meta property="og:image" content="https://mrtrclb.github.io/siper/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -29,7 +29,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:url" content="https://mrtrclb.github.io/siper/">
 <meta name="twitter:title" content="Siper — Kule Savunma Oyunu">
-<meta name="twitter:description" content="18 harita, 3 zorluk, sonsuz dalga. Modern askeri kule savunma oyunu.">
+<meta name="twitter:description" content="30 harita, 7 kule, 7 düşman, boss dalgaları. Modern askeri kule savunma oyunu.">
 <meta name="twitter:image" content="https://mrtrclb.github.io/siper/og-image.png">
 <meta name="twitter:creator" content="@mrtrclb">
 
@@ -40,7 +40,7 @@
   "@type": "VideoGame",
   "name": "Siper",
   "alternateName": "Siper Tower Defense",
-  "description": "Modern askeri temalı tarayıcı kule savunma oyunu. 18 harita, 3 zorluk seviyesi, sonsuz dalga modu ve bulut kayıt özelliği.",
+  "description": "Modern askeri temalı tarayıcı kule savunma oyunu. 30 harita, 7 kule tipi, 7 düşman sınıfı, boss dalgaları, 32 başarım, 3 zorluk seviyesi ve bulut kayıt özelliği.",
   "url": "https://mrtrclb.github.io/siper/",
   "image": "https://mrtrclb.github.io/siper/og-image.png",
   "author": {
@@ -208,6 +208,10 @@
     background: var(--border);
     margin: 4px 0;
   }
+
+  /* Changelog expander */
+  .changelog-more-hidden { display: none; }
+  .changelog-more-visible { display: block; }
   .btn {
     background: linear-gradient(180deg, var(--khaki) 0%, #4d4530 100%);
     color: var(--text);
@@ -1387,14 +1391,14 @@
 <!-- SPLASH SCREEN -->
 <div class="splash" id="splash">
   <div class="splash-logo">SİPER</div>
-  <div class="splash-sub">v2.0.0</div>
+  <div class="splash-sub">v2.0.1</div>
   <div class="splash-tagline" data-i18n="splashTagline">Hattı Tut, Üssü Koru.</div>
   <div class="splash-lang">
     <button class="lang-btn" data-lang="tr">TÜRKÇE</button>
     <button class="lang-btn" data-lang="en">ENGLISH</button>
   </div>
   <button class="splash-start" id="splash-start" data-i18n="startGame">Oyuna Başla!</button>
-  <div class="splash-footer">v2.0.0 · mrtrclb</div>
+  <div class="splash-footer">v2.0.1 · mrtrclb</div>
 </div>
 
 <!-- MAIN MENU -->
@@ -1545,7 +1549,7 @@
   <div class="panel-content">
     <h1>SİPER</h1>
     <p style="text-align:center; color: var(--sand); letter-spacing: 2px; margin-bottom: 20px;">
-      <span data-i18n="version">Sürüm</span> 2.0.0
+      <span data-i18n="version">Sürüm</span> 2.0.1
     </p>
     <p data-i18n="aboutDesc">Siper, 10×8 grid üzerinde modern askeri temalı bir kule savunma oyunudur.</p>
 
@@ -1596,14 +1600,18 @@
     </div>
 
     <h2 data-i18n="changelog">Sürüm Notları</h2>
+    <p><strong>v2.0.1</strong> — <span data-i18n="changelog201"></span></p>
     <p><strong>v2.0.0</strong> — <span data-i18n="changelog200"></span></p>
     <p><strong>v1.9.0</strong> — <span data-i18n="changelog190"></span></p>
     <p><strong>v1.8.0</strong> — <span data-i18n="changelog180"></span></p>
-    <p><strong>v1.7.0</strong> — <span data-i18n="changelog170"></span></p>
-    <p><strong>v1.6.0</strong> — <span data-i18n="changelog160"></span></p>
-    <p><strong>v1.5.2</strong> — <span data-i18n="changelog152"></span></p>
-    <p><strong>v1.5.1</strong> — <span data-i18n="changelog151"></span></p>
-    <p><strong>v1.5.0</strong> — <span data-i18n="changelog150"></span></p>
+    <div id="changelog-more" class="changelog-more-hidden">
+      <p><strong>v1.7.0</strong> — <span data-i18n="changelog170"></span></p>
+      <p><strong>v1.6.0</strong> — <span data-i18n="changelog160"></span></p>
+      <p><strong>v1.5.2</strong> — <span data-i18n="changelog152"></span></p>
+      <p><strong>v1.5.1</strong> — <span data-i18n="changelog151"></span></p>
+      <p><strong>v1.5.0</strong> — <span data-i18n="changelog150"></span></p>
+    </div>
+    <button class="btn" id="changelog-toggle" data-i18n="showMore" style="margin: 8px 0 20px; font-size: 11px;">Daha Fazla Göster</button>
 
     <h2 data-i18n="otherGames">Diğer Oyunlarım</h2>
     <div class="other-games">
@@ -1814,7 +1822,7 @@ const I18N = {
     resetDone: "Veriler sıfırlandı",
     on: "Açık", off: "Kapalı",
     // About
-    aboutDesc: "Siper, 10×8 grid üzerinde modern askeri temalı bir kule savunma oyunudur. 4 kule tipi, 3 düşman sınıfı ve 8 farklı harita ile sonsuz dalgalara karşı üssünü savun.",
+    aboutDesc: "Siper, 10×8 grid üzerinde modern askeri temalı bir kule savunma oyunudur. 7 kule tipi, 7 düşman sınıfı, 6 tanesi 4-yönlü saldırı olan 30 farklı harita ve her 10 dalgada bir boss ile sonsuz dalgalara karşı üssünü savun.",
     howToPlay: "Nasıl Oynanır",
     howToPlay1: "Sol paneldeki kulelerden birini seç ve grid üzerinde boş bir hücreye tıklayarak yerleştir.",
     howToPlay2: "Dalga başlat butonuna bas, düşmanlar yolda ilerlerken kuleleri otomatik ateş eder.",
@@ -1834,6 +1842,8 @@ const I18N = {
     weDesc: "Saat üretim imparatorluğu kur",
     tgDesc: "Borsa ve yatırım simülasyonu",
     changelog: "Sürüm Notları",
+    showMore: "Daha Fazla Göster",
+    showLess: "Daha Az Göster",
     changelog150: "İlk resmi sürüm. 8 harita, 3 zorluk, Firebase presence ve feedback.",
     changelog151: "10 yeni harita (toplam 18). Kaydet & Çık + Bulut senkron (SI-XXXXXX kod). Feedback günlük 3 limit.",
     changelog152: "Web Audio ses efektleri (atış, patlama, dalga, game over). Dosya temizleme.",
@@ -1842,6 +1852,7 @@ const I18N = {
     changelog180: "Başarım sistemi eklendi. Oyun hızı kontrolü (1×/2×/3×). Mobilde alt panel yatay kaydırılabilir. Butonlar büyütüldü. Oyun Hakkında sayfası yenilendi.",
     changelog190: "4 yeni düşman: Koşucu (hızlı), Kalkanlı (shield), Yenileyici (regen), Mega-Tank (boss). Her 10. dalgada boss. 2 yeni başarım. Toplam 32 başarım.",
     changelog200: "Büyük UI yenileme: hamburger dropdown menü. Kule taşıma özelliği (her kule 1 kez). Mobil kartlar büyütüldü. Kule seçiminde toast geri bildirimi. Bulut paneli geri dönüş hatası düzeltildi.",
+    changelog201: "Hakkında sayfası ve meta etiketler güncel değerlerle (30 harita, 7 kule, 7 düşman, 32 başarım) güncellendi. Sürüm notları için 'Daha Fazla Göster' butonu.",
     otherGames: "Diğer Oyunlarım",
     credits: "Geliştiren: mrtrclb",
     version: "Sürüm",
@@ -1937,7 +1948,7 @@ const I18N = {
     resetConfirm: "All saved scores and settings will be deleted. Are you sure?",
     resetDone: "Data reset",
     on: "On", off: "Off",
-    aboutDesc: "Siper is a modern military-themed tower defense game on a 10×8 grid. Defend your base against endless waves with 4 tower types, 3 enemy classes, and 8 different maps.",
+    aboutDesc: "Siper is a modern military-themed tower defense game on a 10×8 grid. Defend your base against endless waves with 7 tower types, 7 enemy classes, 30 different maps (6 of which are 4-way quad-attack) and a boss every 10 waves.",
     howToPlay: "How to Play",
     howToPlay1: "Select a tower from the left panel and click an empty cell on the grid to place it.",
     howToPlay2: "Press Start Wave — towers automatically fire at enemies moving along the path.",
@@ -1957,6 +1968,8 @@ const I18N = {
     weDesc: "Build a watchmaking empire",
     tgDesc: "Stock market and investment sim",
     changelog: "Changelog",
+    showMore: "Show More",
+    showLess: "Show Less",
     changelog150: "First official release. 8 maps, 3 difficulties, Firebase presence and feedback.",
     changelog151: "10 new maps (18 total). Save & Quit + Cloud sync (SI-XXXXXX code). Feedback 3/day limit.",
     changelog152: "Web Audio SFX (shots, explosions, waves, game over). Polish.",
@@ -1965,6 +1978,7 @@ const I18N = {
     changelog180: "Achievements system added. Game speed control (1×/2×/3×). Horizontal scrollable tower shop on mobile. Larger buttons. Refreshed About page.",
     changelog190: "4 new enemies: Scout (fast), Shielded (shield HP), Regenerator (heals), Mega-Tank (boss). Boss spawns every 10th wave. 2 new achievements. 32 total.",
     changelog200: "Major UI overhaul: hamburger dropdown menu. Tower relocation feature (once per tower). Larger mobile cards. Toast feedback when selecting a tower. Fixed cloud panel return bug.",
+    changelog201: "About page and meta tags updated with current values (30 maps, 7 towers, 7 enemies, 32 achievements). 'Show More' button for changelog.",
     otherGames: "My Other Games",
     credits: "Developed by mrtrclb",
     version: "Version",
@@ -2365,7 +2379,7 @@ let MAPS = [
     ]],
     palette: { road1: '#34301e', road2: '#24201a', ground: '#0c0b09', accent: '#e88a32' }
   },
-  // ===== 12 NEW MAPS (v2.0.0) =====
+  // ===== 12 NEW MAPS (v2.0.1) =====
   // ===== 6 QUAD-ATTACK MAPS (4-way convergence on central HQ) =====
   {
     id: 'sierra',
@@ -2652,7 +2666,7 @@ const ENEMY_TEMPLATES = {
   infantry:  { name: 'Piyade',   hp: 30,  speed: 1.2, armor: 0.0,  reward: 6,  flying: false, color: '#a08660', size: 9 },
   armor:     { name: 'Zırhlı',   hp: 110, speed: 0.7, armor: 0.55, reward: 14, flying: false, color: '#4d4530', size: 12 },
   air:       { name: 'Hava',     hp: 55,  speed: 1.6, armor: 0.1,  reward: 12, flying: true,  color: '#6b7a8a', size: 10 },
-  // NEW v2.0.0:
+  // NEW v2.0.1:
   scout:     { name: 'Koşucu',   hp: 22,  speed: 2.6, armor: 0.0,  reward: 5,  flying: false, color: '#d97e2a', size: 7 },
   shielded:  { name: 'Kalkanlı', hp: 50,  speed: 0.9, armor: 0.25, reward: 22, flying: false, color: '#6b5a3a', size: 11, shield: 80 },
   regen:     { name: 'Yenileyici', hp: 80, speed: 0.95, armor: 0.15, reward: 20, flying: false, color: '#7a6f3f', size: 10, regenRate: 3 },
@@ -5036,7 +5050,7 @@ document.getElementById('feedback-send').addEventListener('click', () => {
       msg: msg.substring(0, 1000),
       lang: LANG,
       ts: firebase.database.ServerValue.TIMESTAMP,
-      version: '2.0.0',
+      version: '2.0.1',
       ua: navigator.userAgent.substring(0, 200)
     }).then(() => {
       toast(t('feedbackThanks'), '#7a9f3f');
@@ -5065,7 +5079,7 @@ document.getElementById('feedback-send').addEventListener('click', () => {
 
 function serializeGame() {
   return {
-    version: '2.0.0',
+    version: '2.0.1',
     mapId: currentMap.id,
     difficulty: currentDifficulty,
     money: state.money,
@@ -5500,7 +5514,7 @@ async function uploadToCloud() {
     await fbDb.ref('siper/saves/' + code).set({
       ts: firebase.database.ServerValue.TIMESTAMP,
       data: data,
-      version: '2.0.0'
+      version: '2.0.1'
     });
     // Also mirror scores into /siper/scores/<code> for quick lookup
     await fbDb.ref('siper/scores/' + code).set(data.scores);
@@ -5599,6 +5613,18 @@ document.getElementById('btn-download').addEventListener('click', downloadFromCl
 applyI18n();
 resizeCanvas();
 setGameSpeed(gameSpeed);
+// Changelog Show More / Show Less toggle
+(function() {
+  const btn = document.getElementById('changelog-toggle');
+  const more = document.getElementById('changelog-more');
+  if (btn && more) {
+    btn.addEventListener('click', () => {
+      const expanded = more.classList.toggle('changelog-more-visible');
+      more.classList.toggle('changelog-more-hidden', !expanded);
+      btn.textContent = expanded ? t('showLess') : t('showMore');
+    });
+  }
+})();
 // Set initial lang-val (show the OTHER language as clickable target)
 (function() {
   const valEl = document.getElementById('btn-lang-val');
