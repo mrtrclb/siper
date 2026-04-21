@@ -172,6 +172,7 @@
   .hamburger-wrap {
     position: relative;
     display: inline-block;
+    margin-left: auto; /* push to right edge of HUD */
   }
   .hamburger-btn {
     font-size: 22px;
@@ -183,13 +184,15 @@
     position: absolute;
     top: calc(100% + 4px);
     right: 0;
+    /* Clamp so it doesn't escape viewport edges */
+    max-width: calc(100vw - 20px);
     background: linear-gradient(180deg, var(--panel) 0%, var(--bg-2) 100%);
     border: 1px solid var(--orange);
     border-radius: 3px;
     padding: 6px;
     min-width: 180px;
     box-shadow: 0 6px 20px rgba(0,0,0,0.7);
-    z-index: 100;
+    z-index: 1000;
     display: none;
     flex-direction: column;
     gap: 4px;
@@ -1424,14 +1427,14 @@
 <!-- SPLASH SCREEN -->
 <div class="splash" id="splash">
   <div class="splash-logo">SİPER</div>
-  <div class="splash-sub">v2.5.0</div>
+  <div class="splash-sub">v2.5.1</div>
   <div class="splash-tagline" data-i18n="splashTagline">Hattı Tut, Üssü Koru.</div>
   <div class="splash-lang">
     <button class="lang-btn" data-lang="tr">TÜRKÇE</button>
     <button class="lang-btn" data-lang="en">ENGLISH</button>
   </div>
   <button class="splash-start" id="splash-start" data-i18n="startGame">Oyuna Başla!</button>
-  <div class="splash-footer">v2.5.0 · mrtrclb</div>
+  <div class="splash-footer">v2.5.1 · mrtrclb</div>
 </div>
 
 <!-- MAIN MENU -->
@@ -1582,7 +1585,7 @@
   <div class="panel-content">
     <h1>SİPER</h1>
     <p style="text-align:center; color: var(--sand); letter-spacing: 2px; margin-bottom: 20px;">
-      <span data-i18n="version">Sürüm</span> 2.5.0
+      <span data-i18n="version">Sürüm</span> 2.5.1
     </p>
     <p data-i18n="aboutDesc">Siper, 10×8 grid üzerinde modern askeri temalı bir kule savunma oyunudur.</p>
 
@@ -1634,6 +1637,7 @@
     </div>
 
     <h2 data-i18n="changelog">Sürüm Notları</h2>
+    <p><strong>v2.5.1</strong> — <span data-i18n="changelog251"></span></p>
     <p><strong>v2.5.0</strong> — <span data-i18n="changelog250"></span></p>
     <p><strong>v2.4.0</strong> — <span data-i18n="changelog240"></span></p>
     <p><strong>v2.3.0</strong> — <span data-i18n="changelog230"></span></p>
@@ -1905,6 +1909,7 @@ const I18N = {
     changelog230: "Görsel geri bildirim paketi: her vuruşta turuncu hasar sayısı yukarı uçar (50+ hasar = sarı kritik). Düşmanlar vurulunca beyaz flash, kalkan vuruşlarında mavi flash. Kuleler ateş ederken parlıyor ve namlu hafif geri tepiyor. Namlu ucundan muzzle flash. Patlamada ve boss ölümünde screen shake. Boss'un sürekli kırmızı nefes alan glow'u var.",
     changelog240: "Can sistemi: Her 5 dalgada otomatik +2 can, her 10 dalgada +5 can. Ayrıca HUD'daki ♥ simgesine tıklayarak para karşılığı tamir satın alabilirsin (50◈ başlangıç, her alımda +25◈ pahalanır). Üst sınır yok — istediğin kadar biriktir.",
     changelog250: "Yeni düşman ve kule HP sistemi: Ajitatör wave 10+'da çıkar, yürürken en yakın kulene her 2 saniyede bir kırmızı mermi atar. Her kulenin artık 100 HP'si var — hasarlı kule duman çıkarır, sıfırlanınca patlayıp kaybolur. Kule panelinde 'Onar' butonu (1 para = 2 HP). 3 yeni başarım: Kesinti Yok, Sağlam Savunma, Teknisyen. Toplam 35 başarım.",
+    changelog251: "Mobil ekran döndürme düzeltildi: yatay-dikey geçişte artık HUD ve canvas doğru boyutta yeniden hesaplanıyor. Hamburger menü artık ekrandan taşmıyor ve rotation sırasında otomatik kapatılıyor.",
     otherGames: "Diğer Oyunlarım",
     credits: "Geliştiren: mrtrclb",
     version: "Sürüm",
@@ -2039,6 +2044,7 @@ const I18N = {
     changelog230: "Visual feedback pack: every hit shows a rising orange damage number (50+ damage = yellow critical). Enemies flash white when hit, blue when shield absorbs. Towers glow while firing with a small barrel recoil. Muzzle flash at barrel tip. Screen shake on explosions and boss kills. Boss now has a constant breathing red glow.",
     changelog240: "Life system: Every 5 waves auto-grants +2 lives, every 10 waves +5 lives. Click the ♥ icon in the HUD to buy repairs (starts at 50◈, +25◈ per additional purchase). No upper limit — stockpile as much as you want.",
     changelog250: "New enemy and tower HP system: Agitator appears at wave 10+, fires a red shot at the nearest tower every 2 seconds while walking. Towers now have 100 HP each — damaged towers smoke, destroyed ones explode and vanish. 'Repair' button added to tower panel (1 money = 2 HP). 3 new achievements: Zero Casualties, Firm Defense, Technician. 35 total.",
+    changelog251: "Mobile orientation fix: rotating between portrait/landscape now recomputes HUD and canvas sizes correctly. Hamburger menu no longer escapes the viewport, and auto-closes during rotation.",
     otherGames: "My Other Games",
     credits: "Developed by mrtrclb",
     version: "Version",
@@ -2439,7 +2445,7 @@ let MAPS = [
     ]],
     palette: { road1: '#34301e', road2: '#24201a', ground: '#0c0b09', accent: '#e88a32' }
   },
-  // ===== 12 NEW MAPS (v2.5.0) =====
+  // ===== 12 NEW MAPS (v2.5.1) =====
   // ===== 6 QUAD-ATTACK MAPS (4-way convergence on central HQ) =====
   {
     id: 'sierra',
@@ -2726,12 +2732,12 @@ const ENEMY_TEMPLATES = {
   infantry:  { name: 'Piyade',   hp: 30,  speed: 1.2, armor: 0.0,  reward: 6,  flying: false, color: '#a08660', size: 9 },
   armor:     { name: 'Zırhlı',   hp: 110, speed: 0.7, armor: 0.55, reward: 14, flying: false, color: '#4d4530', size: 12 },
   air:       { name: 'Hava',     hp: 55,  speed: 1.6, armor: 0.1,  reward: 12, flying: true,  color: '#6b7a8a', size: 10 },
-  // NEW v2.5.0:
+  // NEW v2.5.1:
   scout:     { name: 'Koşucu',   hp: 22,  speed: 2.6, armor: 0.0,  reward: 5,  flying: false, color: '#d97e2a', size: 7 },
   shielded:  { name: 'Kalkanlı', hp: 50,  speed: 0.9, armor: 0.25, reward: 22, flying: false, color: '#6b5a3a', size: 11, shield: 80 },
   regen:     { name: 'Yenileyici', hp: 80, speed: 0.95, armor: 0.15, reward: 20, flying: false, color: '#7a6f3f', size: 10, regenRate: 3 },
   boss:      { name: 'Mega-Tank', hp: 2200, speed: 0.35, armor: 0.75, reward: 250, flying: false, color: '#2a2418', size: 20, isBoss: true },
-  // NEW v2.5.0: Agitator - shoots at towers while walking
+  // NEW v2.5.1: Agitator - shoots at towers while walking
   agitator:  { name: 'Ajitatör', hp: 70,  speed: 0.9, armor: 0.30, reward: 20, flying: false, color: '#8a4530', size: 11, shoots: true, fireRange: 3.5, fireRate: 2.0, fireDmg: 25 }
 };
 
@@ -2811,7 +2817,7 @@ function generateWave(n) {
   let scoutChance    = n < 4  ? 0 : Math.min(0.22, (n - 3) * 0.02);
   let shieldedChance = n < 8  ? 0 : Math.min(0.15, (n - 7) * 0.015);
   let regenChance    = n < 12 ? 0 : Math.min(0.12, (n - 11) * 0.012);
-  // NEW v2.5.0: Agitator starts at wave 10, caps at 20% at wave 20+
+  // NEW v2.5.1: Agitator starts at wave 10, caps at 20% at wave 20+
   let agitatorChance = n < 10 ? 0 : n < 20 ? (n - 9) * 0.01 : 0.20;
 
   for (let i = 0; i < count; i++) {
@@ -2837,15 +2843,47 @@ canvas.height = CANVAS_H;
 
 function resizeCanvas() {
   const wrap = canvas.parentElement;
+  if (!wrap) return;
   const maxW = wrap.clientWidth - 16;
   const maxH = wrap.clientHeight - 16;
+  if (maxW <= 0 || maxH <= 0) return; // Layout not ready yet
   const ratio = CANVAS_W / CANVAS_H;
   let w = maxW, h = maxW / ratio;
   if (h > maxH) { h = maxH; w = h * ratio; }
   canvas.style.width = w + 'px';
   canvas.style.height = h + 'px';
 }
-window.addEventListener('resize', resizeCanvas);
+
+// Debounced resize — handles rotation and resize
+let _resizeT = null;
+function scheduleResize() {
+  if (_resizeT) clearTimeout(_resizeT);
+  _resizeT = setTimeout(() => {
+    resizeCanvas();
+    _resizeT = null;
+  }, 50);
+}
+window.addEventListener('resize', scheduleResize);
+// iOS rotation: orientationchange fires BEFORE layout settles.
+// Do multiple attempts to catch the final layout.
+window.addEventListener('orientationchange', () => {
+  // Immediate attempt
+  resizeCanvas();
+  // Clear any hover state — stale after rotation
+  state.mouseCell = { c: -1, r: -1 };
+  pendingTapCell = null;
+  // Close dropdown (gets visually broken otherwise)
+  const drop = document.getElementById('hamburger-dropdown');
+  if (drop) drop.classList.remove('active');
+  // Delayed attempts for iOS Safari layout settle
+  setTimeout(resizeCanvas, 100);
+  setTimeout(resizeCanvas, 300);
+  setTimeout(resizeCanvas, 600);
+});
+// Visual viewport changes (iOS safe area updates)
+if (window.visualViewport) {
+  window.visualViewport.addEventListener('resize', scheduleResize);
+}
 
 /* ---------- HELPERS ---------- */
 function cellCenter(c, r) { return { x: c*CELL + CELL/2, y: r*CELL + CELL/2 }; }
@@ -3885,7 +3923,7 @@ function updateEnemies(dt) {
       e.x += dx/d * step; e.y += dy/d * step;
     }
 
-    // NEW v2.5.0: Agitator fires at nearest tower while walking
+    // NEW v2.5.1: Agitator fires at nearest tower while walking
     if (e.shoots && !e.dead) {
       e.fireCd = (e.fireCd || 0) - dt;
       if (e.fireCd <= 0) {
@@ -4439,11 +4477,11 @@ function updateSpawns(dt) {
     if (autoplayEnabled) {
       autoplayCountdown = AUTOPLAY_DELAY;
     }
-    // NEW v2.5.0: noLoss achievement (wave 20 reached without losing a tower)
+    // NEW v2.5.1: noLoss achievement (wave 20 reached without losing a tower)
     if (state.wave >= 20 && !state.runTowerLost) {
       unlockAch('noLoss');
     }
-    // NEW v2.5.0: repairer achievement (5+ repairs in a run)
+    // NEW v2.5.1: repairer achievement (5+ repairs in a run)
     if ((state.runRepairsMade || 0) >= 5) {
       unlockAch('repairer');
     }
@@ -5778,7 +5816,7 @@ document.getElementById('feedback-send').addEventListener('click', () => {
       msg: msg.substring(0, 1000),
       lang: LANG,
       ts: firebase.database.ServerValue.TIMESTAMP,
-      version: '2.5.0',
+      version: '2.5.1',
       ua: navigator.userAgent.substring(0, 200)
     }).then(() => {
       toast(t('feedbackThanks'), '#7a9f3f');
@@ -5807,7 +5845,7 @@ document.getElementById('feedback-send').addEventListener('click', () => {
 
 function serializeGame() {
   return {
-    version: '2.5.0',
+    version: '2.5.1',
     mapId: currentMap.id,
     difficulty: currentDifficulty,
     money: state.money,
@@ -6288,7 +6326,7 @@ async function uploadToCloud() {
     await fbDb.ref('siper/saves/' + code).set({
       ts: firebase.database.ServerValue.TIMESTAMP,
       data: data,
-      version: '2.5.0'
+      version: '2.5.1'
     });
     // Also mirror scores into /siper/scores/<code> for quick lookup
     await fbDb.ref('siper/scores/' + code).set(data.scores);
