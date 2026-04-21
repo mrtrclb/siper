@@ -591,6 +591,119 @@
     line-height: 1.4;
   }
 
+  /* ===== LOCKED MAP CARDS ===== */
+  .map-card.locked {
+    cursor: not-allowed;
+    opacity: 0.75;
+    position: relative;
+  }
+  .map-card.locked:hover {
+    border-color: var(--border);
+    background: var(--panel);
+    transform: none;
+    box-shadow: none;
+  }
+  .map-card.locked canvas {
+    filter: grayscale(1) brightness(0.4);
+  }
+  .map-card.locked .map-name {
+    color: var(--dim);
+  }
+  .map-card .lock-overlay {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    right: 12px;
+    bottom: 92px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(10, 10, 10, 0.72);
+    border: 1px solid rgba(217, 126, 42, 0.35);
+    border-radius: 3px;
+    gap: 8px;
+    pointer-events: none;
+  }
+  .map-card .lock-icon {
+    font-size: 32px;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
+  }
+  .map-card .lock-req {
+    font-size: 11px;
+    color: var(--khaki-2);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: center;
+  }
+  .map-card .lock-req strong {
+    color: var(--orange-2);
+    font-size: 13px;
+  }
+  .map-card .lock-progress {
+    font-size: 10px;
+    color: var(--dim);
+    font-family: monospace;
+  }
+  .map-card .map-desc-locked {
+    font-style: italic;
+    color: var(--dim);
+  }
+
+  /* ===== PROGRESS HEADER ===== */
+  .map-progress-header {
+    max-width: 900px;
+    margin: 0 auto 20px auto;
+    padding: 14px 18px;
+    background: linear-gradient(180deg, rgba(217,126,42,0.08), rgba(217,126,42,0.02));
+    border: 1px solid rgba(217,126,42,0.3);
+    border-radius: 3px;
+  }
+  .map-progress-header:empty {
+    display: none;
+  }
+  .map-progress-header .mp-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 8px;
+  }
+  .map-progress-header .mp-label {
+    font-size: 11px;
+    color: var(--khaki-2);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+  .map-progress-header .mp-value {
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--orange-2);
+    font-family: monospace;
+  }
+  .map-progress-header .mp-bar {
+    width: 100%;
+    height: 8px;
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .map-progress-header .mp-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--orange) 0%, var(--orange-2) 100%);
+    transition: width 0.3s ease;
+  }
+  .map-progress-header .mp-next {
+    font-size: 11px;
+    color: var(--dim);
+    margin-top: 8px;
+    text-align: center;
+    letter-spacing: 0.5px;
+  }
+  .map-progress-header .mp-next strong {
+    color: var(--sand);
+  }
+
   /* ===== SPLASH SCREEN ===== */
   .splash {
     position: fixed;
@@ -1638,6 +1751,7 @@
     </div>
 
     <h2 data-i18n="changelog">Sürüm Notları</h2>
+    <p><strong>v2.6.3</strong> — <span data-i18n="changelog263"></span></p>
     <p><strong>v2.6.2</strong> — <span data-i18n="changelog262"></span></p>
     <p><strong>v2.6.1</strong> — <span data-i18n="changelog261"></span></p>
     <p><strong>v2.6.0</strong> — <span data-i18n="changelog260"></span></p>
@@ -1794,6 +1908,7 @@
     <h1>SİPER</h1>
     <p data-i18n="selectMap">Harita Seç</p>
   </div>
+  <div class="map-progress-header" id="map-progress-header"></div>
   <div class="map-grid" id="map-grid"></div>
 </div>
 
@@ -1819,7 +1934,7 @@
 
 // Tek kaynak: oyunun versiyonu. Buradan değiştir, her yer otomatik günceller.
 // sw.js içindeki CACHE_VERSION'u da bunu değiştirdikten sonra aynı değere set et.
-const GAME_VERSION = '2.6.2';
+const GAME_VERSION = '2.6.3';
 
 // Versiyonu DOM'a yerleştir (splash + about sayfası)
 document.addEventListener('DOMContentLoaded', () => {
@@ -1855,6 +1970,12 @@ const I18N = {
     best: "En İyi",
     changeMap: "Menü", selectMap: "Harita Seç",
     mapSingle: "Tek Yol", mapMulti: "Çoklu Yol", mapQuad: "4 Yön",
+    progressPoints: "İlerleme Puanı",
+    nextUnlock: "Sıradaki",
+    allUnlocked: "Tüm haritalar açıldı!",
+    requires: "Gereken",
+    points: "puan",
+    lockedDesc: "Daha fazla dalga geçerek puan biriktir.",
     bossWave: "BOSS DALGASI",
     backToMaps: "Haritalara Dön",
     // Splash
@@ -1933,6 +2054,7 @@ const I18N = {
     changelog260: "Güçlendirilmiş otomatik kayıt: oyun artık her 30 saniyede bir, her kule yerleştirildiğinde, her dalga sonunda, ve sayfa kapatıldığında kendiliğinden kayıt oluyor. iPhone'da uygulamayı alttan kaydırıp kapatsan bile kaldığın yerden devam edebilirsin. Haritaya girdiğin anda 'Devam Et' butonu aktifleşiyor. Yalnızca yerel kayıt — Firebase'e trafik yok.",
     changelog261: "Mobilde ikinci kuleyi yerleştirememe bug'ı düzeltildi: Kule seçip gride dokun → ikinci dokunuşta yerleşir. Önceden 400ms zaman sınırı vardı, artık sınırsız — istediğin kadar düşün, aynı hücreye tekrar dokunduğunda yerleşir. Farklı hücreye dokunursan yeni preview'a kayar.",
     changelog262: "Oyun duraklatıldığında müzik de duraklıyor, devam ettirdiğinde kaldığı yerden çalmaya başlıyor. Firebase tarafında domain-bazlı koruma (App Check + reCAPTCHA v3) aktif — oyun sadece resmi adreste çalışacak, başka sitede host edilirse online özellikler (skor tablosu, bulut kayıt, geri bildirim) devre dışı kalır. Tek kaynaklı sürüm yönetimi: tüm ekranlar artık aynı versiyon numarasını gösteriyor.",
+    changelog263: "Haritalar artık kolaydan zora doğru sıralı ve kilitli başlıyor. İlk 3 harita (Bravo-II, Kilo, Lima) açık — diğer 27 harita 'İlerleme Puanı' biriktirerek açılıyor. Her haritada geçtiğin en yüksek dalga × haritanın zorluk katsayısı (kolay 1×, zor 5×) kadar puan kazanırsın. İstediğin haritayı yeterince oynayarak ilerle: tek yol kolay haritaları tekrar et veya zor haritalara erken atla — puan havuzu seni yoluna göre ilerletir.",
     otherGames: "Diğer Oyunlarım",
     credits: "Geliştiren: mrtrclb",
     version: "Sürüm",
@@ -1999,6 +2121,12 @@ const I18N = {
     best: "Best",
     changeMap: "Menu", selectMap: "Select Map",
     mapSingle: "Single Path", mapMulti: "Multi Path", mapQuad: "4-Way",
+    progressPoints: "Progress Points",
+    nextUnlock: "Next",
+    allUnlocked: "All maps unlocked!",
+    requires: "Requires",
+    points: "pts",
+    lockedDesc: "Clear more waves to earn unlock points.",
     bossWave: "BOSS WAVE",
     backToMaps: "Back to Maps",
     splashTagline: "Hold the Line. Protect the Base.",
@@ -2072,6 +2200,7 @@ const I18N = {
     changelog260: "Robust auto-save: the game now saves every 30 seconds, on every tower placement, after every wave, and when the page is closed. Even if you swipe the app away on iPhone, you can resume exactly where you left off. 'Continue' appears the moment you pick a map. Purely local — no Firebase traffic.",
     changelog261: "Fixed mobile bug where second tower couldn't be placed: Select tower, tap grid → second tap places it. Previously had a 400ms time limit, now unlimited — take as long as you want to confirm, second tap on the same cell places. Tapping a different cell moves the preview.",
     changelog262: "Music now pauses together with the game and resumes from where it left off. Domain-level Firebase protection (App Check + reCAPTCHA v3) is active — the game runs only on the official address; if hosted on another site, online features (leaderboard, cloud save, feedback) will be disabled. Single-source version management: all screens now display the same version number.",
+    changelog263: "Maps are now ordered easy-to-hard and start locked. The first 3 maps (Bravo-II, Kilo, Lima) are open — the other 27 unlock via 'Progress Points' you earn by playing. Each map awards (highest wave reached × map difficulty weight, from 1× for easy to 5× for hardest). Grind an easy map or jump into a tough one — the shared pool lets you progress at your own pace.",
     otherGames: "My Other Games",
     credits: "Developed by mrtrclb",
     version: "Version",
@@ -2679,6 +2808,108 @@ MAPS = MAPS.filter(m => {
   return true;
 });
 
+/* ---------- MAP DIFFICULTY ORDER & UNLOCK SYSTEM ----------
+   Maps are ordered easy → hard based on:
+   - Path count (more paths = simultaneous assault = harder)
+   - Minimum path length (short = enemies reach HQ fast = harder)
+   - HQ position (center HQ = more exposed)
+   - Turn count (more turns = slower enemies = easier)
+
+   Unlock system: each map has a "complexity weight" (cp).
+   Player earns progress points = (best waves reached × cp of played map), summed across ALL maps.
+   To unlock a locked map, total progress ≥ map's unlockThreshold.
+   First 3 easiest maps are unlocked by default.
+*/
+const MAP_ORDER = [
+  'bravo2', 'kilo', 'lima',                                             // 1-3 : unlocked by default
+  'november', 'yankee', 'india', 'delta', 'echo', 'alpha', 'delta2',    // 4-10
+  'charlie', 'romeo', 'bravo', 'quebec', 'oscar',                       // 11-15
+  'juliet', 'golf', 'hotel', 'foxtrot', 'alpha2',                       // 16-20
+  'mike', 'zulu', 'tango', 'whiskey', 'papa',                           // 21-25
+  'charlie2', 'victor', 'uniform', 'xray', 'sierra'                     // 26-30 (hardest)
+];
+
+// Each map's complexity weight (cp = points per wave cleared).
+// Easy maps give 1 cp/wave, hardest give 5 cp/wave — rewarding harder play.
+const MAP_CP = {
+  bravo2: 1, kilo: 1, lima: 1,
+  november: 1, yankee: 1, india: 1, delta: 1, echo: 1, alpha: 1, delta2: 1,
+  charlie: 2, romeo: 2, bravo: 2, quebec: 2, oscar: 2,
+  juliet: 3, golf: 3, hotel: 3, foxtrot: 3, alpha2: 3,
+  mike: 4, zulu: 4, tango: 4, whiskey: 4, papa: 4,
+  charlie2: 5, victor: 5, uniform: 5, xray: 5, sierra: 5
+};
+
+// Reorder MAPS array to match difficulty order
+MAPS.sort((a, b) => MAP_ORDER.indexOf(a.id) - MAP_ORDER.indexOf(b.id));
+
+// Unlock thresholds (cumulative progress points).
+// Designed so a player averaging ~12 waves per map can always progress.
+// Progression feels: easy maps cheap, zone transitions expensive.
+const UNLOCK_THRESHOLDS = {
+  bravo2: 0, kilo: 0, lima: 0,
+  november: 10, yankee: 20, india: 35, delta: 55, echo: 80,
+  alpha: 110, delta2: 145,
+  charlie: 185, romeo: 230, bravo: 280, quebec: 335, oscar: 395,
+  juliet: 460, golf: 540, hotel: 625, foxtrot: 720, alpha2: 825,
+  mike: 940, zulu: 1065, tango: 1200, whiskey: 1345, papa: 1500,
+  charlie2: 1665, victor: 1840, uniform: 2025, xray: 2220, sierra: 2425
+};
+
+/* Compute total progress points earned across all maps played.
+   Uses best wave reached on each map (across all difficulties) × map's cp weight. */
+function computeProgressPoints() {
+  let total = 0;
+  for (const m of MAPS) {
+    let bestWave = 0;
+    for (const d of ['easy', 'medium', 'hard']) {
+      const w = parseInt(localStorage.getItem('siper_bestwave_' + m.id + '_' + d) || '0');
+      if (w > bestWave) bestWave = w;
+    }
+    total += bestWave * (MAP_CP[m.id] || 1);
+  }
+  return total;
+}
+
+function isMapUnlocked(mapId) {
+  const threshold = UNLOCK_THRESHOLDS[mapId] ?? 0;
+  if (threshold === 0) return true;
+  return computeProgressPoints() >= threshold;
+}
+
+function getNextLockedMap() {
+  // Returns the lowest-threshold locked map (the "next to unlock")
+  const progress = computeProgressPoints();
+  let best = null;
+  for (const m of MAPS) {
+    const th = UNLOCK_THRESHOLDS[m.id] ?? 0;
+    if (th > progress && (best === null || th < best.threshold)) {
+      best = { id: m.id, name: m.name, threshold: th };
+    }
+  }
+  return best;
+}
+
+/* Called after saving a new best wave. Notifies the player if the points they
+   just earned crossed a map's unlock threshold. */
+function checkUnlockNotify() {
+  try {
+    const progress = computeProgressPoints();
+    const seenKey = 'siper_unlocks_seen';
+    let seen = [];
+    try { seen = JSON.parse(localStorage.getItem(seenKey) || '[]'); } catch(e) { seen = []; }
+    for (const m of MAPS) {
+      const th = UNLOCK_THRESHOLDS[m.id] ?? 0;
+      if (th > 0 && progress >= th && !seen.includes(m.id)) {
+        seen.push(m.id);
+        const msg = (LANG === 'tr' ? '🔓 Yeni harita: ' : '🔓 New map: ') + m.name[LANG];
+        toast(msg, '#7a9f3f');
+      }
+    }
+    localStorage.setItem(seenKey, JSON.stringify(seen));
+  } catch(e) { /* silent */ }
+}
+
 let currentMap = MAPS[0];
 
 /* ---------- TOWER DEFS ---------- */
@@ -2808,6 +3039,41 @@ function loadMapIntoState(mapDef, difficulty) {
   state.best = parseInt(localStorage.getItem('siper_best_' + mapDef.id + '_' + currentDifficulty) || '0');
 }
 loadMapIntoState(MAPS[0]);
+
+/* ---------- ONE-TIME MIGRATION: bestwave backfill for legacy saves ----------
+   Players from v2.6.2 and earlier only have siper_best_* (score) saved, not
+   siper_bestwave_*. Without migration their unlock progress would be 0 and only
+   the first 3 maps would be playable. We estimate waves from score using a
+   conservative formula: each wave roughly awards 50 + 30·wave reward on medium,
+   so score ≈ 15·w² (cumulative). Invert: w ≈ sqrt(score / 15).
+   We only set bestwave if it's currently missing, so this runs once per map+diff. */
+(function migrateBestWaves() {
+  try {
+    const flagKey = 'siper_migrated_bestwave_v1';
+    if (localStorage.getItem(flagKey)) return;
+    for (const m of MAPS) {
+      for (const d of ['easy', 'medium', 'hard']) {
+        const waveKey = 'siper_bestwave_' + m.id + '_' + d;
+        if (localStorage.getItem(waveKey) !== null) continue;
+        const score = parseInt(localStorage.getItem('siper_best_' + m.id + '_' + d) || '0');
+        if (score > 0) {
+          const estWave = Math.max(1, Math.floor(Math.sqrt(score / 15)));
+          localStorage.setItem(waveKey, estWave);
+        }
+      }
+    }
+    // Mark existing unlocked maps as "seen" so migrated players don't get a
+    // flood of "🔓 New map" toasts on first load after update.
+    const progress = computeProgressPoints();
+    const seen = [];
+    for (const m of MAPS) {
+      const th = UNLOCK_THRESHOLDS[m.id] ?? 0;
+      if (th > 0 && progress >= th) seen.push(m.id);
+    }
+    localStorage.setItem('siper_unlocks_seen', JSON.stringify(seen));
+    localStorage.setItem(flagKey, '1');
+  } catch (e) { /* silent */ }
+})();
 
 /* ---------- WAVE GENERATION (endless) ---------- */
 function generateWave(n) {
@@ -4480,6 +4746,13 @@ function updateSpawns(dt) {
       state.fx.push({ kind: 'text', x: CANVAS_W/2, y: CANVAS_H/2 + 30, msg: '⚕ +' + lifeBonus, color: 'rgba(122,199,95,1)', t: 0, dur: 1.5 });
     }
     if (state.score > state.best) { state.best = state.score; localStorage.setItem('siper_best_' + currentMap.id + '_' + currentDifficulty, state.best); }
+    // Track best wave reached per map+difficulty (used by unlock progress system)
+    const prevBestWave = parseInt(localStorage.getItem('siper_bestwave_' + currentMap.id + '_' + currentDifficulty) || '0');
+    if (state.wave > prevBestWave) {
+      localStorage.setItem('siper_bestwave_' + currentMap.id + '_' + currentDifficulty, state.wave);
+      // Check if this unlocked a new map → notify the player
+      checkUnlockNotify();
+    }
     if (state.score >= 1000) unlockAch('score1k');
     if (state.score >= 5000) unlockAch('score5k');
     if (state.money >= 500)  unlockAch('rich500');
@@ -5062,6 +5335,12 @@ function doGameOver() {
   state.waveActive = false;
   sfxGameOver();
   if (state.score > state.best) { state.best = state.score; localStorage.setItem('siper_best_' + currentMap.id + '_' + currentDifficulty, state.best); }
+  // Track best wave reached per map+difficulty (used by unlock progress system)
+  const prevBestWaveGO = parseInt(localStorage.getItem('siper_bestwave_' + currentMap.id + '_' + currentDifficulty) || '0');
+  if (state.wave > prevBestWaveGO) {
+    localStorage.setItem('siper_bestwave_' + currentMap.id + '_' + currentDifficulty, state.wave);
+    checkUnlockNotify();
+  }
   // Clear this map's save since the run is over
   localStorage.removeItem('siper_save_' + currentMap.id);
   refreshContinueButton();
@@ -5152,9 +5431,36 @@ function renderMapPreview(canv, mapDef) {
 function buildMapSelect() {
   const grid = document.getElementById('map-grid');
   grid.innerHTML = '';
+  // Header: progress bar + total points
+  const progress = computeProgressPoints();
+  const next = getNextLockedMap();
+  const header = document.getElementById('map-progress-header');
+  if (header) {
+    if (next) {
+      const pct = Math.min(100, Math.round((progress / next.threshold) * 100));
+      header.innerHTML = `
+        <div class="mp-row">
+          <span class="mp-label">${t('progressPoints')}</span>
+          <span class="mp-value">${progress} / ${next.threshold}</span>
+        </div>
+        <div class="mp-bar"><div class="mp-bar-fill" style="width:${pct}%"></div></div>
+        <div class="mp-next">${t('nextUnlock')}: <strong>${next.name[LANG]}</strong></div>
+      `;
+    } else {
+      header.innerHTML = `
+        <div class="mp-row">
+          <span class="mp-label">${t('progressPoints')}</span>
+          <span class="mp-value">${progress}</span>
+        </div>
+        <div class="mp-bar"><div class="mp-bar-fill" style="width:100%"></div></div>
+        <div class="mp-next">${t('allUnlocked')}</div>
+      `;
+    }
+  }
   for (const mapDef of MAPS) {
     const card = document.createElement('div');
-    card.className = 'map-card';
+    const unlocked = isMapUnlocked(mapDef.id);
+    card.className = 'map-card' + (unlocked ? '' : ' locked');
     // Best = max across all difficulties for this map
     let best = 0, bestDiff = '';
     for (const d of ['easy','medium','hard']) {
@@ -5169,15 +5475,38 @@ function buildMapSelect() {
     const bestLabel = best > 0
       ? `<span class="best-val">${best}</span> <span style="font-size:9px; color:var(--dim);">(${t(bestDiff)})</span>`
       : `<span class="best-val">—</span>`;
-    card.innerHTML = `
-      <canvas width="200" height="160"></canvas>
-      <div class="map-name">${mapDef.name[LANG]} <span class="map-tag ${typeClass}">${typeLabel}</span></div>
-      <div class="map-desc">${mapDef.desc ? mapDef.desc[LANG] : ''}</div>
-      <div class="map-best"><span>${t('best')}</span> ${bestLabel}</div>
-    `;
-    const canv = card.querySelector('canvas');
-    renderMapPreview(canv, mapDef);
-    card.addEventListener('click', () => showDifficultyModal(mapDef));
+    const threshold = UNLOCK_THRESHOLDS[mapDef.id] ?? 0;
+    if (unlocked) {
+      card.innerHTML = `
+        <canvas width="200" height="160"></canvas>
+        <div class="map-name">${mapDef.name[LANG]} <span class="map-tag ${typeClass}">${typeLabel}</span></div>
+        <div class="map-desc">${mapDef.desc ? mapDef.desc[LANG] : ''}</div>
+        <div class="map-best"><span>${t('best')}</span> ${bestLabel}</div>
+      `;
+      const canv = card.querySelector('canvas');
+      renderMapPreview(canv, mapDef);
+      card.addEventListener('click', () => showDifficultyModal(mapDef));
+    } else {
+      card.innerHTML = `
+        <canvas width="200" height="160"></canvas>
+        <div class="lock-overlay">
+          <div class="lock-icon">🔒</div>
+          <div class="lock-req">${t('requires')} <strong>${threshold}</strong> ${t('points')}</div>
+          <div class="lock-progress">${progress} / ${threshold}</div>
+        </div>
+        <div class="map-name">${mapDef.name[LANG]} <span class="map-tag ${typeClass}">${typeLabel}</span></div>
+        <div class="map-desc map-desc-locked">${t('lockedDesc')}</div>
+      `;
+      const canv = card.querySelector('canvas');
+      renderMapPreview(canv, mapDef);
+      card.addEventListener('click', () => {
+        const remaining = threshold - progress;
+        const msg = (LANG === 'tr'
+          ? `🔒 Bu harita kilitli. Açılması için ${remaining} puan daha gerekli.`
+          : `🔒 This map is locked. ${remaining} more points needed to unlock.`);
+        toast(msg, '#c8472f');
+      });
+    }
     grid.appendChild(card);
   }
 }

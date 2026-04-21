@@ -1,6 +1,6 @@
 // Siper Service Worker
 // NOT: Bu versiyonu index.html içindeki GAME_VERSION ile aynı tut.
-const CACHE_VERSION = 'siper-v2.6.2';
+const CACHE_VERSION = 'siper-v2.6.3';
 const CORE_ASSETS = [
   './',
   './index.html',
