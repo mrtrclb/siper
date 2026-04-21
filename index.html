@@ -1427,14 +1427,14 @@
 <!-- SPLASH SCREEN -->
 <div class="splash" id="splash">
   <div class="splash-logo">SİPER</div>
-  <div class="splash-sub">v2.6.0</div>
+  <div class="splash-sub">v2.6.1</div>
   <div class="splash-tagline" data-i18n="splashTagline">Hattı Tut, Üssü Koru.</div>
   <div class="splash-lang">
     <button class="lang-btn" data-lang="tr">TÜRKÇE</button>
     <button class="lang-btn" data-lang="en">ENGLISH</button>
   </div>
   <button class="splash-start" id="splash-start" data-i18n="startGame">Oyuna Başla!</button>
-  <div class="splash-footer">v2.6.0 · mrtrclb</div>
+  <div class="splash-footer">v2.6.1 · mrtrclb</div>
 </div>
 
 <!-- MAIN MENU -->
@@ -1637,6 +1637,7 @@
     </div>
 
     <h2 data-i18n="changelog">Sürüm Notları</h2>
+    <p><strong>v2.6.1</strong> — <span data-i18n="changelog261"></span></p>
     <p><strong>v2.6.0</strong> — <span data-i18n="changelog260"></span></p>
     <p><strong>v2.5.2</strong> — <span data-i18n="changelog252"></span></p>
     <p><strong>v2.5.1</strong> — <span data-i18n="changelog251"></span></p>
@@ -1914,6 +1915,7 @@ const I18N = {
     changelog251: "Mobil ekran döndürme düzeltildi: yatay-dikey geçişte artık HUD ve canvas doğru boyutta yeniden hesaplanıyor. Hamburger menü artık ekrandan taşmıyor ve rotation sırasında otomatik kapatılıyor.",
     changelog252: "Menüye dönüş bug'ı düzeltildi: Hamburger > Menü seçince oyun simülasyonu artık tamamen duruyor — düşmanlar yürümeyi bırakıyor, kuleler ateşi kesiyor, ses efektleri arka planda çalmıyor.",
     changelog260: "Güçlendirilmiş otomatik kayıt: oyun artık her 30 saniyede bir, her kule yerleştirildiğinde, her dalga sonunda, ve sayfa kapatıldığında kendiliğinden kayıt oluyor. iPhone'da uygulamayı alttan kaydırıp kapatsan bile kaldığın yerden devam edebilirsin. Haritaya girdiğin anda 'Devam Et' butonu aktifleşiyor. Yalnızca yerel kayıt — Firebase'e trafik yok.",
+    changelog261: "Mobilde ikinci kuleyi yerleştirememe bug'ı düzeltildi: Kule seçip gride dokun → ikinci dokunuşta yerleşir. Önceden 400ms zaman sınırı vardı, artık sınırsız — istediğin kadar düşün, aynı hücreye tekrar dokunduğunda yerleşir. Farklı hücreye dokunursan yeni preview'a kayar.",
     otherGames: "Diğer Oyunlarım",
     credits: "Geliştiren: mrtrclb",
     version: "Sürüm",
@@ -2051,6 +2053,7 @@ const I18N = {
     changelog251: "Mobile orientation fix: rotating between portrait/landscape now recomputes HUD and canvas sizes correctly. Hamburger menu no longer escapes the viewport, and auto-closes during rotation.",
     changelog252: "Menu exit bug fixed: Hamburger > Menu now fully stops the simulation — enemies no longer walk, towers no longer fire, and SFX no longer play in the background.",
     changelog260: "Robust auto-save: the game now saves every 30 seconds, on every tower placement, after every wave, and when the page is closed. Even if you swipe the app away on iPhone, you can resume exactly where you left off. 'Continue' appears the moment you pick a map. Purely local — no Firebase traffic.",
+    changelog261: "Fixed mobile bug where second tower couldn't be placed: Select tower, tap grid → second tap places it. Previously had a 400ms time limit, now unlimited — take as long as you want to confirm, second tap on the same cell places. Tapping a different cell moves the preview.",
     otherGames: "My Other Games",
     credits: "Developed by mrtrclb",
     version: "Version",
@@ -2451,7 +2454,7 @@ let MAPS = [
     ]],
     palette: { road1: '#34301e', road2: '#24201a', ground: '#0c0b09', accent: '#e88a32' }
   },
-  // ===== 12 NEW MAPS (v2.6.0) =====
+  // ===== 12 NEW MAPS (v2.6.1) =====
   // ===== 6 QUAD-ATTACK MAPS (4-way convergence on central HQ) =====
   {
     id: 'sierra',
@@ -2738,12 +2741,12 @@ const ENEMY_TEMPLATES = {
   infantry:  { name: 'Piyade',   hp: 30,  speed: 1.2, armor: 0.0,  reward: 6,  flying: false, color: '#a08660', size: 9 },
   armor:     { name: 'Zırhlı',   hp: 110, speed: 0.7, armor: 0.55, reward: 14, flying: false, color: '#4d4530', size: 12 },
   air:       { name: 'Hava',     hp: 55,  speed: 1.6, armor: 0.1,  reward: 12, flying: true,  color: '#6b7a8a', size: 10 },
-  // NEW v2.6.0:
+  // NEW v2.6.1:
   scout:     { name: 'Koşucu',   hp: 22,  speed: 2.6, armor: 0.0,  reward: 5,  flying: false, color: '#d97e2a', size: 7 },
   shielded:  { name: 'Kalkanlı', hp: 50,  speed: 0.9, armor: 0.25, reward: 22, flying: false, color: '#6b5a3a', size: 11, shield: 80 },
   regen:     { name: 'Yenileyici', hp: 80, speed: 0.95, armor: 0.15, reward: 20, flying: false, color: '#7a6f3f', size: 10, regenRate: 3 },
   boss:      { name: 'Mega-Tank', hp: 2200, speed: 0.35, armor: 0.75, reward: 250, flying: false, color: '#2a2418', size: 20, isBoss: true },
-  // NEW v2.6.0: Agitator - shoots at towers while walking
+  // NEW v2.6.1: Agitator - shoots at towers while walking
   agitator:  { name: 'Ajitatör', hp: 70,  speed: 0.9, armor: 0.30, reward: 20, flying: false, color: '#8a4530', size: 11, shoots: true, fireRange: 3.5, fireRate: 2.0, fireDmg: 25 }
 };
 
@@ -2823,7 +2826,7 @@ function generateWave(n) {
   let scoutChance    = n < 4  ? 0 : Math.min(0.22, (n - 3) * 0.02);
   let shieldedChance = n < 8  ? 0 : Math.min(0.15, (n - 7) * 0.015);
   let regenChance    = n < 12 ? 0 : Math.min(0.12, (n - 11) * 0.012);
-  // NEW v2.6.0: Agitator starts at wave 10, caps at 20% at wave 20+
+  // NEW v2.6.1: Agitator starts at wave 10, caps at 20% at wave 20+
   let agitatorChance = n < 10 ? 0 : n < 20 ? (n - 9) * 0.01 : 0.20;
 
   for (let i = 0; i < count; i++) {
@@ -3042,8 +3045,7 @@ function drawPlacementPreview() {
   const x = c*CELL + CELL/2, y = r*CELL + CELL/2;
   const valid = !isPathCell(c, r) && !towerAt(c, r) && state.money >= def.levels[0].cost;
   // Is this cell pending confirmation (mobile two-phase)?
-  const pending = pendingTapCell && pendingTapCell.c === c && pendingTapCell.r === r &&
-                  (Date.now() - pendingTapTime) < DOUBLE_TAP_WINDOW;
+  const pending = pendingTapCell && pendingTapCell.c === c && pendingTapCell.r === r;
   if (pending) {
     // Pulsing green — "tap again to confirm"
     const pulse = 0.5 + 0.5 * Math.sin(Date.now() * 0.012);
@@ -3929,7 +3931,7 @@ function updateEnemies(dt) {
       e.x += dx/d * step; e.y += dy/d * step;
     }
 
-    // NEW v2.6.0: Agitator fires at nearest tower while walking
+    // NEW v2.6.1: Agitator fires at nearest tower while walking
     if (e.shoots && !e.dead) {
       e.fireCd = (e.fireCd || 0) - dt;
       if (e.fireCd <= 0) {
@@ -4483,15 +4485,15 @@ function updateSpawns(dt) {
     if (autoplayEnabled) {
       autoplayCountdown = AUTOPLAY_DELAY;
     }
-    // NEW v2.6.0: noLoss achievement (wave 20 reached without losing a tower)
+    // NEW v2.6.1: noLoss achievement (wave 20 reached without losing a tower)
     if (state.wave >= 20 && !state.runTowerLost) {
       unlockAch('noLoss');
     }
-    // NEW v2.6.0: repairer achievement (5+ repairs in a run)
+    // NEW v2.6.1: repairer achievement (5+ repairs in a run)
     if ((state.runRepairsMade || 0) >= 5) {
       unlockAch('repairer');
     }
-    // NEW v2.6.0: event-driven auto-save after each wave
+    // NEW v2.6.1: event-driven auto-save after each wave
     silentAutoSave();
     updateWaveButton();
   }
@@ -4615,8 +4617,11 @@ let isTouchDevice = false;
 // Pending placement/move cell for mobile two-phase tap
 let pendingTapCell = null;
 let pendingTapTime = 0;
-const DOUBLE_TAP_WINDOW = 400; // ms — same-cell second tap within this confirms placement
+const DOUBLE_TAP_WINDOW = 1200; // ms — same-cell second tap within this confirms placement
 
+// Two-phase placement on touch devices: first tap shows preview, second tap confirms.
+// Second tap must be on the SAME cell — any different cell resets the preview.
+// No time limit: user can take as long as they want to confirm.
 canvas.addEventListener('touchstart', (e) => {
   e.preventDefault();
   isTouchDevice = true;
@@ -4625,8 +4630,6 @@ canvas.addEventListener('touchstart', (e) => {
   const c = cellAt(x, y);
   if (!c) return;
   state.mouseCell = c;
-
-  const now = Date.now();
 
   // Two-phase placement on touch devices: first tap shows preview, second tap confirms
   if (state.placing) {
@@ -4641,15 +4644,15 @@ canvas.addEventListener('touchstart', (e) => {
       }
       return;
     }
-    // Same cell tapped twice within window → confirm placement
-    if (pendingTapCell && pendingTapCell.c === c.c && pendingTapCell.r === c.r && (now - pendingTapTime) < DOUBLE_TAP_WINDOW) {
+    // Same cell tapped again → confirm placement (no time limit)
+    if (pendingTapCell && pendingTapCell.c === c.c && pendingTapCell.r === c.r) {
       pendingTapCell = null;
       handleClick(c.c, c.r);
       return;
     }
     // First tap on a new valid cell → show preview, don't place yet
     pendingTapCell = c;
-    pendingTapTime = now;
+    pendingTapTime = Date.now();
     toast(LANG === 'tr' ? 'Onaylamak için tekrar dokun' : 'Tap again to confirm', '#d97e2a');
     return;
   }
@@ -4660,13 +4663,13 @@ canvas.addEventListener('touchstart', (e) => {
       toast(t2('cantPlaceHere'), '#c8472f');
       return;
     }
-    if (pendingTapCell && pendingTapCell.c === c.c && pendingTapCell.r === c.r && (now - pendingTapTime) < DOUBLE_TAP_WINDOW) {
+    if (pendingTapCell && pendingTapCell.c === c.c && pendingTapCell.r === c.r) {
       pendingTapCell = null;
       handleClick(c.c, c.r);
       return;
     }
     pendingTapCell = c;
-    pendingTapTime = now;
+    pendingTapTime = Date.now();
     toast(LANG === 'tr' ? 'Onaylamak için tekrar dokun' : 'Tap again to confirm', '#6ab8d9');
     return;
   }
@@ -4720,6 +4723,7 @@ function handleClick(c, r) {
     state.runTowerTypesUsed.add(state.placing);
     if (state.runTowerTypesUsed.size >= 7) unlockAch('allTypes');
     state.placing = null;
+    pendingTapCell = null;
     refreshShopSelection();
     return;
   }
@@ -4752,6 +4756,7 @@ function buildShop() {
     el.addEventListener('click', () => {
       if (state.placing === key) {
         state.placing = null;
+        pendingTapCell = null;
         toast(LANG === 'tr' ? 'Seçim iptal' : 'Selection cancelled', '#8a7d52');
       } else {
         const cost = def.levels[0].cost;
@@ -4761,6 +4766,7 @@ function buildShop() {
         }
         state.placing = key;
         state.selected = null;
+        pendingTapCell = null;
         hideTowerPanel();
         toast((LANG === 'tr' ? 'Yerleştirmek için gride dokun: ' : 'Tap grid to place: ') + t(def.nameKey), '#d97e2a');
       }
@@ -5192,7 +5198,7 @@ function selectMap(mapDef, difficulty) {
   document.getElementById('online-indicator').style.display = 'flex';
   playTrack('game');
   resizeCanvas();
-  // NEW v2.6.0: initial auto-save so Continue button shows up even before first tower
+  // NEW v2.6.1: initial auto-save so Continue button shows up even before first tower
   silentAutoSave();
 }
 function showMapSelect() {
