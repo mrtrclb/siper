@@ -1428,14 +1428,14 @@
 <!-- SPLASH SCREEN -->
 <div class="splash" id="splash">
   <div class="splash-logo">SİPER</div>
-  <div class="splash-sub">v2.6.1</div>
+  <div class="splash-sub" id="splash-version">v2.6.1</div>
   <div class="splash-tagline" data-i18n="splashTagline">Hattı Tut, Üssü Koru.</div>
   <div class="splash-lang">
     <button class="lang-btn" data-lang="tr">TÜRKÇE</button>
     <button class="lang-btn" data-lang="en">ENGLISH</button>
   </div>
   <button class="splash-start" id="splash-start" data-i18n="startGame">Oyuna Başla!</button>
-  <div class="splash-footer">v2.6.1 · mrtrclb</div>
+  <div class="splash-footer" id="splash-footer">v2.6.1 · mrtrclb</div>
 </div>
 
 <!-- MAIN MENU -->
@@ -1586,7 +1586,7 @@
   <div class="panel-content">
     <h1>SİPER</h1>
     <p style="text-align:center; color: var(--sand); letter-spacing: 2px; margin-bottom: 20px;">
-      <span data-i18n="version">Sürüm</span> 2.5.2
+      <span data-i18n="version">Sürüm</span> <span id="about-version">2.5.2</span>
     </p>
     <p data-i18n="aboutDesc">Siper, 10×8 grid üzerinde modern askeri temalı bir kule savunma oyunudur.</p>
 
@@ -1638,6 +1638,7 @@
     </div>
 
     <h2 data-i18n="changelog">Sürüm Notları</h2>
+    <p><strong>v2.6.2</strong> — <span data-i18n="changelog262"></span></p>
     <p><strong>v2.6.1</strong> — <span data-i18n="changelog261"></span></p>
     <p><strong>v2.6.0</strong> — <span data-i18n="changelog260"></span></p>
     <p><strong>v2.5.2</strong> — <span data-i18n="changelog252"></span></p>
@@ -1816,6 +1817,20 @@
    Single-file, Canvas-based, offline
    ============================================================ */
 
+// Tek kaynak: oyunun versiyonu. Buradan değiştir, her yer otomatik günceller.
+// sw.js içindeki CACHE_VERSION'u da bunu değiştirdikten sonra aynı değere set et.
+const GAME_VERSION = '2.6.2';
+
+// Versiyonu DOM'a yerleştir (splash + about sayfası)
+document.addEventListener('DOMContentLoaded', () => {
+  const sv = document.getElementById('splash-version');
+  const sf = document.getElementById('splash-footer');
+  const av = document.getElementById('about-version');
+  if (sv) sv.textContent = 'v' + GAME_VERSION;
+  if (sf) sf.textContent = 'v' + GAME_VERSION + ' · mrtrclb';
+  if (av) av.textContent = GAME_VERSION;
+});
+
 /* ---------- I18N ---------- */
 const I18N = {
   tr: {
@@ -1917,6 +1932,7 @@ const I18N = {
     changelog252: "Menüye dönüş bug'ı düzeltildi: Hamburger > Menü seçince oyun simülasyonu artık tamamen duruyor — düşmanlar yürümeyi bırakıyor, kuleler ateşi kesiyor, ses efektleri arka planda çalmıyor.",
     changelog260: "Güçlendirilmiş otomatik kayıt: oyun artık her 30 saniyede bir, her kule yerleştirildiğinde, her dalga sonunda, ve sayfa kapatıldığında kendiliğinden kayıt oluyor. iPhone'da uygulamayı alttan kaydırıp kapatsan bile kaldığın yerden devam edebilirsin. Haritaya girdiğin anda 'Devam Et' butonu aktifleşiyor. Yalnızca yerel kayıt — Firebase'e trafik yok.",
     changelog261: "Mobilde ikinci kuleyi yerleştirememe bug'ı düzeltildi: Kule seçip gride dokun → ikinci dokunuşta yerleşir. Önceden 400ms zaman sınırı vardı, artık sınırsız — istediğin kadar düşün, aynı hücreye tekrar dokunduğunda yerleşir. Farklı hücreye dokunursan yeni preview'a kayar.",
+    changelog262: "Oyun duraklatıldığında müzik de duraklıyor, devam ettirdiğinde kaldığı yerden çalmaya başlıyor. Firebase tarafında domain-bazlı koruma (App Check + reCAPTCHA v3) aktif — oyun sadece resmi adreste çalışacak, başka sitede host edilirse online özellikler (skor tablosu, bulut kayıt, geri bildirim) devre dışı kalır. Tek kaynaklı sürüm yönetimi: tüm ekranlar artık aynı versiyon numarasını gösteriyor.",
     otherGames: "Diğer Oyunlarım",
     credits: "Geliştiren: mrtrclb",
     version: "Sürüm",
@@ -2055,6 +2071,7 @@ const I18N = {
     changelog252: "Menu exit bug fixed: Hamburger > Menu now fully stops the simulation — enemies no longer walk, towers no longer fire, and SFX no longer play in the background.",
     changelog260: "Robust auto-save: the game now saves every 30 seconds, on every tower placement, after every wave, and when the page is closed. Even if you swipe the app away on iPhone, you can resume exactly where you left off. 'Continue' appears the moment you pick a map. Purely local — no Firebase traffic.",
     changelog261: "Fixed mobile bug where second tower couldn't be placed: Select tower, tap grid → second tap places it. Previously had a 400ms time limit, now unlimited — take as long as you want to confirm, second tap on the same cell places. Tapping a different cell moves the preview.",
+    changelog262: "Music now pauses together with the game and resumes from where it left off. Domain-level Firebase protection (App Check + reCAPTCHA v3) is active — the game runs only on the official address; if hosted on another site, online features (leaderboard, cloud save, feedback) will be disabled. Single-source version management: all screens now display the same version number.",
     otherGames: "My Other Games",
     credits: "Developed by mrtrclb",
     version: "Version",
@@ -5871,7 +5888,7 @@ document.getElementById('feedback-send').addEventListener('click', () => {
       msg: msg.substring(0, 1000),
       lang: LANG,
       ts: firebase.database.ServerValue.TIMESTAMP,
-      version: '2.5.2',
+      version: GAME_VERSION,
       ua: navigator.userAgent.substring(0, 200)
     }).then(() => {
       toast(t('feedbackThanks'), '#7a9f3f');
@@ -5900,7 +5917,7 @@ document.getElementById('feedback-send').addEventListener('click', () => {
 
 function serializeGame() {
   return {
-    version: '2.5.2',
+    version: GAME_VERSION,
     mapId: currentMap.id,
     difficulty: currentDifficulty,
     money: state.money,
@@ -6402,7 +6419,7 @@ async function uploadToCloud() {
     await fbDb.ref('siper/saves/' + code).set({
       ts: firebase.database.ServerValue.TIMESTAMP,
       data: data,
-      version: '2.5.2'
+      version: GAME_VERSION
     });
     // Also mirror scores into /siper/scores/<code> for quick lookup
     await fbDb.ref('siper/scores/' + code).set(data.scores);
