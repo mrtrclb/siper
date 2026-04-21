@@ -169,11 +169,27 @@
   .stat.repairable.affordable .repair-badge { display: inline-block; }
   .spacer { flex: 1; }
 
+  /* HUD control cluster — groups Wave/Speed/Hamburger so they stay together
+     and never get pushed onto a second line when any of them widens. */
+  .hud-controls {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+    margin-left: auto;
+  }
+  /* Wave button must be wide enough to hold its widest text ("⏸ 99s") without
+     pushing neighbors onto the next row. */
+  #btn-wave {
+    min-width: 72px;
+    text-align: center;
+    justify-content: center;
+  }
+
   /* Hamburger dropdown menu */
   .hamburger-wrap {
     position: relative;
     display: inline-block;
-    margin-left: auto; /* push to right edge of HUD */
   }
   .hamburger-btn {
     font-size: 22px;
@@ -280,6 +296,7 @@
     min-width: 0;
     min-height: 0;
     overflow: hidden;
+    position: relative; /* positioning context for .tower-panel overlay on desktop */
   }
   canvas {
     max-width: 100%;
@@ -368,10 +385,15 @@
     border-radius: 2px;
   }
 
-  /* ===== SELECTED TOWER PANEL ===== */
+  /* ===== SELECTED TOWER PANEL =====
+     On desktop: overlays the canvas, positioned dynamically by JS near the
+     selected tower.
+     On mobile: pinned to the bottom-left (see mobile media query below). */
   .tower-panel {
     position: absolute;
-    bottom: 10px;
+    /* Initial safe default — JS recomputes these from selected tower's screen
+       coords every time showTowerPanel() is called. */
+    top: 10px;
     left: 10px;
     background: linear-gradient(180deg, var(--panel) 0%, var(--bg-2) 100%);
     border: 1px solid var(--orange);
@@ -381,6 +403,12 @@
     box-shadow: 0 4px 16px rgba(0,0,0,0.8);
     display: none;
     z-index: 10;
+    /* Subtle entry animation */
+    animation: tp-fade-in 0.12s ease-out;
+  }
+  @keyframes tp-fade-in {
+    from { opacity: 0; transform: scale(0.96); }
+    to   { opacity: 1; transform: scale(1); }
   }
   .tower-panel.active { display: block; }
   .tp-close {
@@ -673,6 +701,32 @@
     color: var(--khaki-2);
     text-transform: uppercase;
     letter-spacing: 1.5px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .map-progress-header .mp-info-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    padding: 0;
+    border-radius: 50%;
+    border: 1px solid var(--orange);
+    background: rgba(217,126,42,0.12);
+    color: var(--orange-2);
+    font-size: 11px;
+    font-weight: bold;
+    font-family: inherit;
+    cursor: pointer;
+    line-height: 1;
+    transition: all 0.15s;
+  }
+  .map-progress-header .mp-info-btn:hover {
+    background: var(--orange);
+    color: #0a0a0a;
+    transform: scale(1.1);
   }
   .map-progress-header .mp-value {
     font-size: 16px;
@@ -1505,7 +1559,16 @@
     .stat { font-size: 11px; padding: 4px 8px; }
     .stat .icon { font-size: 12px; }
     .btn { font-size: 11px; padding: 6px 10px; letter-spacing: 0.3px; min-height: 32px; }
-    .tower-panel { min-width: 200px; left: 5px; bottom: 140px; }
+    /* Mobile: force panel to a stable bottom-left overlay on the canvas,
+       ignoring JS-computed desktop coords (JS won't touch top/right either —
+       see positionTowerPanel()). */
+    .tower-panel {
+      min-width: 200px;
+      left: 5px !important;
+      right: auto !important;
+      top: auto !important;
+      bottom: 5px !important;
+    }
     .canvas-wrap { padding: 4px; }
   }
   @media (max-width: 540px) {
@@ -1720,6 +1783,17 @@
       <li data-i18n="howToPlay6"></li>
     </ul>
 
+    <h2 data-i18n="unlockTitle">Harita Kilidi ve İlerleme</h2>
+    <p data-i18n="unlockIntro"></p>
+    <ul>
+      <li data-i18n="unlock1"></li>
+      <li data-i18n="unlock2"></li>
+      <li data-i18n="unlock3"></li>
+      <li data-i18n="unlock4"></li>
+      <li data-i18n="unlock5"></li>
+    </ul>
+    <p style="background: rgba(217,126,42,0.08); border-left: 3px solid var(--orange); padding: 10px 14px; margin-top: 10px; font-size: 13px;" data-i18n="unlockExample"></p>
+
     <h2 data-i18n="towers">Kuleler</h2>
     <ul>
       <li><strong data-i18n="tMG">Makineli Tüfek</strong> — <span data-i18n="tMGd"></span></li>
@@ -1751,6 +1825,7 @@
     </div>
 
     <h2 data-i18n="changelog">Sürüm Notları</h2>
+    <p><strong>v2.6.4</strong> — <span data-i18n="changelog264"></span></p>
     <p><strong>v2.6.3</strong> — <span data-i18n="changelog263"></span></p>
     <p><strong>v2.6.2</strong> — <span data-i18n="changelog262"></span></p>
     <p><strong>v2.6.1</strong> — <span data-i18n="changelog261"></span></p>
@@ -1828,6 +1903,25 @@
   </div>
 </div>
 
+<!-- PROGRESS INFO MODAL -->
+<div class="diff-modal" id="progress-info-modal">
+  <div class="diff-box">
+    <h2 data-i18n="unlockTitle">Harita Kilidi ve İlerleme</h2>
+    <p style="font-size: 13px; line-height: 1.6; color: var(--khaki-2); margin-bottom: 14px;" data-i18n="unlockIntro"></p>
+    <ul style="font-size: 13px; line-height: 1.6; color: var(--khaki-2); padding-left: 20px; margin-bottom: 14px;">
+      <li data-i18n="unlock1" style="margin-bottom: 8px;"></li>
+      <li data-i18n="unlock2" style="margin-bottom: 8px;"></li>
+      <li data-i18n="unlock3" style="margin-bottom: 8px;"></li>
+      <li data-i18n="unlock4" style="margin-bottom: 8px;"></li>
+      <li data-i18n="unlock5"></li>
+    </ul>
+    <p style="background: rgba(217,126,42,0.08); border-left: 3px solid var(--orange); padding: 10px 14px; font-size: 12px; line-height: 1.5; color: var(--sand); margin-bottom: 16px;" data-i18n="unlockExample"></p>
+    <div class="diff-actions">
+      <button class="btn primary" id="progress-info-close" data-i18n="back" style="margin-left: auto;">Geri</button>
+    </div>
+  </div>
+</div>
+
 <div id="app" style="display:none;">
   <!-- HUD -->
   <div class="hud">
@@ -1849,17 +1943,19 @@
       <span id="hud-score">0</span>
     </div>
     <div class="spacer"></div>
-    <button class="btn primary" id="btn-wave" data-i18n="startWave">Dalgayı Başlat</button>
-    <button class="btn" id="btn-speed" title="Hız">1×</button>
-    <div class="hamburger-wrap">
-      <button class="btn hamburger-btn" id="btn-hamburger" aria-label="menu">≡</button>
-      <div class="hamburger-dropdown" id="hamburger-dropdown">
-        <button class="dropdown-item" id="btn-autoplay"><span data-i18n="autoplayLabel">Otomatik Oynat</span>: <span id="btn-autoplay-val">AÇIK</span></button>
-        <button class="dropdown-item save-quit" id="btn-save-quit" data-i18n="saveAndQuit">Kaydet & Çık</button>
-        <button class="dropdown-item" id="btn-map" data-i18n="changeMap">Menü</button>
-        <button class="dropdown-item danger" id="btn-restart" data-i18n="restart">Yeniden Başla</button>
-        <div class="dropdown-divider"></div>
-        <button class="dropdown-item" id="btn-lang"><span data-i18n="langLabel">Dil</span>: <span id="btn-lang-val">EN</span></button>
+    <div class="hud-controls">
+      <button class="btn primary" id="btn-wave">▶</button>
+      <button class="btn" id="btn-speed" title="Hız">1×</button>
+      <div class="hamburger-wrap">
+        <button class="btn hamburger-btn" id="btn-hamburger" aria-label="menu">≡</button>
+        <div class="hamburger-dropdown" id="hamburger-dropdown">
+          <button class="dropdown-item" id="btn-autoplay"><span data-i18n="autoplayLabel">Otomatik Oynat</span>: <span id="btn-autoplay-val">AÇIK</span></button>
+          <button class="dropdown-item save-quit" id="btn-save-quit" data-i18n="saveAndQuit">Kaydet & Çık</button>
+          <button class="dropdown-item" id="btn-map" data-i18n="changeMap">Menü</button>
+          <button class="dropdown-item danger" id="btn-restart" data-i18n="restart">Yeniden Başla</button>
+          <div class="dropdown-divider"></div>
+          <button class="dropdown-item" id="btn-lang"><span data-i18n="langLabel">Dil</span>: <span id="btn-lang-val">EN</span></button>
+        </div>
       </div>
     </div>
   </div>
@@ -1868,32 +1964,32 @@
   <div class="main">
     <div class="canvas-wrap">
       <canvas id="game" width="800" height="640"></canvas>
+      <!-- Selected tower info panel (overlays the board, positioned by JS) -->
+      <div class="tower-panel" id="tower-panel">
+        <button class="tp-close" id="tp-close" aria-label="close">×</button>
+        <h3 id="tp-name">—</h3>
+        <div class="stats-row">
+          <div><span data-i18n="level">Seviye</span>: <span id="tp-level">1</span><span class="level-dots" id="tp-dots"></span></div>
+        </div>
+        <div class="stats-row">
+          <div><span data-i18n="dmg">Hasar</span>: <span id="tp-dmg">0</span></div>
+          <div><span data-i18n="range">Menzil</span>: <span id="tp-range">0</span></div>
+          <div><span data-i18n="rate">Hız</span>: <span id="tp-rate">0</span></div>
+        </div>
+        <div class="stats-row">
+          <div>HP: <span id="tp-hp">100</span>/<span id="tp-maxhp">100</span></div>
+        </div>
+        <div class="actions">
+          <button class="btn primary" id="tp-upgrade" data-i18n="upgrade">Yükselt</button>
+          <button class="btn" id="tp-repair" data-i18n="repair">Onar</button>
+          <button class="btn" id="tp-move" data-i18n="move">Taşı</button>
+          <button class="btn danger" id="tp-sell" data-i18n="sell">Sat</button>
+        </div>
+      </div>
     </div>
     <div class="sidebar">
       <div class="sidebar-title" data-i18n="towers">Kuleler</div>
       <div id="tower-shop"></div>
-    </div>
-    <!-- Selected tower info panel -->
-    <div class="tower-panel" id="tower-panel">
-      <button class="tp-close" id="tp-close" aria-label="close">×</button>
-      <h3 id="tp-name">—</h3>
-      <div class="stats-row">
-        <div><span data-i18n="level">Seviye</span>: <span id="tp-level">1</span><span class="level-dots" id="tp-dots"></span></div>
-      </div>
-      <div class="stats-row">
-        <div><span data-i18n="dmg">Hasar</span>: <span id="tp-dmg">0</span></div>
-        <div><span data-i18n="range">Menzil</span>: <span id="tp-range">0</span></div>
-        <div><span data-i18n="rate">Hız</span>: <span id="tp-rate">0</span></div>
-      </div>
-      <div class="stats-row">
-        <div>HP: <span id="tp-hp">100</span>/<span id="tp-maxhp">100</span></div>
-      </div>
-      <div class="actions">
-        <button class="btn primary" id="tp-upgrade" data-i18n="upgrade">Yükselt</button>
-        <button class="btn" id="tp-repair" data-i18n="repair">Onar</button>
-        <button class="btn" id="tp-move" data-i18n="move">Taşı</button>
-        <button class="btn danger" id="tp-sell" data-i18n="sell">Sat</button>
-      </div>
     </div>
   </div>
 </div>
@@ -1934,7 +2030,7 @@
 
 // Tek kaynak: oyunun versiyonu. Buradan değiştir, her yer otomatik günceller.
 // sw.js içindeki CACHE_VERSION'u da bunu değiştirdikten sonra aynı değere set et.
-const GAME_VERSION = '2.6.3';
+const GAME_VERSION = '2.6.4';
 
 // Versiyonu DOM'a yerleştir (splash + about sayfası)
 document.addEventListener('DOMContentLoaded', () => {
@@ -1976,6 +2072,15 @@ const I18N = {
     requires: "Gereken",
     points: "puan",
     lockedDesc: "Daha fazla dalga geçerek puan biriktir.",
+    unlockTitle: "Harita Kilidi ve İlerleme",
+    unlockIntro: "Haritalar kolaydan zora doğru sıralanmıştır. İlk 3 harita (Bravo-II Labirent, Kilo Dörtgen, Lima Üçgen) açıktır — diğer 27 harita İlerleme Puanı biriktirerek açılır.",
+    unlock1: "Her haritada geçtiğin en yüksek dalga, o haritanın zorluk katsayısıyla çarpılarak puana dönüşür. Örneğin Alfa Hattı'nda 12. dalgaya ulaşırsan 12 × 1 = 12 puan kazanırsın.",
+    unlock2: "Zorluk katsayıları: en kolay 10 harita 1×, sonraki 5 harita 2×, sonraki 5 harita 3×, sonraki 5 harita 4×, en zor 5 harita 5× puan verir.",
+    unlock3: "Puanlar ortak havuzda birikir — istersen kolay haritayı tekrar oyna, istersen zor haritada az dalga geç. İki yol da seni yeni haritalara yaklaştırır.",
+    unlock4: "Her haritanın kendi açılma eşiği vardır. Harita seçim ekranının üstündeki ilerleme çubuğu toplam puanını ve bir sonraki haritayı gösterir.",
+    unlock5: "Yalnızca bir haritadaki en yüksek dalga sayılır — aynı haritayı defalarca oynamak o haritanın en iyi skorunu geçmediğin sürece ek puan getirmez.",
+    unlockExample: "💡 Pratik örnek: Bravo-II'de 20. dalgaya gelirsen 20 × 1 = 20 puan kazanırsın ve 4. harita (November Sekiz, eşik 10) ile 5. harita (Yankee, eşik 20) açılır. Böylece ilk birkaç kilit oldukça hızlı açılır.",
+    progressInfoBtn: "Nasıl puan kazanılır?",
     bossWave: "BOSS DALGASI",
     backToMaps: "Haritalara Dön",
     // Splash
@@ -2055,6 +2160,7 @@ const I18N = {
     changelog261: "Mobilde ikinci kuleyi yerleştirememe bug'ı düzeltildi: Kule seçip gride dokun → ikinci dokunuşta yerleşir. Önceden 400ms zaman sınırı vardı, artık sınırsız — istediğin kadar düşün, aynı hücreye tekrar dokunduğunda yerleşir. Farklı hücreye dokunursan yeni preview'a kayar.",
     changelog262: "Oyun duraklatıldığında müzik de duraklıyor, devam ettirdiğinde kaldığı yerden çalmaya başlıyor. Firebase tarafında domain-bazlı koruma (App Check + reCAPTCHA v3) aktif — oyun sadece resmi adreste çalışacak, başka sitede host edilirse online özellikler (skor tablosu, bulut kayıt, geri bildirim) devre dışı kalır. Tek kaynaklı sürüm yönetimi: tüm ekranlar artık aynı versiyon numarasını gösteriyor.",
     changelog263: "Haritalar artık kolaydan zora doğru sıralı ve kilitli başlıyor. İlk 3 harita (Bravo-II, Kilo, Lima) açık — diğer 27 harita 'İlerleme Puanı' biriktirerek açılıyor. Her haritada geçtiğin en yüksek dalga × haritanın zorluk katsayısı (kolay 1×, zor 5×) kadar puan kazanırsın. İstediğin haritayı yeterince oynayarak ilerle: tek yol kolay haritaları tekrar et veya zor haritalara erken atla — puan havuzu seni yoluna göre ilerletir.",
+    changelog264: "İlerleme puanı sisteminin açıklaması: harita seçim ekranındaki ℹ ikonuna tıklayınca ayrıntılı bilgi modal'ı açılır. Hakkında sayfasına 'Harita Kilidi ve İlerleme' başlığı eklendi. Mobil HUD hamburger çakışması düzeltildi — otomatik oynat geri sayımı sırasında HUD artık kaymıyor. Masaüstünde kule yükselt/tamir/sat paneli artık ekranın ortasında açılıyor — sol alt köşeye sıkışmıyor.",
     otherGames: "Diğer Oyunlarım",
     credits: "Geliştiren: mrtrclb",
     version: "Sürüm",
@@ -2127,6 +2233,15 @@ const I18N = {
     requires: "Requires",
     points: "pts",
     lockedDesc: "Clear more waves to earn unlock points.",
+    unlockTitle: "Map Unlocks & Progression",
+    unlockIntro: "Maps are ordered easy to hard. The first 3 (Bravo-II Labyrinth, Kilo Rectangle, Lima Triangle) are unlocked — the other 27 unlock as you earn Progress Points.",
+    unlock1: "Each map's highest wave × that map's difficulty weight converts into points. Reaching wave 12 on Alpha Line, for example, gives 12 × 1 = 12 points.",
+    unlock2: "Weights: the 10 easiest maps are 1×, next 5 are 2×, next 5 are 3×, next 5 are 4×, and the 5 hardest maps are 5×.",
+    unlock3: "Points pool together — grind an easy map or push a few waves on a tougher one. Either path moves you toward new maps.",
+    unlock4: "Each map has its own unlock threshold. The progress bar at the top of the map select screen shows your total and the next map in line.",
+    unlock5: "Only the highest wave per map counts — replaying the same map doesn't earn more points unless you beat your previous best on it.",
+    unlockExample: "💡 Practical example: reaching wave 20 on Bravo-II earns 20 × 1 = 20 points, which unlocks map #4 (November Eight, threshold 10) and map #5 (Yankee, threshold 20). The first few unlocks come fairly quickly.",
+    progressInfoBtn: "How to earn points?",
     bossWave: "BOSS WAVE",
     backToMaps: "Back to Maps",
     splashTagline: "Hold the Line. Protect the Base.",
@@ -2201,6 +2316,7 @@ const I18N = {
     changelog261: "Fixed mobile bug where second tower couldn't be placed: Select tower, tap grid → second tap places it. Previously had a 400ms time limit, now unlimited — take as long as you want to confirm, second tap on the same cell places. Tapping a different cell moves the preview.",
     changelog262: "Music now pauses together with the game and resumes from where it left off. Domain-level Firebase protection (App Check + reCAPTCHA v3) is active — the game runs only on the official address; if hosted on another site, online features (leaderboard, cloud save, feedback) will be disabled. Single-source version management: all screens now display the same version number.",
     changelog263: "Maps are now ordered easy-to-hard and start locked. The first 3 maps (Bravo-II, Kilo, Lima) are open — the other 27 unlock via 'Progress Points' you earn by playing. Each map awards (highest wave reached × map difficulty weight, from 1× for easy to 5× for hardest). Grind an easy map or jump into a tough one — the shared pool lets you progress at your own pace.",
+    changelog264: "Progress system explanation: tap the ℹ icon on the map select screen to open a detailed info modal. A new 'Map Unlocks & Progression' section was added to the About page. Mobile HUD hamburger overlap fixed — the HUD no longer shifts during autoplay countdown. On desktop, the tower upgrade/repair/sell panel now opens centered instead of stuck in the bottom-left corner.",
     otherGames: "My Other Games",
     credits: "Developed by mrtrclb",
     version: "Version",
@@ -3145,6 +3261,13 @@ function resizeCanvas() {
   if (h > maxH) { h = maxH; w = h * ratio; }
   canvas.style.width = w + 'px';
   canvas.style.height = h + 'px';
+  // Reposition the open tower panel (if any) — canvas moved, panel follows.
+  if (state && state.selected !== null && state.towers && state.towers[state.selected]) {
+    const panel = document.getElementById('tower-panel');
+    if (panel && panel.classList.contains('active')) {
+      positionTowerPanel(state.towers[state.selected]);
+    }
+  }
 }
 
 // Debounced resize — handles rotation and resize
@@ -5147,7 +5270,59 @@ function showTowerPanel() {
   }
 
   panel.classList.add('active');
+  positionTowerPanel(tw);
 }
+
+/* Position the tower panel near the selected tower on desktop.
+   On mobile (≤768px) the CSS media query forces bottom-left via !important,
+   so we still compute coords but they'll be overridden. */
+function positionTowerPanel(tw) {
+  const panel = document.getElementById('tower-panel');
+  const canvas = document.getElementById('game');
+  if (!panel || !canvas) return;
+  // Skip dynamic positioning on narrow screens — CSS handles it.
+  if (window.innerWidth <= 768) {
+    // Ensure inline styles don't override mobile CSS. Clear any that JS set.
+    panel.style.top = '';
+    panel.style.left = '';
+    panel.style.right = '';
+    panel.style.bottom = '';
+    return;
+  }
+  // Canvas bounding rect in page, then offset relative to canvas-wrap parent.
+  const canvasRect = canvas.getBoundingClientRect();
+  const wrap = canvas.parentElement; // .canvas-wrap
+  const wrapRect = wrap.getBoundingClientRect();
+  // Scale factor — canvas may be scaled by CSS (max-width/height).
+  const scaleX = canvasRect.width / canvas.width;
+  const scaleY = canvasRect.height / canvas.height;
+  // Tower center in canvas logical coords:
+  const tx = (tw.c + 0.5) * CELL;
+  const ty = (tw.r + 0.5) * CELL;
+  // → relative to canvas-wrap (panel's positioning context):
+  const towerX = (canvasRect.left - wrapRect.left) + tx * scaleX;
+  const towerY = (canvasRect.top  - wrapRect.top ) + ty * scaleY;
+  // Measure panel now that it's visible.
+  const pw = panel.offsetWidth;
+  const ph = panel.offsetHeight;
+  const margin = 12;
+  // Preferred placement: to the right of the tower, vertically centered on it.
+  // If that overflows the wrap, flip to the left. Then clamp vertically.
+  let left = towerX + CELL * scaleX * 0.5 + margin;
+  if (left + pw > wrapRect.width - margin) {
+    // Not enough room on the right — try the left side.
+    left = towerX - CELL * scaleX * 0.5 - margin - pw;
+  }
+  // Final clamp horizontally (handles very narrow canvases).
+  left = Math.max(margin, Math.min(left, wrapRect.width - pw - margin));
+  let top = towerY - ph / 2;
+  top = Math.max(margin, Math.min(top, wrapRect.height - ph - margin));
+  panel.style.left = left + 'px';
+  panel.style.top = top + 'px';
+  panel.style.right = 'auto';
+  panel.style.bottom = 'auto';
+}
+
 function hideTowerPanel() {
   document.getElementById('tower-panel').classList.remove('active');
 }
@@ -5428,6 +5603,19 @@ function renderMapPreview(canv, mapDef) {
     ctx2.fill();
   }
 }
+function showProgressInfoModal() {
+  const modal = document.getElementById('progress-info-modal');
+  if (!modal) return;
+  // Translate any data-i18n children that were freshly injected (safety net —
+  // the static HTML is already translated on lang change, but this ensures
+  // the modal shows translated text even if it's opened before a lang toggle).
+  modal.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    el.textContent = t(key);
+  });
+  modal.classList.add('active');
+}
+
 function buildMapSelect() {
   const grid = document.getElementById('map-grid');
   grid.innerHTML = '';
@@ -5440,7 +5628,7 @@ function buildMapSelect() {
       const pct = Math.min(100, Math.round((progress / next.threshold) * 100));
       header.innerHTML = `
         <div class="mp-row">
-          <span class="mp-label">${t('progressPoints')}</span>
+          <span class="mp-label">${t('progressPoints')} <button class="mp-info-btn" id="mp-info-btn" title="${t('progressInfoBtn')}" aria-label="${t('progressInfoBtn')}">ℹ</button></span>
           <span class="mp-value">${progress} / ${next.threshold}</span>
         </div>
         <div class="mp-bar"><div class="mp-bar-fill" style="width:${pct}%"></div></div>
@@ -5449,12 +5637,19 @@ function buildMapSelect() {
     } else {
       header.innerHTML = `
         <div class="mp-row">
-          <span class="mp-label">${t('progressPoints')}</span>
+          <span class="mp-label">${t('progressPoints')} <button class="mp-info-btn" id="mp-info-btn" title="${t('progressInfoBtn')}" aria-label="${t('progressInfoBtn')}">ℹ</button></span>
           <span class="mp-value">${progress}</span>
         </div>
         <div class="mp-bar"><div class="mp-bar-fill" style="width:100%"></div></div>
         <div class="mp-next">${t('allUnlocked')}</div>
       `;
+    }
+    const infoBtn = document.getElementById('mp-info-btn');
+    if (infoBtn) {
+      infoBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showProgressInfoModal();
+      });
     }
   }
   for (const mapDef of MAPS) {
@@ -5601,6 +5796,17 @@ document.getElementById('diff-start').addEventListener('click', () => {
   const diff = pendingDiff;
   hideDifficultyModal();
   selectMap(map, diff);
+});
+
+// Progress info modal close — click on button OR on the overlay background
+document.getElementById('progress-info-close').addEventListener('click', () => {
+  document.getElementById('progress-info-modal').classList.remove('active');
+});
+document.getElementById('progress-info-modal').addEventListener('click', (e) => {
+  // Close only if clicking the overlay itself, not the box content
+  if (e.target.id === 'progress-info-modal') {
+    e.currentTarget.classList.remove('active');
+  }
 });
 
 /* ---------- NAVIGATION: SPLASH, MAIN MENU ---------- */
