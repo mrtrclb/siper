@@ -4937,6 +4937,7 @@ document.getElementById('btn-wave').addEventListener('click', () => {
   // If game is paused → resume
   if (state.paused) {
     state.paused = false;
+    resumeMusic();
     updateWaveButton();
     toast(t('resumed') || 'Resumed', '#7a9f3f');
     return;
@@ -4944,6 +4945,7 @@ document.getElementById('btn-wave').addEventListener('click', () => {
   // If wave is active or autoplay counting down → pause the game
   if (state.waveActive || autoplayCountdown > 0) {
     state.paused = true;
+    pauseMusic();
     updateWaveButton();
     toast(t('paused') || 'Paused', '#8a7d52');
     return;
@@ -5429,6 +5431,19 @@ function stopMusic() {
   if (!audioEl) return;
   audioEl.pause();
   currentTrack = null;
+}
+
+// Pause/resume without losing current track position
+function pauseMusic() {
+  if (!audioEl || !musicEnabled) return;
+  if (!audioEl.paused) audioEl.pause();
+}
+function resumeMusic() {
+  if (!audioEl || !musicEnabled) return;
+  if (audioEl.paused && audioEl.src) {
+    const pr = audioEl.play();
+    if (pr && typeof pr.catch === 'function') pr.catch(() => {});
+  }
 }
 
 function setMusicEnabled(on) {
