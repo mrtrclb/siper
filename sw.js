@@ -1,5 +1,5 @@
-// Siper Service Worker v2.6.2
-const CACHE_VERSION = 'siper-v2.6.2';
+// Siper Service Worker v2.6.3
+const CACHE_VERSION = 'siper-v2.6.3';
 const CORE_ASSETS = [
   './',
   './index.html',

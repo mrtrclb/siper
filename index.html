@@ -79,6 +79,7 @@
 <!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-check-compat.js"></script>
 <style>
   :root {
     --bg: #0a0a0a;
@@ -5754,6 +5755,19 @@ let fbApp = null, fbDb = null, fbEnabled = false;
 try {
   if (firebaseConfig.apiKey && firebaseConfig.apiKey !== "REPLACE_ME") {
     fbApp = firebase.initializeApp(firebaseConfig);
+
+    // App Check — domain-level koruma (reCAPTCHA v3)
+    // SITE KEY'i Google reCAPTCHA admin'den aldığın public key ile değiştir
+    try {
+      const appCheck = firebase.appCheck();
+      appCheck.activate(
+        '6LeZFsMsAAAAAMvFuTuLcGtcJqLryvURrHMODEod',
+        true // auto-refresh token
+      );
+    } catch (ace) {
+      console.warn('App Check init failed:', ace);
+    }
+
     fbDb = firebase.database();
     fbEnabled = true;
   }
