@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>Siper — Kule Savunma Oyunu | Tower Defense</title>
-<meta name="description" content="Siper, modern askeri temalı ücretsiz bir tarayıcı tabanlı kule savunma oyunudur. 30 farklı harita, 7 kule tipi, 7 düşman, boss dalgaları, 32 başarım, 3 zorluk, sonsuz dalga modu ve bulut kayıt. Hattı tut, üssü koru!">
+<meta name="description" content="Siper, modern askeri temalı ücretsiz bir tarayıcı tabanlı kule savunma oyunudur. 32 farklı harita (2 dinamik), 7 kule tipi, 8 düşman, boss dalgaları, 37 başarım, 3 zorluk, sonsuz dalga modu ve bulut kayıt. Hattı tut, üssü koru!">
 <meta name="keywords" content="siper, tower defense, kule savunma, kule oyunu, tarayıcı oyunu, türkçe oyun, strateji oyunu, pwa oyun, ücretsiz oyun, mrtrclb, offline oyun">
 <meta name="author" content="mrtrclb">
 <meta name="theme-color" content="#d97e2a">
@@ -16,7 +16,7 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://mrtrclb.github.io/siper/">
 <meta property="og:title" content="Siper — Kule Savunma Oyunu">
-<meta property="og:description" content="30 harita, 7 kule, 7 düşman, boss dalgaları, 32 başarım. Modern askeri kule savunma oyunu. Hattı tut, üssü koru!">
+<meta property="og:description" content="32 harita (2 dinamik), 7 kule, 8 düşman, boss dalgaları, 37 başarım. Modern askeri kule savunma oyunu. Hattı tut, üssü koru!">
 <meta property="og:image" content="https://mrtrclb.github.io/siper/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -29,7 +29,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:url" content="https://mrtrclb.github.io/siper/">
 <meta name="twitter:title" content="Siper — Kule Savunma Oyunu">
-<meta name="twitter:description" content="30 harita, 7 kule, 7 düşman, boss dalgaları. Modern askeri kule savunma oyunu.">
+<meta name="twitter:description" content="32 harita (2 dinamik), 7 kule, 8 düşman, boss dalgaları. Modern askeri kule savunma oyunu.">
 <meta name="twitter:image" content="https://mrtrclb.github.io/siper/og-image.png">
 <meta name="twitter:creator" content="@mrtrclb">
 
@@ -40,7 +40,7 @@
   "@type": "VideoGame",
   "name": "Siper",
   "alternateName": "Siper Tower Defense",
-  "description": "Modern askeri temalı tarayıcı kule savunma oyunu. 30 harita, 7 kule tipi, 7 düşman sınıfı, boss dalgaları, 32 başarım, 3 zorluk seviyesi ve bulut kayıt özelliği.",
+  "description": "Modern askeri temalı tarayıcı kule savunma oyunu. 32 harita (2 dinamik), 7 kule tipi, 8 düşman sınıfı, boss dalgaları, 37 başarım, 3 zorluk seviyesi ve bulut kayıt özelliği.",
   "url": "https://mrtrclb.github.io/siper/",
   "image": "https://mrtrclb.github.io/siper/og-image.png",
   "author": {
@@ -606,6 +606,7 @@
   }
   .map-card .map-tag.multi { color: var(--orange-2); border-color: var(--orange); }
   .map-card .map-tag.quad { color: var(--danger); border-color: var(--danger); background: rgba(200,71,47,0.12); }
+  .map-card .map-tag.dynamic { color: #b97edb; border-color: #8b5cf6; background: rgba(139,92,246,0.14); }
   .map-card .map-best {
     font-size: 11px;
     color: var(--khaki-2);
@@ -756,6 +757,44 @@
   }
   .map-progress-header .mp-next strong {
     color: var(--sand);
+  }
+
+  /* ===== PLACEMENT BANNER (dynamic maps) =====
+     Fixed-position strip that appears on top of the canvas during HQ placement.
+     Instructs the player and dismisses as soon as a valid HQ is placed. */
+  .placement-banner {
+    position: fixed;
+    top: 70px;  /* below HUD */
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 10px 20px;
+    background: linear-gradient(180deg, rgba(30,22,10,0.95), rgba(15,12,6,0.95));
+    border: 1px solid var(--orange);
+    border-radius: 4px;
+    color: var(--sand);
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 0.8px;
+    z-index: 200;
+    display: none;
+    animation: pb-pulse 2.2s ease-in-out infinite;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.7), 0 0 24px rgba(217,126,42,0.25);
+    pointer-events: none;
+    max-width: 90vw;
+    text-align: center;
+  }
+  .placement-banner.active { display: block; }
+  @keyframes pb-pulse {
+    0%, 100% { box-shadow: 0 4px 18px rgba(0,0,0,0.7), 0 0 24px rgba(217,126,42,0.25); }
+    50%      { box-shadow: 0 4px 18px rgba(0,0,0,0.7), 0 0 36px rgba(217,126,42,0.55); }
+  }
+  @media (max-width: 640px) {
+    .placement-banner {
+      top: auto;
+      bottom: 155px;
+      font-size: 11px;
+      padding: 8px 14px;
+    }
   }
 
   /* ===== SPLASH SCREEN ===== */
@@ -1767,10 +1806,10 @@
     <p data-i18n="aboutDesc">Siper, 10×8 grid üzerinde modern askeri temalı bir kule savunma oyunudur.</p>
 
     <div class="about-stats">
-      <div class="about-stat"><div class="as-val">30</div><div class="as-lab" data-i18n="asMaps">Harita</div></div>
+      <div class="about-stat"><div class="as-val">32</div><div class="as-lab" data-i18n="asMaps">Harita</div></div>
       <div class="about-stat"><div class="as-val">7</div><div class="as-lab" data-i18n="asTowers">Kule Tipi</div></div>
       <div class="about-stat"><div class="as-val">3</div><div class="as-lab" data-i18n="asDiff">Zorluk</div></div>
-      <div class="about-stat"><div class="as-val">35</div><div class="as-lab" data-i18n="asAchs">Başarım</div></div>
+      <div class="about-stat"><div class="as-val">37</div><div class="as-lab" data-i18n="asAchs">Başarım</div></div>
     </div>
 
     <h2 data-i18n="howToPlay">Nasıl Oynanır</h2>
@@ -1793,6 +1832,15 @@
       <li data-i18n="unlock5"></li>
     </ul>
     <p style="background: rgba(217,126,42,0.08); border-left: 3px solid var(--orange); padding: 10px 14px; margin-top: 10px; font-size: 13px;" data-i18n="unlockExample"></p>
+
+    <h2 data-i18n="dynamicMapsTitle">Dinamik Haritalar</h2>
+    <p data-i18n="dynamicMapsDesc"></p>
+    <ul>
+      <li data-i18n="dynamic1"></li>
+      <li data-i18n="dynamic2"></li>
+      <li data-i18n="dynamic3"></li>
+      <li data-i18n="dynamic4"></li>
+    </ul>
 
     <h2 data-i18n="towers">Kuleler</h2>
     <ul>
@@ -1825,6 +1873,7 @@
     </div>
 
     <h2 data-i18n="changelog">Sürüm Notları</h2>
+    <p><strong>v2.7.0</strong> — <span data-i18n="changelog270"></span></p>
     <p><strong>v2.6.4</strong> — <span data-i18n="changelog264"></span></p>
     <p><strong>v2.6.3</strong> — <span data-i18n="changelog263"></span></p>
     <p><strong>v2.6.2</strong> — <span data-i18n="changelog262"></span></p>
@@ -2030,7 +2079,7 @@
 
 // Tek kaynak: oyunun versiyonu. Buradan değiştir, her yer otomatik günceller.
 // sw.js içindeki CACHE_VERSION'u da bunu değiştirdikten sonra aynı değere set et.
-const GAME_VERSION = '2.6.4';
+const GAME_VERSION = '2.7.0';
 
 // Versiyonu DOM'a yerleştir (splash + about sayfası)
 document.addEventListener('DOMContentLoaded', () => {
@@ -2065,13 +2114,24 @@ const I18N = {
     sold: "Satıldı", placed: "Yerleştirildi",
     best: "En İyi",
     changeMap: "Menü", selectMap: "Harita Seç",
-    mapSingle: "Tek Yol", mapMulti: "Çoklu Yol", mapQuad: "4 Yön",
+    mapSingle: "Tek Yol", mapMulti: "Çoklu Yol", mapQuad: "4 Yön", mapDynamic: "Dinamik",
     progressPoints: "İlerleme Puanı",
     nextUnlock: "Sıradaki",
     allUnlocked: "Tüm haritalar açıldı!",
     requires: "Gereken",
     points: "puan",
     lockedDesc: "Daha fazla dalga geçerek puan biriktir.",
+    placeHQPrompt: "🎯 Ana kaleni (HQ) yerleştir — tıkla. Kenara yapıştırma.",
+    placeHQFirst: "Önce ana kaleni yerleştir",
+    hqEdgeWarn: "⚠ Kenara çok yakın — iç kısımlara yerleştir",
+    hqNoPath: "Bu konumdan yol oluşturulamadı, başka bir hücre dene",
+    hqPlaced: "✓ Ana kale kuruldu! Düşman kaleleri belirlendi.",
+    dynamicMapsTitle: "Dinamik Haritalar",
+    dynamicMapsDesc: "Bu haritalarda her oyun farklı: ana kalenin yerini sen seçersin, düşman kaleleri otomatik belirir. Yol sistem tarafından hesaplanır.",
+    dynamic1: "2 dinamik harita var: Echo-II Rastgele (düşman kaleleri serbestçe seçilir) ve Foxtrot-II Aynalı (iki kale HQ etrafında simetrik noktalarda belirir).",
+    dynamic2: "Ana kaleni yerleştirirken kenara 1 kareden yakın olamazsın — yolun oluşması için boşluk gerekiyor.",
+    dynamic3: "Düşman kaleleri HQ'na en az 4 kare uzakta ve birbirlerine 3 kare uzakta yerleşir. Her iki kaleden HQ'na eş zamanlı saldırı gelir.",
+    dynamic4: "Yol kule yerleştirdikçe değişmez — yerleşim başında tek sefer hesaplanır. En zor harita kategorisine aittir (6× ilerleme puanı katsayısı).",
     unlockTitle: "Harita Kilidi ve İlerleme",
     unlockIntro: "Haritalar kolaydan zora doğru sıralanmıştır. İlk 3 harita (Bravo-II Labirent, Kilo Dörtgen, Lima Üçgen) açıktır — diğer 27 harita İlerleme Puanı biriktirerek açılır.",
     unlock1: "Her haritada geçtiğin en yüksek dalga, o haritanın zorluk katsayısıyla çarpılarak puana dönüşür. Örneğin Alfa Hattı'nda 12. dalgaya ulaşırsan 12 × 1 = 12 puan kazanırsın.",
@@ -2117,7 +2177,7 @@ const I18N = {
     resetDone: "Veriler sıfırlandı",
     on: "Açık", off: "Kapalı",
     // About
-    aboutDesc: "Siper, 10×8 grid üzerinde modern askeri temalı bir kule savunma oyunudur. 7 kule tipi, 8 düşman sınıfı, 6 tanesi 4-yönlü saldırı olan 30 farklı harita ve her 10 dalgada bir boss ile sonsuz dalgalara karşı üssünü savun. Kulelerin HP'si var — Ajitatör düşmanı ateş ederek onları yıkabilir.",
+    aboutDesc: "Siper, 10×8 grid üzerinde modern askeri temalı bir kule savunma oyunudur. 7 kule tipi, 8 düşman sınıfı, 32 farklı harita (15 tek yol + 15 çoklu yol + 2 dinamik) ve her 10 dalgada bir boss ile sonsuz dalgalara karşı üssünü savun. Kulelerin HP'si var — Ajitatör düşmanı ateş ederek onları yıkabilir.",
     howToPlay: "Nasıl Oynanır",
     howToPlay1: "Sol paneldeki kulelerden birini seç ve grid üzerinde boş bir hücreye tıklayarak yerleştir.",
     howToPlay2: "Dalga başlat butonuna bas, düşmanlar yolda ilerlerken kuleleri otomatik ateş eder.",
@@ -2127,11 +2187,11 @@ const I18N = {
     howToPlay6: "Her 5 dalgada +2 can, her 10 dalgada +5 can otomatik kazanırsın. ♥ simgesine tıklayarak para karşılığı tamir satın alabilirsin (başlangıç 50◈, her alımda +25◈ pahalanır).",
     towers: "Kuleler",
     features: "Özellikler",
-    feat1: "30 farklı harita (15 tek yol + 15 çoklu yol + 6 dört yönlü saldırı)",
+    feat1: "32 farklı harita (15 tek yol + 15 çoklu yol — 6'sı 4-yönlü + 2 dinamik)",
     feat2: "3 zorluk seviyesi",
     feat3: "7 kule tipi, 3 seviye yükseltme",
     feat4: "Sonsuz dalga modu, harita bazlı skor",
-    feat5: "35 başarım sistemi",
+    feat5: "37 başarım sistemi",
     feat6: "1×, 2×, 3× hız kontrolü",
     feat7: "TR/EN dil desteği, PWA offline, bulut senkron",
     asMaps: "Harita", asTowers: "Kule Tipi", asDiff: "Zorluk", asAchs: "Başarım",
@@ -2161,6 +2221,7 @@ const I18N = {
     changelog262: "Oyun duraklatıldığında müzik de duraklıyor, devam ettirdiğinde kaldığı yerden çalmaya başlıyor. Firebase tarafında domain-bazlı koruma (App Check + reCAPTCHA v3) aktif — oyun sadece resmi adreste çalışacak, başka sitede host edilirse online özellikler (skor tablosu, bulut kayıt, geri bildirim) devre dışı kalır. Tek kaynaklı sürüm yönetimi: tüm ekranlar artık aynı versiyon numarasını gösteriyor.",
     changelog263: "Haritalar artık kolaydan zora doğru sıralı ve kilitli başlıyor. İlk 3 harita (Bravo-II, Kilo, Lima) açık — diğer 27 harita 'İlerleme Puanı' biriktirerek açılıyor. Her haritada geçtiğin en yüksek dalga × haritanın zorluk katsayısı (kolay 1×, zor 5×) kadar puan kazanırsın. İstediğin haritayı yeterince oynayarak ilerle: tek yol kolay haritaları tekrar et veya zor haritalara erken atla — puan havuzu seni yoluna göre ilerletir.",
     changelog264: "İlerleme puanı sisteminin açıklaması: harita seçim ekranındaki ℹ ikonuna tıklayınca ayrıntılı bilgi modal'ı açılır. Hakkında sayfasına 'Harita Kilidi ve İlerleme' başlığı eklendi. Mobil HUD hamburger çakışması düzeltildi — otomatik oynat geri sayımı sırasında HUD artık kaymıyor. Masaüstünde kule yükselt/tamir/sat paneli artık ekranın ortasında açılıyor — sol alt köşeye sıkışmıyor.",
+    changelog270: "2 yeni DİNAMİK harita eklendi (Echo-II Rastgele ve Foxtrot-II Aynalı). Bu haritalarda her oyun farklı: ana kalenin yerini sen seçiyorsun, düşman kaleleri HQ'na en az 4 kare uzakta otomatik olarak belirleniyor, yol sistem tarafından BFS ile hesaplanıyor. İki kaleden eş zamanlı saldırı gelir. Aynalı modda düşman kaleleri HQ etrafında simetrik noktalarda belirir. En zor harita kategorisi (6× ilerleme puanı katsayısı). Continue özelliği dinamik haritaları da destekliyor. 2 yeni başarım: HQ Stratejisti, Komuta Merkezi (toplam 37 başarım). Mobilde HQ yerleşimi iki aşamalı dokunmayla güvenli hale getirildi.",
     otherGames: "Diğer Oyunlarım",
     credits: "Geliştiren: mrtrclb",
     version: "Sürüm",
@@ -2226,13 +2287,24 @@ const I18N = {
     sold: "Sold", placed: "Placed",
     best: "Best",
     changeMap: "Menu", selectMap: "Select Map",
-    mapSingle: "Single Path", mapMulti: "Multi Path", mapQuad: "4-Way",
+    mapSingle: "Single Path", mapMulti: "Multi Path", mapQuad: "4-Way", mapDynamic: "Dynamic",
     progressPoints: "Progress Points",
     nextUnlock: "Next",
     allUnlocked: "All maps unlocked!",
     requires: "Requires",
     points: "pts",
     lockedDesc: "Clear more waves to earn unlock points.",
+    placeHQPrompt: "🎯 Place your HQ — click a cell. Not on the edge.",
+    placeHQFirst: "Place your HQ first",
+    hqEdgeWarn: "⚠ Too close to the edge — pick an inner cell",
+    hqNoPath: "Couldn't generate a path from here — try another cell",
+    hqPlaced: "✓ HQ built! Enemy bases set.",
+    dynamicMapsTitle: "Dynamic Maps",
+    dynamicMapsDesc: "On these maps every run is different: you choose where to place your HQ, and enemy bases spawn automatically. Paths are computed by the system.",
+    dynamic1: "2 dynamic maps: Echo-II Random (enemy bases freely chosen) and Foxtrot-II Mirrored (the two bases spawn at symmetric points around HQ).",
+    dynamic2: "When placing your HQ, you can't sit on the outermost ring — paths need room to form.",
+    dynamic3: "Enemy bases settle at least 4 cells from HQ and at least 3 cells from each other. Both bases attack simultaneously.",
+    dynamic4: "Paths don't recompute as you place towers — the layout is locked in at placement. Top-tier difficulty (6× progress-point weight).",
     unlockTitle: "Map Unlocks & Progression",
     unlockIntro: "Maps are ordered easy to hard. The first 3 (Bravo-II Labyrinth, Kilo Rectangle, Lima Triangle) are unlocked — the other 27 unlock as you earn Progress Points.",
     unlock1: "Each map's highest wave × that map's difficulty weight converts into points. Reaching wave 12 on Alpha Line, for example, gives 12 × 1 = 12 points.",
@@ -2273,7 +2345,7 @@ const I18N = {
     resetConfirm: "All saved scores and settings will be deleted. Are you sure?",
     resetDone: "Data reset",
     on: "On", off: "Off",
-    aboutDesc: "Siper is a modern military-themed tower defense game on a 10×8 grid. Defend your base against endless waves with 7 tower types, 8 enemy classes, 30 different maps (6 of which are 4-way quad-attack) and a boss every 10 waves. Towers now have HP — the Agitator enemy can shoot and destroy them.",
+    aboutDesc: "Siper is a modern military-themed tower defense game on a 10×8 grid. Defend your base against endless waves with 7 tower types, 8 enemy classes, 32 different maps (15 single-path + 15 multi-path + 2 dynamic) and a boss every 10 waves. Towers now have HP — the Agitator enemy can shoot and destroy them.",
     howToPlay: "How to Play",
     howToPlay1: "Select a tower from the left panel and click an empty cell on the grid to place it.",
     howToPlay2: "Press Start Wave — towers automatically fire at enemies moving along the path.",
@@ -2283,11 +2355,11 @@ const I18N = {
     howToPlay6: "You gain +2 lives every 5 waves and +5 lives every 10 waves automatically. Click the ♥ icon to buy repairs (starts at 50◈, +25◈ per additional purchase).",
     towers: "Towers",
     features: "Features",
-    feat1: "30 different maps (15 single-path + 15 multi-path + 6 four-way assault)",
+    feat1: "32 different maps (15 single-path + 15 multi-path — 6 of which are 4-way + 2 dynamic)",
     feat2: "3 difficulty levels",
     feat3: "7 tower types, 3 upgrade levels",
     feat4: "Endless wave mode, per-map scores",
-    feat5: "35-achievement system",
+    feat5: "37-achievement system",
     feat6: "1×, 2×, 3× speed control",
     feat7: "TR/EN language support, PWA offline, cloud sync",
     asMaps: "Maps", asTowers: "Towers", asDiff: "Difficulty", asAchs: "Achievements",
@@ -2317,6 +2389,7 @@ const I18N = {
     changelog262: "Music now pauses together with the game and resumes from where it left off. Domain-level Firebase protection (App Check + reCAPTCHA v3) is active — the game runs only on the official address; if hosted on another site, online features (leaderboard, cloud save, feedback) will be disabled. Single-source version management: all screens now display the same version number.",
     changelog263: "Maps are now ordered easy-to-hard and start locked. The first 3 maps (Bravo-II, Kilo, Lima) are open — the other 27 unlock via 'Progress Points' you earn by playing. Each map awards (highest wave reached × map difficulty weight, from 1× for easy to 5× for hardest). Grind an easy map or jump into a tough one — the shared pool lets you progress at your own pace.",
     changelog264: "Progress system explanation: tap the ℹ icon on the map select screen to open a detailed info modal. A new 'Map Unlocks & Progression' section was added to the About page. Mobile HUD hamburger overlap fixed — the HUD no longer shifts during autoplay countdown. On desktop, the tower upgrade/repair/sell panel now opens centered instead of stuck in the bottom-left corner.",
+    changelog270: "2 new DYNAMIC maps added (Echo-II Random and Foxtrot-II Mirrored). Every run is different: you choose your HQ placement, enemy bases spawn automatically at least 4 cells away from HQ, and the path is computed by the system using BFS. Both bases attack simultaneously. In Mirrored mode the two bases appear at symmetric points around HQ. Top-tier difficulty (6× progress-point weight). Continue supports dynamic maps too. 2 new achievements: HQ Strategist, Command Center (37 total). Mobile HQ placement uses safe two-tap confirmation.",
     otherGames: "My Other Games",
     credits: "Developed by mrtrclb",
     version: "Version",
@@ -2901,6 +2974,37 @@ let MAPS = [
       [9,2],[9,3],[9,4],[9,5],[9,6],[9,7]
     ]],
     palette: { road1: '#363018', road2: '#26210e', ground: '#0a0906', accent: '#d08030' }
+  },
+  // ===== 2 DYNAMIC MAPS (v2.7.0) =====
+  // On these maps, the player places HQ before the game starts.
+  // Two enemy bases are chosen automatically (≥4 cells from HQ, spread apart),
+  // and BFS carves the shortest paths from each base to HQ.
+  // `paths` is left empty here — it gets filled at runtime by generateDynamicPaths().
+  {
+    id: 'rando1',
+    name: { tr: 'Echo-II Rastgele', en: 'Echo-II Random' },
+    desc: {
+      tr: 'Ana kaleni istediğin yere koy. Düşman kaleleri rastgele seçilir.',
+      en: 'Place your HQ anywhere. Enemy bases are chosen randomly.'
+    },
+    type: 'multi',
+    dynamic: true,
+    dynamicMode: 'random',
+    paths: [], // filled at runtime
+    palette: { road1: '#3a2e1c', road2: '#2a2016', ground: '#0d0b08', accent: '#e88a32' }
+  },
+  {
+    id: 'rando2',
+    name: { tr: 'Foxtrot-II Aynalı', en: 'Foxtrot-II Mirrored' },
+    desc: {
+      tr: 'HQ\'nu koy. Düşman kaleleri simetrik noktalarda belirir.',
+      en: 'Place HQ. Enemy bases appear at symmetric points.'
+    },
+    type: 'multi',
+    dynamic: true,
+    dynamicMode: 'mirrored',
+    paths: [],
+    palette: { road1: '#3d2f18', road2: '#2d2212', ground: '#0c0a07', accent: '#cc742a' }
   }
 ];
 
@@ -2942,18 +3046,22 @@ const MAP_ORDER = [
   'charlie', 'romeo', 'bravo', 'quebec', 'oscar',                       // 11-15
   'juliet', 'golf', 'hotel', 'foxtrot', 'alpha2',                       // 16-20
   'mike', 'zulu', 'tango', 'whiskey', 'papa',                           // 21-25
-  'charlie2', 'victor', 'uniform', 'xray', 'sierra'                     // 26-30 (hardest)
+  'charlie2', 'victor', 'uniform', 'xray', 'sierra',                    // 26-30
+  'rando1', 'rando2'                                                    // 31-32 (dynamic — endgame)
 ];
 
 // Each map's complexity weight (cp = points per wave cleared).
 // Easy maps give 1 cp/wave, hardest give 5 cp/wave — rewarding harder play.
+// Dynamic maps are at the top tier (6×) since they combine unpredictability
+// with the hardest base mechanics (2-path simultaneous assault).
 const MAP_CP = {
   bravo2: 1, kilo: 1, lima: 1,
   november: 1, yankee: 1, india: 1, delta: 1, echo: 1, alpha: 1, delta2: 1,
   charlie: 2, romeo: 2, bravo: 2, quebec: 2, oscar: 2,
   juliet: 3, golf: 3, hotel: 3, foxtrot: 3, alpha2: 3,
   mike: 4, zulu: 4, tango: 4, whiskey: 4, papa: 4,
-  charlie2: 5, victor: 5, uniform: 5, xray: 5, sierra: 5
+  charlie2: 5, victor: 5, uniform: 5, xray: 5, sierra: 5,
+  rando1: 6, rando2: 6
 };
 
 // Reorder MAPS array to match difficulty order
@@ -2969,7 +3077,8 @@ const UNLOCK_THRESHOLDS = {
   charlie: 185, romeo: 230, bravo: 280, quebec: 335, oscar: 395,
   juliet: 460, golf: 540, hotel: 625, foxtrot: 720, alpha2: 825,
   mike: 940, zulu: 1065, tango: 1200, whiskey: 1345, papa: 1500,
-  charlie2: 1665, victor: 1840, uniform: 2025, xray: 2220, sierra: 2425
+  charlie2: 1665, victor: 1840, uniform: 2025, xray: 2220, sierra: 2425,
+  rando1: 2650, rando2: 2900
 };
 
 /* Compute total progress points earned across all maps played.
@@ -3154,6 +3263,143 @@ function loadMapIntoState(mapDef, difficulty) {
   state.pathWaypoints = mapDef.paths.map(buildWaypointsForPath);
   state.best = parseInt(localStorage.getItem('siper_best_' + mapDef.id + '_' + currentDifficulty) || '0');
 }
+
+/* ---------- DYNAMIC MAP GENERATION (v2.7.0) ----------
+   For maps with `dynamic: true`, the layout is generated per run:
+     1. Player places HQ on any non-edge cell.
+     2. Two enemy bases are picked automatically — on opposite sides of HQ,
+        ≥4 cells away (Chebyshev), ≥3 apart from each other.
+     3. BFS finds the shortest path from each base to HQ. Paths become the
+        map's paths for that run.
+
+   Why BFS? Player chose "yol oluştur, kuleler yol hariç boşluğa" — classic TD
+   style. Paths are fixed once the round starts; towers block placement on
+   path cells, but path itself doesn't recompute as towers are placed.
+*/
+const DYN_MIN_HQ_DIST = 4;   // Chebyshev cells between HQ and each enemy base
+const DYN_MIN_BASE_DIST = 3; // Between the two enemy bases
+
+// Chebyshev = max(|dx|,|dy|). Good "king's move" distance for grid-based TD.
+function chebyshev(c1, r1, c2, r2) {
+  return Math.max(Math.abs(c1 - c2), Math.abs(r1 - r2));
+}
+
+/* BFS from (sc,sr) to (gc,gr) on a 10×8 grid.
+   Returns array of [c,r] including both endpoints, or null if no path. */
+function bfsPath(sc, sr, gc, gr) {
+  if (sc === gc && sr === gr) return [[sc, sr]];
+  const key = (c, r) => c + ',' + r;
+  const visited = new Map();     // key → [parentC, parentR]
+  visited.set(key(sc, sr), null);
+  const queue = [[sc, sr]];
+  const dirs = [[1,0],[-1,0],[0,1],[0,-1]];
+  while (queue.length) {
+    const [c, r] = queue.shift();
+    for (const [dc, dr] of dirs) {
+      const nc = c + dc, nr = r + dr;
+      if (nc < 0 || nc >= COLS || nr < 0 || nr >= ROWS) continue;
+      const k = key(nc, nr);
+      if (visited.has(k)) continue;
+      visited.set(k, [c, r]);
+      if (nc === gc && nr === gr) {
+        // Reconstruct
+        const path = [[nc, nr]];
+        let cur = [c, r];
+        while (cur) {
+          path.unshift([cur[0], cur[1]]);
+          cur = visited.get(key(cur[0], cur[1]));
+        }
+        return path;
+      }
+      queue.push([nc, nr]);
+    }
+  }
+  return null;
+}
+
+/* Pick 2 enemy base cells given an HQ cell.
+   Strategy: split the board into 4 quadrants relative to HQ; pick one base
+   from the "far" quadrants (max distance) and a second from a different
+   quadrant. Ensures the two bases aren't clustered. */
+function pickEnemyBases(hqC, hqR) {
+  const candidates = [];
+  for (let c = 0; c < COLS; c++) {
+    for (let r = 0; r < ROWS; r++) {
+      if (c === hqC && r === hqR) continue;
+      if (chebyshev(c, r, hqC, hqR) >= DYN_MIN_HQ_DIST) {
+        candidates.push([c, r]);
+      }
+    }
+  }
+  if (candidates.length < 2) return null;
+  // First base: random among far candidates
+  const b1 = candidates[Math.floor(Math.random() * candidates.length)];
+  // Second base: must be on the opposite side of HQ and ≥DYN_MIN_BASE_DIST from b1
+  const opposite = candidates.filter(([c, r]) => {
+    // Opposite quadrant: sign of (c - hqC) and (r - hqR) flipped vs. b1.
+    // Soft check — allow same sign on one axis but require ≥ MIN apart AND
+    // at least a minimum angular spread.
+    const sameSideC = Math.sign(c - hqC) === Math.sign(b1[0] - hqC);
+    const sameSideR = Math.sign(r - hqR) === Math.sign(b1[1] - hqR);
+    if (sameSideC && sameSideR) return false;
+    return chebyshev(c, r, b1[0], b1[1]) >= DYN_MIN_BASE_DIST;
+  });
+  if (opposite.length === 0) {
+    // Fallback: any candidate far enough from b1
+    const fallback = candidates.filter(([c, r]) =>
+      chebyshev(c, r, b1[0], b1[1]) >= DYN_MIN_BASE_DIST);
+    if (fallback.length === 0) return null;
+    return [b1, fallback[Math.floor(Math.random() * fallback.length)]];
+  }
+  const b2 = opposite[Math.floor(Math.random() * opposite.length)];
+  return [b1, b2];
+}
+
+/* Pick bases in mirrored mode: base2 is the point-reflection of base1 around
+   the HQ. If that cell is out of bounds, nudge it inward. */
+function pickEnemyBasesMirrored(hqC, hqR) {
+  // Find a valid base1 first
+  const candidates = [];
+  for (let c = 0; c < COLS; c++) {
+    for (let r = 0; r < ROWS; r++) {
+      if (c === hqC && r === hqR) continue;
+      if (chebyshev(c, r, hqC, hqR) < DYN_MIN_HQ_DIST) continue;
+      // Reflection must also be in bounds
+      const rc = 2 * hqC - c, rr = 2 * hqR - r;
+      if (rc < 0 || rc >= COLS || rr < 0 || rr >= ROWS) continue;
+      if (rc === hqC && rr === hqR) continue;
+      if (chebyshev(rc, rr, hqC, hqR) < DYN_MIN_HQ_DIST) continue;
+      candidates.push([c, r]);
+    }
+  }
+  if (candidates.length === 0) return null;
+  const b1 = candidates[Math.floor(Math.random() * candidates.length)];
+  const b2 = [2 * hqC - b1[0], 2 * hqR - b1[1]];
+  return [b1, b2];
+}
+
+/* Main: given an HQ cell, fill mapDef.paths with 2 paths (one per enemy base).
+   Returns { bases, paths } on success, null on failure. */
+function generateDynamicPaths(mapDef, hqC, hqR) {
+  const pickFn = mapDef.dynamicMode === 'mirrored'
+    ? pickEnemyBasesMirrored : pickEnemyBases;
+  // Try up to 20 times to find a valid layout (defensive — usually works first try)
+  for (let attempt = 0; attempt < 20; attempt++) {
+    const bases = pickFn(hqC, hqR);
+    if (!bases) continue;
+    const [b1, b2] = bases;
+    const p1 = bfsPath(b1[0], b1[1], hqC, hqR);
+    const p2 = bfsPath(b2[0], b2[1], hqC, hqR);
+    if (p1 && p2) {
+      mapDef.paths = [p1, p2];
+      mapDef._dynamicHQ = [hqC, hqR];
+      mapDef._dynamicBases = [b1, b2];
+      return { bases, paths: [p1, p2] };
+    }
+  }
+  return null;
+}
+
 loadMapIntoState(MAPS[0]);
 
 /* ---------- ONE-TIME MIGRATION: bestwave backfill for legacy saves ----------
@@ -3418,6 +3664,57 @@ function drawBackground() {
 }
 
 function drawPlacementPreview() {
+  // HQ placement phase (dynamic maps) — show cursor preview + edge warning
+  if (state.placementPhase === 'hq') {
+    const { c, r } = state.mouseCell;
+    if (c < 0) return;
+    const isEdge = c < 1 || c > COLS - 2 || r < 1 || r > ROWS - 2;
+    const isPending = pendingTapCell && pendingTapCell.c === c && pendingTapCell.r === r;
+    const pulse = 0.5 + 0.5 * Math.sin(Date.now() * (isPending ? 0.012 : 0.008));
+    const x = c * CELL + CELL / 2, y = r * CELL + CELL / 2;
+    // Cell tint — green if valid, red if edge, stronger green if pending confirm
+    if (isEdge) {
+      ctx.fillStyle = 'rgba(200,71,47,0.28)';
+    } else if (isPending) {
+      ctx.fillStyle = `rgba(122,159,63,${0.35 + pulse * 0.25})`;
+    } else {
+      ctx.fillStyle = `rgba(122,159,63,${0.22 + pulse * 0.18})`;
+    }
+    ctx.fillRect(c * CELL, r * CELL, CELL, CELL);
+    // Border — thicker & brighter when awaiting confirm
+    ctx.strokeStyle = isEdge
+      ? 'rgba(200,71,47,0.75)'
+      : (isPending ? `rgba(180,230,120,${0.8 + pulse * 0.2})` : 'rgba(160,210,100,0.85)');
+    ctx.lineWidth = isPending ? 2.8 : 2;
+    ctx.strokeRect(c * CELL + 2, r * CELL + 2, CELL - 4, CELL - 4);
+    // HQ icon (same 'HQ' disc as enemy bases)
+    ctx.globalAlpha = isEdge ? 0.35 : (isPending ? 0.95 : 0.78);
+    ctx.fillStyle = '#c8472f';
+    ctx.beginPath();
+    ctx.arc(x, y, CELL * 0.28, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = '#ffe9c9';
+    ctx.font = 'bold ' + Math.floor(CELL * 0.22) + 'px system-ui,sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('HQ', x, y + 1);
+    ctx.globalAlpha = 1;
+    // Reach-ring: cells within DYN_MIN_HQ_DIST that enemy bases will avoid
+    if (!isEdge) {
+      ctx.strokeStyle = 'rgba(122,159,63,0.35)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([3, 4]);
+      const ringCells = DYN_MIN_HQ_DIST;
+      ctx.strokeRect(
+        (c - ringCells) * CELL + 2,
+        (r - ringCells) * CELL + 2,
+        (ringCells * 2 + 1) * CELL - 4,
+        (ringCells * 2 + 1) * CELL - 4
+      );
+      ctx.setLineDash([]);
+    }
+    return;
+  }
   // Move mode takes precedence over placing
   if (state.moving !== null && state.moving !== undefined) {
     const { c, r } = state.mouseCell;
@@ -4226,6 +4523,27 @@ function startWave() {
   if (state.wave >= 15 && currentMap.type === 'multi' && currentMap.paths.length === 4) {
     unlockAch('quad5');
   }
+  // Dynamic map achievements
+  if (currentMap.dynamic) {
+    if (state.wave >= 10) unlockAch('dynStrategist');
+    // "Command Center" — 15 waves on BOTH dynamic maps (read from bestwave keys)
+    if (state.wave >= 15) {
+      const rando1Max = Math.max(
+        parseInt(localStorage.getItem('siper_bestwave_rando1_easy') || '0'),
+        parseInt(localStorage.getItem('siper_bestwave_rando1_medium') || '0'),
+        parseInt(localStorage.getItem('siper_bestwave_rando1_hard') || '0')
+      );
+      const rando2Max = Math.max(
+        parseInt(localStorage.getItem('siper_bestwave_rando2_easy') || '0'),
+        parseInt(localStorage.getItem('siper_bestwave_rando2_medium') || '0'),
+        parseInt(localStorage.getItem('siper_bestwave_rando2_hard') || '0')
+      );
+      // Count current run's wave too if it's on one of them
+      const currentMax = currentMap.id === 'rando1' ? Math.max(rando1Max, state.wave) : rando1Max;
+      const currentMax2 = currentMap.id === 'rando2' ? Math.max(rando2Max, state.wave) : rando2Max;
+      if (currentMax >= 15 && currentMax2 >= 15) unlockAch('dynMaster');
+    }
+  }
 }
 
 // Autoplay state: dalga biter → AUTOPLAY_DELAY sn sonra sonraki dalga otomatik başlar.
@@ -4970,9 +5288,11 @@ function loop(now) {
   const dt = rawDt * gameSpeed;
   // Skip ALL simulation if app is not visible (in menu, settings, etc.)
   // This prevents enemies walking, towers firing, and SFX playing behind menus.
+  // Also skip during HQ placement phase for dynamic maps.
   const appEl = document.getElementById('app');
   const inGame = appEl && appEl.style.display !== 'none';
-  if (inGame && !state.paused && !state.gameOver) {
+  const inPlacement = state.placementPhase === 'hq';
+  if (inGame && !inPlacement && !state.paused && !state.gameOver) {
     updateSpawns(dt);
     updateEnemies(dt);
     updateTowers(dt);
@@ -5045,6 +5365,27 @@ canvas.addEventListener('touchstart', (e) => {
   if (!c) return;
   state.mouseCell = c;
 
+  // HQ placement phase (dynamic maps) — two-phase on touch: first tap previews,
+  // second tap on same cell confirms. Edge cells show an immediate warning on
+  // first tap so the player knows to pick a different spot (no preview lock-in).
+  if (state.placementPhase === 'hq') {
+    const isEdge = c.c < 1 || c.c > COLS - 2 || c.r < 1 || c.r > ROWS - 2;
+    if (isEdge) {
+      toast(t2('hqEdgeWarn'), '#c8472f');
+      pendingTapCell = null;
+      return;
+    }
+    if (pendingTapCell && pendingTapCell.c === c.c && pendingTapCell.r === c.r) {
+      pendingTapCell = null;
+      confirmHQPlacement(c.c, c.r);
+      return;
+    }
+    pendingTapCell = c;
+    pendingTapTime = Date.now();
+    toast(LANG === 'tr' ? 'Onaylamak için tekrar dokun' : 'Tap again to confirm', '#7a9f3f');
+    return;
+  }
+
   // Two-phase placement on touch devices: first tap shows preview, second tap confirms
   if (state.placing) {
     // Validity check
@@ -5096,6 +5437,11 @@ canvas.addEventListener('touchstart', (e) => {
 function t2(k) { return t(k); }
 
 function handleClick(c, r) {
+  // Dynamic map HQ placement phase — click confirms HQ position
+  if (state.placementPhase === 'hq') {
+    confirmHQPlacement(c, r);
+    return;
+  }
   // Moving (relocate an existing tower)
   if (state.moving !== undefined && state.moving !== null) {
     if (isPathCell(c, r) || towerAt(c, r)) {
@@ -5400,6 +5746,11 @@ document.getElementById('tp-repair').addEventListener('click', () => {
 
 /* ---------- CONTROLS ---------- */
 document.getElementById('btn-wave').addEventListener('click', () => {
+  // During HQ placement phase — no wave action
+  if (state.placementPhase === 'hq') {
+    toast(t('placeHQFirst'), '#c8472f');
+    return;
+  }
   // If game is paused → resume
   if (state.paused) {
     state.paused = false;
@@ -5568,6 +5919,40 @@ function renderMapPreview(canv, mapDef) {
   for (let r = 0; r <= ROWS; r++) {
     ctx2.beginPath(); ctx2.moveTo(0, r*cellH); ctx2.lineTo(W, r*cellH); ctx2.stroke();
   }
+  // Dynamic maps — no fixed layout to preview; show an iconic placeholder.
+  if (mapDef.dynamic && (!mapDef.paths || mapDef.paths.length === 0)) {
+    // Soft orange glow
+    const grd = ctx2.createRadialGradient(W/2, H/2, 4, W/2, H/2, Math.min(W, H) * 0.55);
+    grd.addColorStop(0, 'rgba(217,126,42,0.28)');
+    grd.addColorStop(1, 'rgba(217,126,42,0)');
+    ctx2.fillStyle = grd;
+    ctx2.fillRect(0, 0, W, H);
+    // Compass-rose-ish: 4 small dashed arrows converging to center
+    ctx2.strokeStyle = 'rgba(217,126,42,0.55)';
+    ctx2.lineWidth = 1.2;
+    ctx2.setLineDash([3, 3]);
+    const cx = W / 2, cy = H / 2;
+    const reach = Math.min(W, H) * 0.38;
+    const starts = [[cx - reach, cy], [cx + reach, cy], [cx, cy - reach], [cx, cy + reach]];
+    for (const [sx, sy] of starts) {
+      ctx2.beginPath();
+      ctx2.moveTo(sx, sy);
+      ctx2.lineTo(cx, cy);
+      ctx2.stroke();
+    }
+    ctx2.setLineDash([]);
+    // "?" disc at center — the "place your HQ here" hint
+    ctx2.fillStyle = 'rgba(200,71,47,0.65)';
+    ctx2.beginPath();
+    ctx2.arc(cx, cy, Math.min(cellW, cellH) * 0.9, 0, Math.PI * 2);
+    ctx2.fill();
+    ctx2.fillStyle = '#ffe9c9';
+    ctx2.font = 'bold ' + Math.floor(Math.min(cellW, cellH) * 1.1) + 'px system-ui,sans-serif';
+    ctx2.textAlign = 'center';
+    ctx2.textBaseline = 'middle';
+    ctx2.fillText('?', cx, cy + 1);
+    return;
+  }
   // path cells
   const drawn = new Set();
   for (const path of mapDef.paths) {
@@ -5664,7 +6049,8 @@ function buildMapSelect() {
     }
     const isQuad = mapDef.type === 'multi' && mapDef.paths.length === 4;
     let typeClass = '', typeLabel = '';
-    if (isQuad) { typeClass = 'quad'; typeLabel = t('mapQuad'); }
+    if (mapDef.dynamic) { typeClass = 'dynamic'; typeLabel = t('mapDynamic'); }
+    else if (isQuad) { typeClass = 'quad'; typeLabel = t('mapQuad'); }
     else if (mapDef.type === 'multi') { typeClass = 'multi'; typeLabel = t('mapMulti'); }
     else { typeClass = ''; typeLabel = t('mapSingle'); }
     const bestLabel = best > 0
@@ -5731,6 +6117,11 @@ function selectMap(mapDef, difficulty) {
       : 'This map has a saved game. Starting a new run will overwrite it on next Save. Continue?';
     if (!confirm(confirmMsg)) return;
   }
+  // Dynamic map: route to HQ placement flow instead of starting immediately.
+  if (mapDef.dynamic) {
+    startHQPlacement(mapDef, difficulty);
+    return;
+  }
   loadMapIntoState(mapDef, difficulty);
   localStorage.setItem('siper_last_diff', difficulty);
   resetGame();
@@ -5744,6 +6135,72 @@ function selectMap(mapDef, difficulty) {
   resizeCanvas();
   // NEW v2.6.1: initial auto-save so Continue button shows up even before first tower
   silentAutoSave();
+}
+
+/* Dynamic map — HQ placement phase. Player clicks a non-edge grid cell;
+   once confirmed, we roll enemy bases + BFS paths, then start the game. */
+function startHQPlacement(mapDef, difficulty) {
+  // Wire state: we enter the game screen but simulation is paused/blocked.
+  currentDifficulty = difficulty;
+  localStorage.setItem('siper_last_diff', difficulty);
+  // Clear any prior dynamic layout so preview is clean
+  mapDef.paths = [];
+  mapDef._dynamicHQ = null;
+  mapDef._dynamicBases = null;
+  // Load empty map; draw loop will render an empty board + HQ preview overlay
+  loadMapIntoState(mapDef, difficulty);
+  resetGame();
+  state.placementPhase = 'hq';
+  state.placementMapDef = mapDef;
+  trackMapPlayed(mapDef.id);
+  document.getElementById('map-select').classList.add('hidden');
+  document.getElementById('main-menu').classList.add('hidden');
+  document.getElementById('app').style.display = 'flex';
+  document.getElementById('online-indicator').style.display = 'flex';
+  playTrack('game');
+  resizeCanvas();
+  // Show placement instruction banner
+  showPlacementBanner();
+}
+
+/* Called when player clicks a cell during HQ placement.
+   Validates, then generates bases/paths and ends the placement phase. */
+function confirmHQPlacement(c, r) {
+  const mapDef = state.placementMapDef;
+  if (!mapDef) return;
+  // Disallow edge cells (HQ needs room around it for paths to exist)
+  if (c < 1 || c > COLS - 2 || r < 1 || r > ROWS - 2) {
+    toast(t('hqEdgeWarn'), '#c8472f');
+    return;
+  }
+  const result = generateDynamicPaths(mapDef, c, r);
+  if (!result) {
+    toast(t('hqNoPath'), '#c8472f');
+    return;
+  }
+  // Apply generated paths
+  state.pathWaypoints = mapDef.paths.map(buildWaypointsForPath);
+  state.placementPhase = null;
+  state.placementMapDef = null;
+  hidePlacementBanner();
+  toast(t('hqPlaced'), '#7a9f3f');
+  silentAutoSave();
+}
+
+function showPlacementBanner() {
+  let banner = document.getElementById('placement-banner');
+  if (!banner) {
+    banner = document.createElement('div');
+    banner.id = 'placement-banner';
+    banner.className = 'placement-banner';
+    document.body.appendChild(banner);
+  }
+  banner.textContent = t('placeHQPrompt');
+  banner.classList.add('active');
+}
+function hidePlacementBanner() {
+  const banner = document.getElementById('placement-banner');
+  if (banner) banner.classList.remove('active');
 }
 function showMapSelect() {
   // hide other screens
@@ -5760,8 +6217,10 @@ document.getElementById('btn-map').addEventListener('click', () => {
   // (If game is over, just navigate to map select directly.)
   const inGame = document.getElementById('app').style.display !== 'none' && !state.gameOver;
   if (inGame) {
-    // Silent save (only if there's something to save — towers placed or wave advanced)
-    if (state.towers.length > 0 || state.wave > 0) {
+    // Silent save (only if there's something to save — towers placed, wave advanced,
+    // or mid-placement on a dynamic map so the player can resume)
+    const hasProgress = state.towers.length > 0 || state.wave > 0 || state.placementPhase === 'hq';
+    if (hasProgress) {
       try {
         const snap = serializeGame();
         localStorage.setItem('siper_save_' + currentMap.id, JSON.stringify(snap));
@@ -5775,8 +6234,11 @@ document.getElementById('btn-map').addEventListener('click', () => {
     // ensures the game is paused cleanly and autoplay doesn't trigger on resume.
     state.paused = true;
     autoplayCountdown = 0;
+    // Hide any placement banner that may be active.
+    hidePlacementBanner();
     showMainMenu();
   } else {
+    hidePlacementBanner();
     showMapSelect();
   }
 });
@@ -6451,7 +6913,7 @@ document.getElementById('feedback-send').addEventListener('click', () => {
    ============================================================ */
 
 function serializeGame() {
-  return {
+  const snap = {
     version: GAME_VERSION,
     mapId: currentMap.id,
     difficulty: currentDifficulty,
@@ -6466,6 +6928,16 @@ function serializeGame() {
     })),
     ts: Date.now()
   };
+  // Dynamic map: also persist the generated layout so Continue restores it.
+  if (currentMap.dynamic) {
+    snap.dynamic = {
+      hq: currentMap._dynamicHQ || null,
+      bases: currentMap._dynamicBases || null,
+      paths: currentMap.paths || [],
+      placementPending: state.placementPhase === 'hq'
+    };
+  }
+  return snap;
 }
 
 function saveCurrentGame() {
@@ -6545,6 +7017,19 @@ function loadSavedGame(mapId) {
     const snap = JSON.parse(raw);
     const mapDef = MAPS.find(m => m.id === snap.mapId);
     if (!mapDef) return false;
+    // Dynamic map: restore the saved layout BEFORE loadMapIntoState so waypoints build correctly.
+    if (mapDef.dynamic) {
+      if (snap.dynamic && snap.dynamic.paths && snap.dynamic.paths.length) {
+        mapDef.paths = snap.dynamic.paths;
+        mapDef._dynamicHQ = snap.dynamic.hq || null;
+        mapDef._dynamicBases = snap.dynamic.bases || null;
+      } else {
+        // Save was made during placement phase with no paths yet — restart placement.
+        mapDef.paths = [];
+        mapDef._dynamicHQ = null;
+        mapDef._dynamicBases = null;
+      }
+    }
     loadMapIntoState(mapDef, snap.difficulty);
     localStorage.setItem('siper_last_diff', snap.difficulty);
     // Restore state
@@ -6564,6 +7049,15 @@ function loadSavedGame(mapId) {
     state.spawnTimer = 0;
     state.paused = false;
     state.gameOver = false;
+    state.placementPhase = null;
+    state.placementMapDef = null;
+    hidePlacementBanner();
+    // If this is a dynamic map and the save was taken during HQ placement, resume it.
+    if (mapDef.dynamic && snap.dynamic && snap.dynamic.placementPending) {
+      state.placementPhase = 'hq';
+      state.placementMapDef = mapDef;
+      showPlacementBanner();
+    }
     refreshShopSelection();
     hideTowerPanel();
     updateWaveButton();
@@ -6701,7 +7195,7 @@ const ACHIEVEMENTS = [
   { id: 'maps3',  name: { tr: 'Gezgin', en: 'Traveler' }, desc: { tr: '3 farklı harita oyna', en: 'Play 3 different maps' } },
   { id: 'maps10', name: { tr: 'Kâşif', en: 'Explorer' }, desc: { tr: '10 farklı harita oyna', en: 'Play 10 different maps' } },
   { id: 'maps20', name: { tr: 'Seyyah', en: 'Wanderer' }, desc: { tr: '20 farklı harita oyna', en: 'Play 20 different maps' } },
-  { id: 'mapsAll',name: { tr: 'Her Harita', en: 'All Maps' }, desc: { tr: 'Tüm 30 haritayı oyna', en: 'Play all 30 maps' } },
+  { id: 'mapsAll',name: { tr: 'Her Harita', en: 'All Maps' }, desc: { tr: '30 farklı harita oyna', en: 'Play 30 different maps' } },
 
   // Difficulty
   { id: 'easyWin', name: { tr: 'İlk Zafer', en: 'First Win' }, desc: { tr: 'Kolayda 20 dalgaya ulaş', en: 'Reach wave 20 on Easy' } },
@@ -6737,6 +7231,9 @@ const ACHIEVEMENTS = [
   { id: 'noLoss',    name: { tr: 'Kesinti Yok', en: 'Zero Casualties' }, desc: { tr: 'Hiç kule kaybetmeden wave 20\'ye ulaş', en: 'Reach wave 20 without losing a tower' } },
   { id: 'agitKill',  name: { tr: 'Sağlam Savunma', en: 'Firm Defense' }, desc: { tr: '10 Ajitatör öldür', en: 'Kill 10 Agitators' } },
   { id: 'repairer',  name: { tr: 'Teknisyen', en: 'Technician' }, desc: { tr: 'Tek oyunda 5+ kule onar', en: 'Repair 5+ towers in one run' } },
+  // Dynamic map achievements (v2.7.0)
+  { id: 'dynStrategist', name: { tr: 'HQ Stratejisti', en: 'HQ Strategist' }, desc: { tr: 'Dinamik haritada 10 dalga geç', en: 'Clear 10 waves on a dynamic map' } },
+  { id: 'dynMaster',     name: { tr: 'Komuta Merkezi', en: 'Command Center' }, desc: { tr: 'İki dinamik haritada da 15 dalga geç', en: 'Clear 15 waves on BOTH dynamic maps' } },
   { id: 'perfect', name: { tr: 'Mükemmeliyet', en: 'Perfection' }, desc: { tr: 'Tüm başarımları kazan', en: 'Unlock all achievements' } }
 ];
 
